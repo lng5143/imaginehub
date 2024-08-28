@@ -1,3 +1,7 @@
 export default function Conversation({ conversation }) {
-  return <div>{conversation}</div>;
+  return (
+    <li>
+        <div>{conversation}</div>
+    </li>
+  );
 }
