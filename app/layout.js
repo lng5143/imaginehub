@@ -14,10 +14,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={jetbrainsMono.className}>
-      <NavigationBar />
+      <body className={`${jetbrainsMono.className} flex flex-col h-screen`}>
+        <NavigationBar />
         {children}
-        </body>
+      </body>
     </html>
   );
 }

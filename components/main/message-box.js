@@ -1,6 +1,6 @@
 export default function MessageBox() {
   return (
-    <div>
+    <div className="grow">
       <h1>MessageBox</h1>
     </div>
   );
