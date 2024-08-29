@@ -1,6 +1,6 @@
 import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import NavigationBar from "../components/nav/nav"
+import NavigationBar from "../components/nav/nav-bar"
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"]
@@ -12,10 +12,12 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
+  
   return (
     <html lang="en">
-      <body className={`${jetbrainsMono.className} flex flex-col h-screen`}>
-        <NavigationBar />
+      
+      <body className={`${jetbrainsMono.className} h-screen`}>
         {children}
       </body>
     </html>
