@@ -4,7 +4,7 @@ import SettingNav from "./setting-nav";
 import SettingMain from "./setting-main";
 import SettingCategory from "./setting-category";
 import ModelsSetting from "./models-setting";
-import AppearanceSetting from "./appearance-setting";
+import GeneralSetting from "./general-setting";
 import { useState } from "react";
 
 export default function Settings() {
@@ -23,15 +23,15 @@ export default function Settings() {
             <SettingNav>
                 <ul>
                     <li key={1}>
-                        <SettingCategory id={1} name="Models" onClick={(id) => handleCategoryClick(id)} />
+                        <SettingCategory id={1} name="General" onClick={(id) => handleCategoryClick(id)} />
                     </li>
                     <li key={2}>
-                        <SettingCategory id={2} name="Appearance" onClick={(id) => handleCategoryClick(id)} />
+                        <SettingCategory id={2} name="Models" onClick={(id) => handleCategoryClick(id)} />
                     </li>
                 </ul>
             </SettingNav>
             <SettingMain>
-                {selectedCategory === 1 ? <ModelsSetting /> : <AppearanceSetting />}
+                {selectedCategory === 1 ? <GeneralSetting /> : <ModelsSetting />}
             </SettingMain>
         </div>
     )
