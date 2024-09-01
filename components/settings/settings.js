@@ -11,11 +11,15 @@ export default function Settings() {
     const [selectedCategory, setSelectedCategory] = useState(1);
 
     const handleCategoryClick = (id) => {
-        setSelectedCategory(id);
+        if (id === 1 || id === 2) {
+            setSelectedCategory(id);
+        } else {
+            console.error('Invalid category ID:', id);
+        }
     }
 
     return (
-        <div className="flex h-full">
+        <div className="flex h-full p-5">
             <SettingNav>
                 <ul>
                     <li key={1}>
