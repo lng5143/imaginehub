@@ -21,9 +21,10 @@ export default function Modal({children, onClose}) {
     }, []);
 
     return (
-        <dialog ref={dialog}>
-            <div ref={modalMain}></div>
-            {children}
+        <dialog ref={dialog} className="h-4/6 w-4/6">
+            <div ref={modalMain} className="h-full w-full">
+                {children}
+            </div>
         </dialog>
     )
 }

@@ -1,5 +1,7 @@
-export default function SettingCategory({id, name}) {
+export default function SettingCategory({id, name, onClick}) {
     return (
-        <p>{name}</p>
+        <button
+            className="hover:cursor-pointer"
+            onClick={() => onClick(id)}>{name}</button>
     )
 }

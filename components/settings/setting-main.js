@@ -1,7 +1,7 @@
-export default function SettingMain() {
+export default function SettingMain({children}) {
     return (
-        <div>
-            <h1>Settings</h1>
+        <div className="basis-5/6">
+            {children}
         </div>
     )
 }
