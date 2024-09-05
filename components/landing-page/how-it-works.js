@@ -1,6 +1,6 @@
 export default function HowItWorksSection() {
     return (
-        <div className="flex flex-col items-center gap-10">
+        <div className="flex flex-col items-center gap-10 w-full px-32">
             <p>How It Works Section</p>
             <div className="flex gap-20">
                 <p>Step 1</p>
