@@ -6,7 +6,7 @@ import FooterSection from "@/components/landing-page/footer";
 
 export default function Home() {
   return (
-    <main>
+    <main className="flex flex-col items-center gap-20">
       <HeroSection />
       <HowItWorksSection />
       <BenefitsSection />
