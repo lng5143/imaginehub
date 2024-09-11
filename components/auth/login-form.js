@@ -1,13 +1,20 @@
-import LoginSchema from "@/schemas/index";
+import { LoginSchema } from "@/schemas/index";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormLabel, FormControl, FormItem } from "../ui/form";
 import { Button } from "../ui/button";
-import CardWrapper from "./card-wrapper";
 import { Input } from "../ui/input";
 import SocialLogin from "./social-login";
+import { useState, useTransition } from "react";
+import { loginWithEmail } from "@/actions/login";
+import FormError from "../form-error";
+import FormSuccess from "../form-success";
 
 export default function LoginForm() {
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
+    const [isPending, startTransition] = useTransition();
+
     const form = useForm({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -16,11 +23,27 @@ export default function LoginForm() {
     })
 
     function onSubmit(values) {
-        console.log(values)
+        setError(null);
+        setSuccess(null);
+
+        startTransition(async () => {
+            await loginWithEmail(values)
+            .then(data => {
+                form.reset();
+
+                if (data.error) {
+                    setError(data.error);
+                }
+
+                if (data.success) {
+                    setSuccess(data.success);
+                }
+            })
+        })
     }
     
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-8">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField
@@ -30,12 +53,14 @@ export default function LoginForm() {
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="email@xample.com" {...field} />
+                                    <Input placeholder="email@xample.com" {...field} disabled={isPending} />
                                 </FormControl>
                             </FormItem>
                         )}
                     />
-                    <Button type="submit">Login with email</Button>
+                    <FormError error={error} />
+                    <FormSuccess success={success} />
+                    <Button className="w-full" type="submit" disabled={isPending}>Login with email</Button>
                 </form>
             </Form>
             <SocialLogin />
