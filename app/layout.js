@@ -16,8 +16,8 @@ export default function RootLayout({ children }) {
   
   return (
     <html lang="en">
-      
       <body className={`${jetbrainsMono.className} h-screen`}>
+        <NavigationBar />
         {children}
       </body>
     </html>

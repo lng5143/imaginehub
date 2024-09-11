@@ -1,5 +1,6 @@
 'use client';
 
+import LoginDialog from "../auth/login-dialog";
 import Settings from "../settings/settings";
 
 export default function NavigationBar({onClickSettings}) {
@@ -7,6 +8,7 @@ export default function NavigationBar({onClickSettings}) {
     <div className="flex h-10 px-10 py-5">
       <h1>NavigationBar</h1>
       <button className="" onClick={onClickSettings}>Settings</button>
+      <LoginDialog />
     </div>
   );
 }
