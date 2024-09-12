@@ -3,9 +3,8 @@
 import { signIn } from "@/auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { LoginSchema } from "@/schemas/index"
-import { AuthError } from "next-auth";
 
-export async function loginWithEmail(values) {
+export async function login(values) {
     const validatedFields = LoginSchema.safeParse(values)
 
     if (!validatedFields.success) {
@@ -17,6 +16,7 @@ export async function loginWithEmail(values) {
     try {
         await signIn("resend", { 
             email,
+            redirect: false,
             redirectTo: DEFAULT_LOGIN_REDIRECT
         })
     } catch (error) {
@@ -24,5 +24,7 @@ export async function loginWithEmail(values) {
         throw error;
     }
     
+    
+
     return { success: "Email sent!"};
 }

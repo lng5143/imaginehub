@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import SocialLogin from "./social-login";
 import { useState, useTransition } from "react";
-import { loginWithEmail } from "@/actions/login";
+import { login } from "@/actions/login";
 import FormError from "../form-error";
 import FormSuccess from "../form-success";
 
@@ -27,8 +27,10 @@ export default function LoginForm() {
         setSuccess(null);
 
         startTransition(async () => {
-            await loginWithEmail(values)
+            await login(values)
             .then(data => {
+                console.log("Login form submitted");
+                console.log(data);
                 form.reset();
 
                 if (data.error) {

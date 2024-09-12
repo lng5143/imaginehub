@@ -1,4 +1,4 @@
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 
 export default function DialogWrapper({ children, headerLabel, triggerLabel }) {
     return (
@@ -8,7 +8,7 @@ export default function DialogWrapper({ children, headerLabel, triggerLabel }) {
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    {headerLabel}
+                    <DialogTitle>{headerLabel}</DialogTitle>
                 </DialogHeader>
                 {children}
             </DialogContent>
