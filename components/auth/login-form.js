@@ -1,3 +1,5 @@
+"use client"
+
 import { LoginSchema } from "@/schemas/index";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,8 +12,8 @@ import { login } from "@/actions/login";
 import FormError from "../form-error";
 import FormSuccess from "../form-success";
 
-export default function LoginForm() {
-    const [error, setError] = useState(null);
+export default function LoginForm({ urlError }) {
+    const [error, setError] = useState(urlError);
     const [success, setSuccess] = useState(null);
     const [isPending, startTransition] = useTransition();
 
