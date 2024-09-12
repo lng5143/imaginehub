@@ -2,26 +2,16 @@
 
 import LoginDialog from "../auth/login-dialog";
 import useCurrentUser from "@/hooks/use-current-user";
-import { Button } from "../ui/button";
-import { signOut } from "next-auth/react";
+import UserButton from "./user-button";
 
-export default function NavigationBar({onClickSettings}) {
+export default function NavigationBar() {
   const user = useCurrentUser();
 
-  function logout() {
-    signOut();
-  }
-
   return (
-    <div className="flex h-10 px-10 py-5 gap-10">
-      <h1>NavigationBar</h1>
-      <button className="" onClick={onClickSettings}>Settings</button>
-      <LoginDialog />
+    <div className="flex h-10 px-10 py-5 gap-10 justify-end">
+      {!user && <LoginDialog />}
       {user && 
-        <div className="flex gap-10">
-          <p>Hello, {user.name || user.email}</p>
-          <Button onClick={logout}>Sign out</Button>
-        </div>
+        <UserButton user={user} />
       }
     </div>
   );

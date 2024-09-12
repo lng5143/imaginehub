@@ -5,7 +5,7 @@ export default function DialogWrapper({ children, headerLabel, triggerLabel }) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button>{triggerLabel}</Button>
+                <Button >{triggerLabel}</Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
