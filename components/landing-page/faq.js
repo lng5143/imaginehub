@@ -1,7 +1,7 @@
 "use client"
 
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@radix-ui/react-accordion";
-import { FAQs } from "@/data/landing-page-data";
+import { FAQs } from "@/static-data/landing-page-data";
 import FAQItem from "./faq-item";
 
 export default function FAQSection() {

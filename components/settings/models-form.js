@@ -8,6 +8,7 @@ import { ModelsSettingsSchema } from "@/schemas/index";
 import { useState } from "react";
 import { MODELS } from "@/.seed-data/models";
 import SwitchItem from "./switch-item";
+
 export default function ModelsForm() {
     const [isPending, startTransition] = useTransition();
     const [models, setModels] = useState(MODELS);
@@ -15,12 +16,7 @@ export default function ModelsForm() {
     const form = useForm({
         resolver: zodResolver(ModelsSettingsSchema),
         defaultValues: {
-            models: [
-                {
-                    name: "DALL-E",
-                    active: true
-                }
-            ],
+            ...models
         }
     })
 
@@ -28,7 +24,9 @@ export default function ModelsForm() {
         startTransition(async () => {
             console.log(values);
             
-            //const res = await updateGeneralSettings(values);
+            // save API keys to localStorage 
+
+            // save models settings to DB 
         })
     }
 
@@ -47,7 +45,13 @@ export default function ModelsForm() {
                         <ul className="flex flex-col gap-2">
                             {models.map((model) => (
                                 <li key={model.id}>
-                                    <SwitchItem id={model.id} name={model.name} value={model.active} onChange={(id, checked) => handleModelToggle(id, checked)} />
+                                    <SwitchItem 
+                                        id={model.id} 
+                                        name={model.name} 
+                                        value={model.active} 
+                                        onChange={(id, checked) => handleModelToggle(id, checked)} 
+                                        disabled={isPending}
+                                    />
                                 </li>
                             ))}
                         </ul>

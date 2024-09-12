@@ -1,5 +1,5 @@
 import BenefitItem from "./benefit-item";
-import { BENEFITS } from "@/data/landing-page-data";
+import { BENEFITS } from "@/static-data/landing-page-data";
 
 export default function BenefitsSection() {
     return (
