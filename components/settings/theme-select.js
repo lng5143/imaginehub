@@ -1,8 +1,8 @@
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-export default function ThemeSelect() {
+export default function ThemeSelect({ ...props }) {
     return (
-        <Select>
+        <Select value={props.value}>
             <SelectTrigger>
                 <SelectValue placeholder="Select a theme" />
             </SelectTrigger>

@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ThemeSelect from "./theme-select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function GeneralForm() {
     const [isPending, startTransition] = useTransition();
@@ -46,9 +47,17 @@ export default function GeneralForm() {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Theme</FormLabel>
-                            <FormControl>
-                                <ThemeSelect {...field} />
-                            </FormControl>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a theme" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        <SelectItem value="light">Light</SelectItem>
+                                        <SelectItem value="dark">Dark</SelectItem>
+                                    </SelectContent>
+                                </Select>
                         </FormItem>
                     )}
                 />

@@ -7,7 +7,8 @@ export const LoginSchema = z.object({
 })
 
 export const GeneralSettingsSchema = z.object({
-    name: z.string().optional()
+    name: z.string().optional(),
+    theme: z.string().optional()
 })
 
 export const ModelsSettingsSchema = z.object({
