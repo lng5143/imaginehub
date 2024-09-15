@@ -5,6 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import ThemeSelect from "./theme-select";
 
 export default function GeneralForm() {
     const [isPending, startTransition] = useTransition();
@@ -34,6 +35,19 @@ export default function GeneralForm() {
                             <FormLabel>Display Name</FormLabel>
                             <FormControl>
                                 <Input placeholder="John Doe" {...field} disabled={isPending} />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="theme"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Theme</FormLabel>
+                            <FormControl>
+                                <ThemeSelect {...field} />
                             </FormControl>
                         </FormItem>
                     )}
