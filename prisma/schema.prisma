@@ -13,6 +13,24 @@ enum UserTier {
   PAID
 }
 
+enum Model {
+  DALL_E_3
+  DALL_E_2
+  STABLE_DIFFUSION
+}
+
+enum ImageGenerationStatus {
+  PENDING
+  PROCESSING
+  SUCCESS
+  ERROR
+}
+
+enum DallEQuality {
+  standard
+  hd
+}
+
 model User {
   id            String          @id @default(cuid())
   name          String?
@@ -21,6 +39,7 @@ model User {
   image         String?
   tier          UserTier        @default(FREE)
   accounts      Account[]
+  imageGenerations ImageGeneration[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -52,4 +71,32 @@ model VerificationToken {
   expires    DateTime
  
   @@id([identifier, token])
+}
+
+model ImageGeneration {
+  id         String          @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  model      Model
+  prompt     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  images     Image[]
+  heigth     Int
+  width      Int
+  samples    Int
+  status     ImageGenerationStatus
+  de_quality DallEQuality
+  sd_negativePrompt String
+  sd_safetyChecker Boolean
+  sd_upscale Boolean
+}
+
+model Image {
+  id         String          @id @default(cuid())
+  url        String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  imageGeneration ImageGeneration @relation(fields: [imageGenerationId], references: [id], onDelete: Cascade)
+  imageGenerationId String
 }
