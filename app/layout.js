@@ -1,6 +1,5 @@
 import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import NavigationBar from "../components/nav/nav-bar"
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { Toaster } from "sonner";
@@ -21,7 +20,6 @@ export default async function RootLayout({ children }) {
     <SessionProvider session={session}>
       <html lang="en">
         <body className={`${jetbrainsMono.className} h-screen`}>
-          <NavigationBar />
           {children}
           <Toaster />
         </body>

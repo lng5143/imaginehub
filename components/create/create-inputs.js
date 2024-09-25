@@ -1,7 +1,4 @@
-'use client';
-
-export default function Chat() {
-
+export default function CreateInputs() {
   return (
     <div>
       <h1>Create</h1>
