@@ -40,7 +40,7 @@ export default function ModelsForm() {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="gap-10 flex flex-col">
                 <div className="flex flex-col gap-10">
-                    <div className="flex flex-col gap-2">
+                    {/* <div className="flex flex-col gap-2">
                         <h2 className="font-semibold">Models</h2>
                         <ul className="flex flex-col gap-2">
                             {models.map((model) => (
@@ -55,7 +55,7 @@ export default function ModelsForm() {
                                 </li>
                             ))}
                         </ul>
-                    </div>
+                    </div> */}
 
                     <div className="flex flex-col gap-8">
                         <FormField

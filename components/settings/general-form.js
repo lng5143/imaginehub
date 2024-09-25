@@ -5,11 +5,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import ThemeSelect from "./theme-select";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
+import { updateGeneralSettings } from "@/actions/general-settings";
+import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export default function GeneralForm() {
     const [isPending, startTransition] = useTransition();
+    const { update, data: session } = useSession();
 
     const form = useForm({
         resolver: zodResolver(GeneralSettingsSchema),
@@ -20,8 +23,13 @@ export default function GeneralForm() {
 
     function onSubmit(values) {
         startTransition(async () => {
-            console.log(values);
-            //const res = await updateGeneralSettings(values);
+            const res = await updateGeneralSettings(values);
+
+            if (res?.error) {
+                toast.error(res?.error);
+            } else {
+                toast.success(res?.success);
+            }
         })
     }
 
@@ -41,7 +49,7 @@ export default function GeneralForm() {
                     )}
                 />
 
-                <FormField
+                {/* <FormField
                     control={form.control}
                     name="theme"
                     render={({ field }) => (
@@ -60,7 +68,7 @@ export default function GeneralForm() {
                                 </Select>
                         </FormItem>
                     )}
-                />
+                /> */}
                 <Button className="w-40 self-end" type="submit" disabled={isPending}>Save</Button>
             </form>
         </Form>

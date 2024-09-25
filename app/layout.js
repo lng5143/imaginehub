@@ -3,6 +3,7 @@ import "./globals.css";
 import NavigationBar from "../components/nav/nav-bar"
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
+import { Toaster } from "sonner";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"]
@@ -22,6 +23,7 @@ export default async function RootLayout({ children }) {
         <body className={`${jetbrainsMono.className} h-screen`}>
           <NavigationBar />
           {children}
+          <Toaster />
         </body>
       </html>
     </SessionProvider>

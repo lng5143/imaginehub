@@ -23,11 +23,13 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
     ],
     callbacks: {
         async session({ session, token }) {
-            if (token.sub && session.user)
-                session.user.id = token.sub;
-
-            if (token.tier && session.user)
-                session.user.tier = token.tier;
+            if (token.user && session.user) {
+                session.user.id = token.user.id;
+                session.user.tier = token.user.tier;
+                session.user.name = token.user.name;
+                session.user.email = token.user.email;
+                session.user.image = token.user.image;
+            }
 
             return session;
         },
@@ -39,7 +41,7 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
             if (!existingUser) 
                 return token;
 
-            token.tier = existingUser.tier;
+            token.user = existingUser;
 
             return token;
         }

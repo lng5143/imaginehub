@@ -7,8 +7,7 @@ export const LoginSchema = z.object({
 })
 
 export const GeneralSettingsSchema = z.object({
-    name: z.string().optional(),
-    theme: z.string().optional()
+    name: z.string().min(1, { message: "Name is required" })
 })
 
 export const ModelsSettingsSchema = z.object({
