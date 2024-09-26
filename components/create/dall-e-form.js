@@ -7,7 +7,7 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { useCurrentModel } from "@/store/use-current-model";
 import { Label } from "../ui/label";
 import InputLabel from "./input-label";
-
+import { Input } from "../ui/input";
 export default function DallEForm() {
     const [currentModel, _setCurrentModel] = useCurrentModel();
 
@@ -102,14 +102,26 @@ export default function DallEForm() {
                             <FormControl>
                                 <div className="flex items-center gap-x-4">
                                     <Slider 
-                                        defaultValue={[field.value]} 
+                                        value={[field.value]} 
                                         max={10} 
                                         min={1} 
                                         step={1} 
                                         onValueChange={field.onChange}
                                         disabled={currentModel === "dall-e-3"}
                                     />
-                                    <p className="text-sm font-medium">{field.value}</p>
+                                    <Input 
+                                        type="text" 
+                                        value={field.value} 
+                                        onChange={field.onChange} 
+                                        onBlur={e => {
+                                            if (e.target.value > 10) {
+                                                field.onChange(10);
+                                            }
+                                            if (e.target.value < 1) {
+                                                field.onChange(1);
+                                            }
+                                        }}
+                                        className="w-[40px] text-xs text-center" disabled={currentModel === "dall-e-3"}/>
                                 </div>
                             </FormControl>
                         </FormItem>

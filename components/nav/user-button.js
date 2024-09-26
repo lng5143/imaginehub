@@ -25,7 +25,7 @@ export default function UserButton({ user }) {
                     <DropdownMenuItem>
                         <div className="flex flex-col gap-2">
                             <p className="text-normal">{user.name || user.email}</p>
-                            <p className="text-muted-foreground text-xs">{user.name && user.email}</p>
+                            <p className="text-muted-foreground text-xs truncate">{user.name && user.email}</p>
                         </div>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />

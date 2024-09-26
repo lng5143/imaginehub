@@ -19,7 +19,8 @@ export default function StableDiffusionForm() {
             samples: [1],
             negative_prompt: "",
             prompt: ""
-        }
+        },
+        mode: ""
     });
 
     const onSubmit = (data) => {
@@ -39,14 +40,27 @@ export default function StableDiffusionForm() {
                             <FormControl className="">
                                 <div className="flex items-center gap-x-2 w-full">
                                     <Slider 
-                                        defaultValue={[field.value]} 
+                                        value={[field.value]} 
                                         max={1024} 
                                         min={256} 
                                         step={1} 
                                         onValueChange={field.onChange}
                                     />
                                     <div className="flex gap-1 items-center">
-                                        <Input type="text" value={field.value} onChange={field.onChange} className="w-[54px] text-xs" />
+                                        <Input 
+                                            type="text" 
+                                            value={field.value} 
+                                            onChange={field.onChange} 
+                                            onBlur={e => {
+                                                if (e.target.value > 1024) {
+                                                    field.onChange(1024);
+                                                }
+                                                if (e.target.value < 256) {
+                                                    field.onChange(256);
+                                                }
+                                            }} 
+                                            className="w-[54px] text-xs" 
+                                        />
                                         <p className="text-xs">px</p>
                                     </div>
                                 </div>
@@ -63,14 +77,27 @@ export default function StableDiffusionForm() {
                             <FormControl className="">
                                 <div className="flex items-center gap-x-2 w-full">
                                     <Slider 
-                                        defaultValue={[field.value]} 
+                                        value={[field.value]} 
                                         max={1024} 
                                         min={256} 
                                         step={1} 
                                         onValueChange={field.onChange}
                                     />
                                     <div className="flex gap-1 items-center">
-                                        <Input type="text" value={field.value} onChange={field.onChange} className="w-[54px] text-xs" />
+                                        <Input 
+                                            type="text" 
+                                            value={field.value} 
+                                            onChange={field.onChange} 
+                                            onBlur={e => {
+                                                if (e.target.value > 1024) {
+                                                    field.onChange(1024);
+                                                }
+                                                if (e.target.value < 256) {
+                                                    field.onChange(256);
+                                                }
+                                            }} 
+                                            className="w-[54px] text-xs" 
+                                        />
                                         <p className="text-xs">px</p>
                                     </div>
                                 </div>
@@ -121,7 +148,21 @@ export default function StableDiffusionForm() {
                                         value={[field.value]}
                                         onValueChange={field.onChange}
                                     />
-                                    <p className="text-sm font-medium">{field.value}</p>
+                                    <Input 
+                                        type="text" 
+                                        value={field.value} 
+                                        onChange={field.onChange} 
+                                        onBlur={e => {
+                                            if (e.target.value > 4) {
+                                                field.onChange(4);
+                                            }
+                                            if (e.target.value < 1) {
+                                                field.onChange(1);
+                                            }
+                                        }}
+                                        className="w-[40px] text-xs text-center" 
+                                        disabled={currentModel === "dall-e-3"}
+                                    />
                                 </div>
                             </FormControl>
                             <FormMessage />
