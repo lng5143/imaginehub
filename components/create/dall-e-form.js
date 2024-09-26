@@ -69,7 +69,6 @@ export default function DallEForm() {
                             )}
                             </>
                             </FormControl>
-                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -91,7 +90,6 @@ export default function DallEForm() {
                                     </div>
                                 </RadioGroup>
                             </FormControl>
-                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -108,14 +106,12 @@ export default function DallEForm() {
                                         max={10} 
                                         min={1} 
                                         step={1} 
-                                        value={[field.value]}
                                         onValueChange={field.onChange}
                                         disabled={currentModel === "dall-e-3"}
                                     />
                                     <p className="text-sm font-medium">{field.value}</p>
                                 </div>
                             </FormControl>
-                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -126,9 +122,8 @@ export default function DallEForm() {
                         <FormItem>
                             <InputLabel label="Prompt" hint={`Description of what you want to generate. \nEg. "A photograph of a white Siamese cat"`} />
                             <FormControl>
-                                <Textarea required className="h-28" {...field} />
+                                <Textarea required className="h-28 bg-white" {...field} />
                             </FormControl>
-                            <FormMessage />
                         </FormItem>
                     )}
                 />

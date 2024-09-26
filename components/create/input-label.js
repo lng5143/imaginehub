@@ -4,16 +4,15 @@ import { Info } from "lucide-react";
 
 export default function InputLabel({ label, hint }) {
     return (
-        <FormLabel className="flex justify-between">
+        <FormLabel className="flex justify-between items-center">
             <p>{label}</p>
-            <Hint 
+            {hint && <Hint 
                 text={hint}
                 side="right"
                 align="start"
             >
                 <Info className="size-3.5 text-muted-foreground" />
-            </Hint>
+            </Hint>}
         </FormLabel>
     )
-
 }

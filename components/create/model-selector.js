@@ -5,7 +5,7 @@ export default function ModelSelector() {
     const [currentModel, setCurrentModel] = useCurrentModel();
 
     return (
-        <Select defaultValue={currentModel} onValueChange={setCurrentModel}>
+        <Select value={currentModel} onValueChange={setCurrentModel}>
             <SelectTrigger>
                 <SelectValue placeholder="Select a model" />
             </SelectTrigger>
