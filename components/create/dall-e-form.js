@@ -15,7 +15,7 @@ export default function DallEForm() {
         defaultValues: {
             size: currentModel === "dall-e-3" ? "1024x1024" : "256x256",
             quality: "standard",
-            samples: 1,
+            samples: [1],
             prompt: ""
         }
     });
