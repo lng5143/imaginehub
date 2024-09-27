@@ -4,9 +4,9 @@ import { useState } from "react";
 import { ResizablePanelGroup, ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 import CreateInputs from "@/components/create/create-inputs";
 import GenerationDetails from "@/components/create/generation-details";
-import GenerationsPanel from "@/components/create/generations";
+import GenerationsPanel from "@/components/create/generations-panel";
 
-export default function Chat() {
+export default function CreatePage() {
   const [generationId, setGenerationId] = useState();
 
   return (
