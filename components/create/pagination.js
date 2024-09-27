@@ -4,8 +4,6 @@ export default function PaginationContainer({ currentPage, total, onClick}) {
 
     if (total <= 1) return null;
 
-
-
     return (
         <Pagination>
             <PaginationContent>
@@ -15,12 +13,7 @@ export default function PaginationContainer({ currentPage, total, onClick}) {
                 <PaginationItem>
                     <PaginationLink href="#">1</PaginationLink>
                 </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink href="#">2</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink href="#">3</PaginationLink>
-                </PaginationItem>
+                {}
                 <PaginationItem>
                     <PaginationLink href="#">{total}</PaginationLink>
                 </PaginationItem>

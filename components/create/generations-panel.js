@@ -1,6 +1,7 @@
 import Generation from "./generation";
 import { useRef, useState, useEffect } from "react";
 import PaginationContainer from "./pagination";
+import { useCurrentGenerationId } from "@/store/use-current-generation-id";
 
 const countCols = (width) => {
   if (width > 1200) {
@@ -18,6 +19,7 @@ export default function GenerationsPanel({}) {
   const containerRef = useRef(null);
   const [width, setWidth] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
 
   let cols = countCols(width);
 
@@ -45,14 +47,14 @@ export default function GenerationsPanel({}) {
         ref={containerRef} 
         className="mb-auto"
       >
-        <Generation thumbnail="/placeholder.png" count={1} />
+        <Generation thumbnail="/placeholder.png" count={1} onClick={() => setCurrentGenerationId(1)}/>
         <Generation thumbnail="/placeholder.png" count={2} />
         <Generation thumbnail="/placeholder.png" count={3} />
         <Generation thumbnail="/placeholder.png" count={1} />
-        <Generation thumbnail="/placeholder.png" count={1} />
+        {/* <Generation thumbnail="/placeholder.png" count={1} />
         <Generation thumbnail="/placeholder.png" count={2} />
         <Generation thumbnail="/placeholder.png" count={3} />
-        <Generation thumbnail="/placeholder.png" count={1} />
+        <Generation thumbnail="/placeholder.png" count={1} /> */}
       </div>
       <div>
         <PaginationContainer 
