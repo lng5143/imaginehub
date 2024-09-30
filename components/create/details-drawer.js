@@ -4,7 +4,6 @@ const placeholderPrompt = "If you use a language different from English in you t
 const placeholderNegativePrompt = "If you use a language different from English in you text prompts"
 
 export default function DetailsDrawer({ data }) {
-
     return (
         <>
             <motion.div

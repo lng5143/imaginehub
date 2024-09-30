@@ -1,11 +1,10 @@
-'use client';
+"use client"
 
 import { ResizablePanelGroup, ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 import CreateInputs from "@/components/create/create-inputs";
 import GenerationDetails from "@/components/create/generation-details";
 import GenerationsPanel from "@/components/create/generations-panel";
 import { useCurrentGenerationId } from "@/store/use-current-generation-id";
-import { useState } from "react";
 
 export default function CreatePage() {
   const [generationId, setGenerationId] = useCurrentGenerationId();
