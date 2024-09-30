@@ -145,7 +145,7 @@ function CarouselWrapper({ selectedIndex }) {
           {images.map((image, index) => (
             <div className="min-w-0" style={{ flex: '0 0 100%' }}>
               {/* <Image className="" key={index} src={image.src} alt={image.alt} width={200} height={200}/> */}
-              Slide {index}
+              Slide {index + 1}
             </div>
           ))}
         </div>
@@ -157,7 +157,7 @@ function CarouselWrapper({ selectedIndex }) {
           className="absolute top-1/2 -left-20 transform -translate-y-1/2 text-gray-200 hover:text-gray-800"
         >
           <CircleChevronLeft className="size-4" />
-      </Button>
+        </Button>
       )}
       {currentIndex < images.length - 1 && (
         <Button 
