@@ -3,18 +3,24 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 
-export const getGenerations = async () => {
+const PAGE_SIZE = 20;
+
+export const getGenerations = async (page) => {
     const session = await auth();
     
     if (!session)
         return { error: "Unauthorized" };
 
-    
+    const totalCount = await prisma.imageGeneration.count({
+        where: { userId: session.user.id }
+    });
 
     const generations = await prisma.imageGeneration.findMany({
-        where: { userId: session.user.id }
+        skip: (page - 1) * PAGE_SIZE,
+        take: PAGE_SIZE,
+        where: { userId: session.user.id },
     })
 
-    return { count: generations.length };
+    return { totalCount: totalCount, data: generations };
 }
 

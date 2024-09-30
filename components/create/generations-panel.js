@@ -23,11 +23,12 @@ export default function GenerationsPanel({}) {
   const [currentPage, setCurrentPage] = useState(1);
   const [_currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
 
-  const { data, isError, isLoading, isPending } = useQuery({
-    queryKey: ["generations"],
+  const { data: response, isError, isLoading, isPending } = useQuery({
+    queryKey: ["generations", currentPage],
     queryFn: async () => {
-      return await getGenerations();
-    }
+      return await getGenerations(currentPage);
+    },
+    keepPreviousData: true
   })
 
   let cols = countCols(width);
@@ -56,7 +57,10 @@ export default function GenerationsPanel({}) {
         ref={containerRef} 
         className="mb-auto"
       >
-        {}
+        {/* {response?.data.map(generation => (
+          <Generation key={generation.id} thumbnail={generation.thumbnail} count={generation.count} onClick={() => setCurrentGenerationId(generation.id)}/>
+        ))} */}
+        {JSON.stringify(response)}
         {/* <Generation thumbnail="/placeholder.png" count={1} onClick={() => setCurrentGenerationId(1)}/>
         <Generation thumbnail="/placeholder.png" count={2} />
         <Generation thumbnail="/placeholder.png" count={3} />
@@ -65,7 +69,7 @@ export default function GenerationsPanel({}) {
       <div>
         <PaginationContainer 
           currentPage={currentPage}
-          // total={10}
+          total={response?.totalCount}
           onClick={page => handlePageChange(page)}
         />
       </div>
