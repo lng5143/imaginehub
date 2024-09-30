@@ -1,14 +1,31 @@
 import { CircleX } from "lucide-react";
 import { useCurrentGenerationId } from "@/store/use-current-generation-id";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback, useTransition } from "react";
 import { Button } from "../ui/button";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
+import { Dialog, DialogContent, DialogHeader,  } from "../ui/dialog";
+import Image from "next/image";
+import DetailsDrawer from "./details-drawer";
+import useEmblaCarousel from "embla-carousel-react";
+import { DialogTitle } from "@radix-ui/react-dialog";
+import { CircleChevronRight } from "lucide-react";
+import { CircleChevronLeft } from "lucide-react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const placeholderPrompt =
   "If you use a language different from English in you text prompts, pass the multi_lingual parameter with yes value in the request body. This will trigger an automatic language detection and translation during the processing of your request.";
 const placeholderNegativePrompt =
   "If you use a language different from English in you text prompts";
+
+const images = [
+  { src: "/placeholder.", alt: "Image 1" },
+  { src: "/placeholder.", alt: "Image 2" },
+  { src: "/placeholder.", alt: "Image 3" },
+  { src: "/placeholder.", alt: "Image 4" },
+  { src: "/placeholder.", alt: "Image 5" },
+  { src: "/placeholder.", alt: "Image 6" },
+]
 
 const calculateCols = (width) => {
   if (width > 1024) {
@@ -22,11 +39,12 @@ const calculateCols = (width) => {
 
 export default function GenerationDetails({ data }) {
   const [width, setWidth] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-  const containerRef = useRef(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const { _currentGenerationId, setCurrentGenerationId } =useCurrentGenerationId();
 
-  const { _currentGenerationId, setCurrentGenerationId } =
-    useCurrentGenerationId();
+  const containerRef = useRef(null);
 
   const cols = calculateCols(width);
 
@@ -47,80 +65,109 @@ export default function GenerationDetails({ data }) {
     setCurrentGenerationId(null);
   };
 
+  const handleDialogOpen = (index) => {
+    setSelectedImageIndex(index);
+    setIsDialogOpen(true);
+  }
+
   return (
     <div className="relative flex flex-col h-full">
       <div className="h-6 flex items-center justify-end p-1 absolute top-1 right-1">
         <CircleX className="size-4 text-gray-800" onClick={handleClose} />
       </div>
-      <div className="mb-auto overflow-y-auto p-5" ref={containerRef}>
-        TODO: render images with real API data
+      <div 
+        style={{
+          gridTemplateColumns: `repeat(${cols}, 1fr)`,
+        }}
+        className="mb-auto overflow-y-auto p-5" 
+        ref={containerRef}>
+        {images.map((image, index) => (
+          <Image key={index} src={image.src} alt={image.alt} width={200} height={200} onClick={() => handleDialogOpen(index)}/>
+        ))}
       </div>
-      <Button className="w-full" onClick={() => setIsOpen(true)}>
+      <Button className="w-full" onClick={() => setIsDetailsOpen(true)}>
         View Details
       </Button>
       <AnimatePresence>
-      {isOpen && (
+      {isDetailsOpen && (
         <>
           <motion.div
             className="h-full w-full absolute z-40 bg-gray-600/60"
-            onClick={() => setIsOpen(false)}
+            onClick={() => setIsDetailsOpen(false)}
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.6 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           />
-            <motion.div
-              initial={{ y: "50%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 30, stiffness: 500 }}
-              className="absolute z-50 bottom-0 h-2/3 flex flex-col gap-2 basis-1/5 bg-gray-200 p-5 text-sm rounded-t-lg"
-            >
-              <div className="flex">
-                <div className="w-80 flex flex-col gap-2">
-                  <p>Model name: Dall-E 3</p>
-                  <p>Width: 1024</p>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <p>Samples: 1</p>
-                  <p>Height: 1024</p>
-                </div>
-              </div>
-
-              {(data?.model === "dall-e-3" || data?.model === "dall-e-2") && (
-                <div className="flex">
-                  <p>Quality: Standard</p>
-                </div>
-              )}
-              {/* {data?.model === "stable-diffusion" && ( */}
-              <div className="flex flex-col gap-2">
-                <div className="flex">
-                  <div className="flex flex-col gap-2 w-80">
-                    <p>Upscale: true</p>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <p>Safety checker: true</p>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <p>Negative Prompt</p>
-                  <div className="w-full bg-gray-300 p-3 rounded-md shadow-md h-12 overflow-y-auto">
-                    {placeholderNegativePrompt}
-                  </div>
-                </div>
-              </div>
-              {/* )} */}
-
-              <div className="flex flex-col gap-2">
-                <p>Prompt</p>
-                <div className="w-full bg-gray-300 p-3 rounded-md shadow-md h-20 overflow-y-auto">
-                  {placeholderPrompt}
-                </div>
-              </div>
-            </motion.div>
+            <DetailsDrawer data={data} />
         </>
       )}
       </AnimatePresence>
+
+      <Dialog className="p-0 m-0" open={isDialogOpen} onOpenChange={() => setIsDialogOpen()}>
+        <DialogContent className="p-0 m-0">
+          <VisuallyHidden>
+            <DialogHeader>
+              <DialogTitle></DialogTitle>
+            </DialogHeader>
+          </VisuallyHidden>
+          <CarouselWrapper selectedIndex={selectedImageIndex} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
+}
+
+function CarouselWrapper({ selectedIndex }) {
+  const [emblaRef, emblaApi] = useEmblaCarousel();
+  const [currentIndex, setCurrentIndex] = useState(selectedIndex);
+
+  useEffect(() => {
+    if (emblaApi) {
+      emblaApi.scrollTo(selectedIndex, true);
+    }
+  }, [emblaApi, selectedIndex]);
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+    setCurrentIndex(prev => prev - 1);
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+    setCurrentIndex(prev => prev + 1);
+  }, [emblaApi]);
+  
+  return (
+    <div className="relative">
+      <div ref={emblaRef} className=" overflow-hidden">
+        <div className="flex">
+          {images.map((image, index) => (
+            <div className="min-w-0" style={{ flex: '0 0 100%' }}>
+              {/* <Image className="" key={index} src={image.src} alt={image.alt} width={200} height={200}/> */}
+              Slide {index}
+            </div>
+          ))}
+        </div>
+      </div>
+      {currentIndex > 0 && (
+        <Button 
+          variant="ghost"
+          onClick={scrollPrev} 
+          className="absolute top-1/2 -left-20 transform -translate-y-1/2 text-gray-200 hover:text-gray-800"
+        >
+          <CircleChevronLeft className="size-4" />
+      </Button>
+      )}
+      {currentIndex < images.length - 1 && (
+        <Button 
+          variant="ghost"
+          onClick={scrollNext} 
+          className="absolute top-1/2 -right-20 transform -translate-y-1/2 text-gray-200 hover:text-gray-800"
+        >
+          <CircleChevronRight className="size-4" />
+        </Button>
+      )}
+    </div>
+  )
 }
