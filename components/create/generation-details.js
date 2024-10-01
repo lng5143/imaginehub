@@ -12,6 +12,8 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 import { CircleChevronRight } from "lucide-react";
 import { CircleChevronLeft } from "lucide-react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { useQuery } from "@tanstack/react-query";
+import { getGenerations, getImages } from "@/actions/generations";
 
 const placeholderPrompt =
   "If you use a language different from English in you text prompts, pass the multi_lingual parameter with yes value in the request body. This will trigger an automatic language detection and translation during the processing of your request.";
@@ -37,12 +39,17 @@ const calculateCols = (width) => {
   }
 };
 
-export default function GenerationDetails({ data }) {
+export default function GenerationDetails({ data: generation }) {
   const [width, setWidth] = useState(0);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { _currentGenerationId, setCurrentGenerationId } =useCurrentGenerationId();
+
+  const { data: response, isLoading} = useQuery({
+    queryKey: ["generation", generation?.id],
+    queryFn: () => getImages(generation?.id)
+  })
 
   const containerRef = useRef(null);
 
@@ -81,7 +88,7 @@ export default function GenerationDetails({ data }) {
         }}
         className="mb-auto overflow-y-auto p-5" 
         ref={containerRef}>
-        {images.map((image, index) => (
+        {response?.data.map((image, index) => (
           <Image key={index} src={image.src} alt={image.alt} width={200} height={200} onClick={() => handleDialogOpen(index)}/>
         ))}
       </div>
@@ -99,7 +106,7 @@ export default function GenerationDetails({ data }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           />
-            <DetailsDrawer data={data} />
+            <DetailsDrawer data={generation} />
         </>
       )}
       </AnimatePresence>
