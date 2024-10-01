@@ -4,6 +4,7 @@ import PaginationContainer from "./pagination";
 import { useCurrentGenerationId } from "@/store/use-current-generation-id";
 import { useQuery } from "@tanstack/react-query";
 import { getGenerations } from "@/actions/generations";
+import { toast } from "sonner";
 
 const countCols = (width) => {
   if (width > 1200) {
@@ -49,6 +50,13 @@ export default function GenerationsPanel({}) {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   }
+
+  const handleSelectGeneration = (generation) => {
+    if (generation.status === "PROCESSING")
+      toast.info("Image generation in progress");
+    else if (generation.status === "SUCCESS")
+      setCurrentGenerationId(generation.id);
+  }
   
   return (
     <div className="flex flex-col gap-10 p-5 h-full">
@@ -57,10 +65,9 @@ export default function GenerationsPanel({}) {
         ref={containerRef} 
         className="mb-auto"
       >
-        {/* {response?.data.map(generation => (
-          <Generation key={generation.id} thumbnail={generation.thumbnail} count={generation.count} onClick={() => setCurrentGenerationId(generation.id)}/>
-        ))} */}
-        {JSON.stringify(response)}
+        {response.generations.map(generation => (
+          <Generation key={generation.id} thumbnail={generation.thumbnail} count={generation.count} onClick={() => handleSelectGeneration(generation)}/>
+        ))}
         {/* <Generation thumbnail="/placeholder.png" count={1} onClick={() => setCurrentGenerationId(1)}/>
         <Generation thumbnail="/placeholder.png" count={2} />
         <Generation thumbnail="/placeholder.png" count={3} />
