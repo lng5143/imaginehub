@@ -3,6 +3,8 @@ import Image from "next/image";
 
 export default function Generation({ data }) {
 
+    const thumbnail = data.image?.[0]?.image;
+
     if (data.status === "PROCESSING") {
         return (
             <div className="flex p-[272px] h-[272px] items-center justify-center">
