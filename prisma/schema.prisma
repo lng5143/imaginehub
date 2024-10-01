@@ -31,6 +31,11 @@ enum DallEQuality {
   hd
 }
 
+enum Provider {
+  STABILITY
+  OPENAI
+}
+
 model User {
   id            String          @id @default(cuid())
   name          String?
@@ -86,6 +91,7 @@ model ImageGeneration {
   width      Int
   samples    Int
   status     ImageGenerationStatus
+  provider   Provider
   de_quality DallEQuality
   sd_negativePrompt String
   sd_seed Int
