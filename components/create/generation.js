@@ -1,8 +1,18 @@
+import { LoaderCircle } from "lucide-react";
 import Image from "next/image";
 
-export default function Generation({ thumbnail, count }) {
+export default function Generation({ data }) {
 
-    if (count === 1) {
+    if (data.status === "PROCESSING") {
+        return (
+            <div className="flex p-[272px] h-[272px] items-center justify-center">
+                <LoaderCircle className="size-10 animate-spin" />
+            </div>
+        )
+    }
+
+
+    if (data.samples === 1) {
         return (
             <div className="">
                 <Image
@@ -16,7 +26,7 @@ export default function Generation({ thumbnail, count }) {
         )
     }
 
-    if (count === 2) {
+    if (data.samples === 2) {
         return (
             <div className="relative">
                 <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-background z-10">
