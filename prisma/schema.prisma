@@ -88,8 +88,10 @@ model ImageGeneration {
   status     ImageGenerationStatus
   de_quality DallEQuality
   sd_negativePrompt String
-  sd_safetyChecker Boolean
-  sd_upscale Boolean
+  sd_seed Int
+  sd_outputFormat String
+  sd_aspectRatio String
+  sd_stylePreset String
 }
 
 model Image {
