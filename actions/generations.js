@@ -52,16 +52,31 @@ export const generateImages = async ( data ) => {
     if (!session)
         throw new Error("Unauthorized");
 
-    let images;
+    const initialRes = await prisma.imageGeneration.create({
+        status: "PROCESSING",
+        ...data
+    })
+
+    data.id = initialRes.id;
+
+    let genRes;
 
     switch (data?.provider) {
         case "stability":
-            images = await generateStabilityImages(data);
+            genRes = await generateStabilityImages(data);
             break;
         case "openai":
-            images = await generateDalleImages(data);
+            genRes = await generateDalleImages(data);
             break;
         default:
-            images = null;
+            genRes = null;
     }
+
+    if (genRes.success) 
+        await prisma.imageGeneration.update({
+            where: { id: initialRes.id },
+            data: {
+                status: "SUCCESS",
+            }
+        })
 }
