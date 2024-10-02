@@ -7,7 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/
 import { ModelsSettingsSchema } from "@/schemas/index";
 import { useState } from "react";
 import { MODELS } from "@/.seed-data/models";
-import SwitchItem from "./switch-item";
+import { toast } from "sonner";
 
 export default function ModelsForm() {
     const [isPending, startTransition] = useTransition();
@@ -16,51 +16,32 @@ export default function ModelsForm() {
     const form = useForm({
         resolver: zodResolver(ModelsSettingsSchema),
         defaultValues: {
-            ...models
+            openai_api_key: localStorage.getItem("ib_openai_api_key") || "",
+            stability_api_key: localStorage.getItem("ib_stability_api_key") || "",
         }
     })
 
     function onSubmit(values) {
         startTransition(async () => {
             console.log(values);
-            
-            // save API keys to localStorage 
+            const stabilityApiKey = values.stability_api_key;
+            const openaiApiKey = values.openai_api_key;
 
-            // save models settings to DB 
+            localStorage.setItem("ib_stability_api_key", stabilityApiKey);
+            localStorage.setItem("ib_openai_api_key", openaiApiKey);
         })
-    }
 
-    function handleModelToggle(id, checked) {
-        setModels(prev => prev.map(model => 
-            model.id === id ? { ...model, active: checked } : model
-        ));
+        toast.success("API keys saved");
     }
 
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="gap-10 flex flex-col">
                 <div className="flex flex-col gap-10">
-                    {/* <div className="flex flex-col gap-2">
-                        <h2 className="font-semibold">Models</h2>
-                        <ul className="flex flex-col gap-2">
-                            {models.map((model) => (
-                                <li key={model.id}>
-                                    <SwitchItem 
-                                        id={model.id} 
-                                        name={model.name} 
-                                        value={model.active} 
-                                        onChange={(id, checked) => handleModelToggle(id, checked)} 
-                                        disabled={isPending}
-                                    />
-                                </li>
-                            ))}
-                        </ul>
-                    </div> */}
-
                     <div className="flex flex-col gap-8">
                         <FormField
                             control={form.control}
-                            name="name"
+                            name="openai_api_key"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="font-semibold text-base">OpenAI API Key</FormLabel>
@@ -72,7 +53,7 @@ export default function ModelsForm() {
                         />
                         <FormField
                             control={form.control}
-                            name="name"
+                            name="stability_api_key"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="font-semibold text-base">StabilityAI API Key</FormLabel>
