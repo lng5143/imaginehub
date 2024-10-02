@@ -21,7 +21,9 @@ export default function StabilityForm() {
     
     let resolver;
     switch(currentModel.code) {
-        case "sd-3":
+        case "sd-3-medium":
+        case "sd-3-large":
+        case "sd-3-turbo":
             resolver = zodResolver(SD3FormSchema);
             break;
         case "si-core":
@@ -37,7 +39,6 @@ export default function StabilityForm() {
     const form = useForm({
         resolver: resolver,
         defaultValues: {
-            sd_model: "sd3-large",
             sd_aspectRatio: "1:1",
             sd_stylePreset: "",
             sd_seed: 0,

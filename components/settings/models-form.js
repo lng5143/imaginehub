@@ -5,12 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { ModelsSettingsSchema } from "@/schemas/index";
-import { useState } from "react";
 import { toast } from "sonner";
 
 export default function ModelsForm() {
     const [isPending, startTransition] = useTransition();
-    const [models, setModels] = useState(MODELS);
 
     const form = useForm({
         resolver: zodResolver(ModelsSettingsSchema),

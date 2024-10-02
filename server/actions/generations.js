@@ -35,20 +35,23 @@ export const updateImageGeneration = async (id, provider, data) => {
     if (!existingGen)
         throw new Error("Image generation not found");
 
-    const response = await prisma.imageGeneration.update({
+    await prisma.imageGeneration.update({
         where: { id: id },
         data: { status: "SUCCESS"}
     })
 
+    await insertImages(id, provider, data);
 
+    console.log("done update")
+    return { success: true }
 }
 
-const insertImages = async (id, provider, data) => {
+const insertImages = async (genId, provider, data) => {
     if (provider === "openai") {
         const res = await prisma.image.createMany({
             data: data.map(item => ({
                 url: item.url,
-                imageGenerationId: id
+                imageGenerationId: genId
             }))
         })
     }

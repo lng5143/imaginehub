@@ -39,7 +39,6 @@ export const DE3FormSchema = z.object({
 })
 
 export const SD3FormSchema = z.object({
-    sd_model: z.enum(SD3_MODELS),
     sd_aspectRatio: z.enum(SD_RATIOS),
     sd_seed: z.number().min(0).max(4294967294),
     sd_negativePrompt: z.string().optional(),
