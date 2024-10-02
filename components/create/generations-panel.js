@@ -32,6 +32,8 @@ export default function GenerationsPanel({}) {
     keepPreviousData: true
   })
 
+  console.log(response)
+
   let cols = countCols(width);
 
   useEffect(() => {
@@ -63,11 +65,11 @@ export default function GenerationsPanel({}) {
       <div 
         style={{ display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: "10px" }} 
         ref={containerRef} 
-        className="mb-auto"
+        className="mb-auto max-w-full"
       >
-        {/* {response.generations.map(generation => (
-          <Generation data={generation} onClick={() => handleSelectGeneration(generation)}/>
-        ))} */}
+        {response?.data?.map(generation => (
+          <Generation key={generation.id} data={generation} onClick={() => handleSelectGeneration(generation)}/>
+        ))}
         {/* <Generation thumbnail="/placeholder.png" count={1} onClick={() => setCurrentGenerationId(1)}/>
         <Generation thumbnail="/placeholder.png" count={2} />
         <Generation thumbnail="/placeholder.png" count={3} />

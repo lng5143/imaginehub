@@ -1,22 +1,29 @@
-import { LoaderCircle } from "lucide-react";
+import { ImageIcon, LoaderCircle } from "lucide-react";
 import Image from "next/image";
 
 export default function Generation({ data }) {
 
-    const thumbnail = data.image?.[0]?.image;
+    const thumbnail = data.images?.[0]?.url;
+
+    if (!thumbnail) {
+        return (
+            <div className="flex w-[272px] h-[272px] items-center justify-center hover:cursor-pointer">
+                <ImageIcon className="size-10" />
+            </div>
+        )
+    }
 
     if (data.status === "PROCESSING") {
         return (
-            <div className="flex p-[272px] h-[272px] items-center justify-center">
+            <div className="flex w-[272px] h-[272px] items-center justify-center hover:cursor-pointer">
                 <LoaderCircle className="size-10 animate-spin" />
             </div>
         )
     }
 
-
     if (data.samples === 1) {
         return (
-            <div className="">
+            <div className="hover:cursor-pointer">
                 <Image
                     src={thumbnail}
                     width={272}
@@ -30,7 +37,7 @@ export default function Generation({ data }) {
 
     if (data.samples === 2) {
         return (
-            <div className="relative">
+            <div className="relative hover:cursor-pointer">
                 <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-background z-10">
                     <Image
                         src={thumbnail}
@@ -52,7 +59,7 @@ export default function Generation({ data }) {
     }
 
     return (
-        <div className="relative">
+        <div className="relative hover:cursor-pointer">
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-background z-10">
             <Image
                 src={thumbnail}
