@@ -1,6 +1,6 @@
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useCurrentModel } from "@/store/use-current-model";
@@ -8,6 +8,7 @@ import InputLabel from "./input-label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Command, CommandInput, CommandList, CommandItem } from "../ui/command";
+import { Input } from "../ui/input";
 
 const PRESETS = ["3d-model", "analog-film", "anime", "cinematic", "comic-book", "digital-art", "enhance", "fantasy-art", "isometric", "line-art", "low-poly", "modeling-compound", "neon-punk", "origami", "photographic", "pixel-art", "tile-texture"]
 
@@ -22,6 +23,7 @@ export default function StabilityForm() {
             model: "sd3-large",
             aspect_ratio: "1:1",
             style_preset: "",
+            seed: 0,
             negative_prompt: "",
             prompt: ""
         },
@@ -106,6 +108,26 @@ export default function StabilityForm() {
                                     </PopoverContent>
                                 </Popover>
                             </FormControl>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="seed"
+                    render={({ field }) => (
+                        <FormItem>
+                            <InputLabel label="Seed" hint={`A specific value that is used to guide the 'randomness' of the generation: [0 .. 4294967294]`} />
+                            <FormControl>
+                                <Input type="number" {...field} onBlur={() => {
+                                    if (field.value < 0) {
+                                        field.onChange(0);
+                                    }
+                                    if (field.value > 4294967294) {
+                                        field.onChange(4294967294);
+                                    }
+                                }} />
+                            </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
