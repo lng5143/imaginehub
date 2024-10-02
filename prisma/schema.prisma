@@ -13,12 +13,6 @@ enum UserTier {
   PAID
 }
 
-enum Model {
-  DALL_E_3
-  DALL_E_2
-  STABLE_DIFFUSION
-}
-
 enum ImageGenerationStatus {
   PENDING
   PROCESSING
@@ -32,8 +26,8 @@ enum DallEQuality {
 }
 
 enum Provider {
-  STABILITY
-  OPENAI
+  stability
+  openai
 }
 
 model User {
@@ -79,23 +73,23 @@ model VerificationToken {
 }
 
 model ImageGeneration {
-  id         String          @id @default(cuid())
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String
-  model      Model
-  prompt     String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  images     Image[]
-  samples    Int
-  status     ImageGenerationStatus
-  provider   Provider
-  de_quality DallEQuality
-  sd_negativePrompt String
-  sd_seed Int
-  sd_aspectRatio String
-  sd_stylePreset String
-  sd_model String
+  id                String          @id @default(cuid())
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String
+  model             String
+  prompt            String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  images            Image[]   
+  samples           Int
+  status            ImageGenerationStatus
+  provider          Provider
+  de_quality        DallEQuality?
+  de_size           String?
+  sd_negativePrompt String?
+  sd_seed           Int?
+  sd_aspectRatio    String?
+  sd_stylePreset    String?
 }
 
 model Image {
