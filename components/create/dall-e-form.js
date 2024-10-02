@@ -11,11 +11,12 @@ import { Input } from "../ui/input";
 import { DE2FormSchema, DE3FormSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DE2_SIZES, DE3_SIZES } from "@/const/imagine-box-consts";
-import { getProvider } from "@/lib/utils";
 import useCurrentUser from "@/hooks/use-current-user";
 import { generateImages } from "@/lib/generate";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function DallEForm() {
+    const queryClient = useQueryClient();
     const currentUser = useCurrentUser();
     const [currentModel, _setCurrentModel] = useCurrentModel();
 
@@ -47,7 +48,7 @@ export default function DallEForm() {
         data.userId = currentUser.id;
         data.samples = data.samples[0]
 
-        const res = await generateImages(currentUser.id, data);
+        const res = await generateImages(currentUser.id, data, queryClient);
     }
 
     return (
