@@ -87,17 +87,15 @@ model ImageGeneration {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   images     Image[]
-  heigth     Int
-  width      Int
   samples    Int
   status     ImageGenerationStatus
   provider   Provider
   de_quality DallEQuality
   sd_negativePrompt String
   sd_seed Int
-  sd_outputFormat String
   sd_aspectRatio String
   sd_stylePreset String
+  sd_model String
 }
 
 model Image {
