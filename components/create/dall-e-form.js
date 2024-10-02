@@ -20,7 +20,7 @@ export default function DallEForm() {
     const [currentModel, _setCurrentModel] = useCurrentModel();
 
     let resolver;
-    switch(currentModel) {
+    switch(currentModel.code) {
         case "de-2":
             resolver = zodResolver(DE2FormSchema);
             break;
@@ -34,7 +34,7 @@ export default function DallEForm() {
     const form = useForm({
         resolver: resolver,
         defaultValues: {
-            size: currentModel === "de-3" ? "1024x1024" : "256x256",
+            de_size: currentModel.code === "de-3" ? "1024x1024" : "256x256",
             de_quality: "standard",
             samples: [1],
             prompt: ""
@@ -42,9 +42,10 @@ export default function DallEForm() {
     });
 
     const onSubmit = async (data) => {
-        data.model = currentModel;
-        data.provider = getProvider(currentModel);
+        data.model = currentModel.code;
+        data.provider = currentModel.provider;
         data.userId = currentUser.id;
+        data.samples = data.samples[0]
 
         const res = await generateImages(currentUser.id, data);
     }
@@ -54,13 +55,13 @@ export default function DallEForm() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-10">
                 <FormField
                     control={form.control}
-                    name="size"
+                    name="de_size"
                     render={({ field }) => (
                         <FormItem>
                             <InputLabel label="Size" hint={`The size of the image to generate. \nDall-E 3 supports 1024x1024, 1024x1792, and 1792x1024. Dall-E 2 only supports 256x256, 512x512, and 1024x1024.`} />
                             <FormControl>
                             <>
-                            {currentModel === "de-2" && (
+                            {currentModel.code === "de-2" && (
                                 <RadioGroup defaultValue={field.value} value={field.value} onValueChange={field.onChange} required>
                                     {DE2_SIZES.map((size, index) => (
                                         <div key={index} className="flex items-center space-x-2">
@@ -70,7 +71,7 @@ export default function DallEForm() {
                                     ))}
                                 </RadioGroup>
                             )}
-                            {currentModel === "de-3" && (
+                            {currentModel.code === "de-3" && (
                                 <RadioGroup defaultValue="1024x1024" value={field.value} onValueChange={field.onChange} required>
                                     {DE3_SIZES.map((size, index) => (
                                         <div key={index} className="flex items-center space-x-2">
@@ -85,7 +86,7 @@ export default function DallEForm() {
                         </FormItem>
                     )}
                 />
-                {currentModel === "de-3" && (
+                {currentModel.code === "de-3" && (
                     <FormField
                         control={form.control}
                         name="de_quality"
@@ -108,7 +109,7 @@ export default function DallEForm() {
                         )}
                     />
                 )}
-                {currentModel === "de-2" && (
+                {currentModel.code === "de-2" && (
                     <FormField
                         control={form.control}
                         name="samples"
@@ -123,7 +124,6 @@ export default function DallEForm() {
                                         min={1} 
                                         step={1} 
                                         onValueChange={field.onChange}
-                                        disabled={currentModel === "dall-e-3"}
                                     />
                                     <Input 
                                         type="text" 
@@ -137,7 +137,7 @@ export default function DallEForm() {
                                                 field.onChange(1);
                                             }
                                         }}
-                                        className="w-[40px] text-xs text-center" disabled={currentModel === "dall-e-3"}/>
+                                        className="w-[40px] text-xs text-center"/>
                                 </div>
                             </FormControl>
                             </FormItem>

@@ -25,14 +25,14 @@ export const ModelsSettingsSchema = z.object({
 })
 
 export const DE2FormSchema = z.object({
-    size: z.enum(DE2_SIZES),
+    de_size: z.enum(DE2_SIZES),
     de_quality: z.enum(DE2_QUALITIES),
     samples: z.array(z.number().min(1).max(10)),
     prompt: z.string().min(1, { message: "Prompt is required" }),
 })
 
 export const DE3FormSchema = z.object({
-    size: z.enum(DE3_SIZES),
+    de_size: z.enum(DE3_SIZES),
     de_quality: z.enum(DE3_QUALITIES),
     samples: z.array(z.number()).min(1).max(10),
     prompt: z.string().min(1, { message: "Prompt is required" }),
@@ -42,7 +42,7 @@ export const SD3FormSchema = z.object({
     sd_model: z.enum(SD3_MODELS),
     sd_aspectRatio: z.enum(SD_RATIOS),
     sd_seed: z.number().min(0).max(4294967294),
-    sd_negativePrompt: z.string(),
+    sd_negativePrompt: z.string().optional(),
     prompt: z.string().min(1, { message: "Prompt is required" }),
 })
 
@@ -50,13 +50,13 @@ export const SICoreFormSchema = z.object({
     sd_aspectRatio: z.enum(SD_RATIOS),
     sd_stylePreset: z.enum(SD_PRESETS).or(z.literal("")),
     sd_seed: z.number().min(0).max(4294967294),
-    sd_negativePrompt: z.string(),
+    sd_negativePrompt: z.string().optional(),
     prompt: z.string().min(1, { message: "Prompt is required" }),
 })
 
 export const SIUltraFormSchema = z.object({
     sd_aspectRatio: z.enum(SD_RATIOS),
     sd_seed: z.number().min(0).max(4294967294),
-    sd_negativePrompt: z.string(),
+    sd_negativePrompt: z.string().optional(),
     prompt: z.string().min(1, { message: "Prompt is required" }),
 })

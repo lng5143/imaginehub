@@ -11,7 +11,7 @@ import { Command, CommandInput, CommandList, CommandItem, CommandEmpty, CommandG
 import { Input } from "../ui/input";
 import { SD3FormSchema, SICoreFormSchema, SIUltraFormSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SD_PRESETS, SD_RATIOS, SD3_MODELS } from "@/const/imagine-box-consts";
+import { SD_PRESETS, SD_RATIOS } from "@/const/imagine-box-consts";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +20,7 @@ export default function StabilityForm() {
     const [openStylePresets, setOpenStylePresets] = useState(false);
     
     let resolver;
-    switch(currentModel) {
+    switch(currentModel.code) {
         case "sd-3":
             resolver = zodResolver(SD3FormSchema);
             break;
@@ -53,31 +53,6 @@ export default function StabilityForm() {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-10">
-                {currentModel === "sd-3" && (
-                    <FormField
-                        control={form.control}
-                        name="sd_model"
-                        render={({ field }) => (
-                            <FormItem>
-                                <InputLabel label="Model" hint={`Model to use for generation. Only available for Stable Diffusion 3`} />
-                                <FormControl>
-                                <Select value={field.value} onValueChange={field.onChange}>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select a SD3 model" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {SD3_MODELS.map((model) => (
-                                            <SelectItem key={model} value={model}>
-                                                {model}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                </FormControl>
-                            </FormItem>
-                        )}
-                    />
-                )}
                 <FormField
                     control={form.control}
                     name="aspect_ratio"
@@ -101,7 +76,7 @@ export default function StabilityForm() {
                         </FormItem>
                     )}
                 />
-                {currentModel === "si-core" && (
+                {currentModel.code === "si-core" && (
                     <FormField
                         control={form.control}
                         name="style_preset"

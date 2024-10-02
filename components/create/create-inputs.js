@@ -7,16 +7,12 @@ import { getProvider } from "@/lib/utils";
 export default function CreateInputs() {
   const [currentModel] = useCurrentModel();
 
-  const provider = getProvider(currentModel);
-  console.log(currentModel);
-  console.log(provider);
-
   return (
     <div className="flex flex-col w-[360px] p-5 bg-gray-100 gap-10 h-auto">
         <ModelSelector />
         <div className="mt-auto">
-            {provider === "openai" ? <DallEForm /> : null}
-            {provider === "stability" ? <StabilityForm /> : null}
+            {currentModel.provider === "openai" ? <DallEForm /> : null}
+            {currentModel.provider === "stability" ? <StabilityForm /> : null}
         </div>
     </div>
   );

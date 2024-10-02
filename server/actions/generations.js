@@ -3,24 +3,23 @@
 import { prisma } from "@/server/lib/prisma";
 import { auth } from "@/auth";
 import { generateStabilityImages } from "@/lib/stability";
+import { getUserById } from "../lib/user";
 
 const PAGE_SIZE = 20;
 
 export const insertInitialGeneration = async (data) => {
-    const session = await auth();
-    
-    if (!session)
-        throw new Error("Unauthorized");
+    console.log(data);
 
-    console.log("here");
-    // const response = await prisma.imageGeneration.create({
-    //     data: {
-    //         status: "PROCESSING",
-    //         ...data
-    //     }
-    // })
+    const response = await prisma.imageGeneration.create({
+        data: {
+            status: "PROCESSING",
+            ...data
+        }
+    })
 
-    // return response;
+    console.log("done initial insert")
+
+    return { success: true, data: response }
 }
 
 export const updateImageGeneration = async (id, provider, data) => {
