@@ -1,7 +1,7 @@
 import ModelSelector from "./model-selector";
 import { useCurrentModel } from "@/store/use-current-model";
 import DallEForm from "./dall-e-form";
-import StableDiffusionForm from "./stable-diffusion-form";
+import StabilityForm from "./stability-form";
 import { getProvider } from "@/lib/utils";
 
 export default function CreateInputs() {
@@ -14,7 +14,7 @@ export default function CreateInputs() {
         <ModelSelector />
         <div className="mt-auto">
             {provider === "openai" ? <DallEForm /> : null}
-            {provider === "stability" ? <StableDiffusionForm /> : null}
+            {provider === "stability" ? <StabilityForm /> : null}
         </div>
     </div>
   );

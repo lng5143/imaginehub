@@ -20,14 +20,14 @@ export const getGenerations = async (page) => {
         skip: (page - 1) * PAGE_SIZE,
         take: PAGE_SIZE,
         where: { userId: session.user.id },
-        include: {
-            image: {
-                take: 1,
-                orderBy: {
-                    createdAt: "desc"
-                }
-            }
-        }
+        // include: {
+        //     image: {
+        //         take: 1,
+        //         orderBy: {
+        //             createdAt: "desc"
+        //         }
+        //     }
+        // }
     })
 
     return { totalCount: totalCount, data: generations };

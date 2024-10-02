@@ -65,9 +65,9 @@ export default function GenerationsPanel({}) {
         ref={containerRef} 
         className="mb-auto"
       >
-        {response.generations.map(generation => (
+        {/* {response.generations.map(generation => (
           <Generation data={generation} onClick={() => handleSelectGeneration(generation)}/>
-        ))}
+        ))} */}
         {/* <Generation thumbnail="/placeholder.png" count={1} onClick={() => setCurrentGenerationId(1)}/>
         <Generation thumbnail="/placeholder.png" count={2} />
         <Generation thumbnail="/placeholder.png" count={3} />
