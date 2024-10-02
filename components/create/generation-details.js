@@ -44,7 +44,7 @@ export default function GenerationDetails({ data: generation }) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const { _currentGenerationId, setCurrentGenerationId } =useCurrentGenerationId();
+  const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
 
   const { data: response, isLoading} = useQuery({
     queryKey: ["generation", generation?.id],
@@ -80,7 +80,7 @@ export default function GenerationDetails({ data: generation }) {
   return (
     <div className="relative flex flex-col h-full">
       <div className="h-6 flex items-center justify-end p-1 absolute top-1 right-1">
-        <CircleX className="size-4 text-gray-800" onClick={handleClose} />
+        <CircleX className="size-4 text-gray-800 hover:cursor-pointer" onClick={handleClose} />
       </div>
       <div 
         style={{
