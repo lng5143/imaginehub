@@ -8,12 +8,16 @@ import { useCurrentModel } from "@/store/use-current-model";
 import { Label } from "../ui/label";
 import InputLabel from "./input-label";
 import { Input } from "../ui/input";
+
+const DE2_SIZES = ["256x256", "512x512", "1024x1024"];
+const DE3_SIZES = ["1024x1024", "1024x1792", "1792x1024"];
+
 export default function DallEForm() {
     const [currentModel, _setCurrentModel] = useCurrentModel();
 
     const form = useForm({
         defaultValues: {
-            size: currentModel === "dall-e-3" ? "1024x1024" : "256x256",
+            size: currentModel === "de-3" ? "1024x1024" : "256x256",
             quality: "standard",
             samples: [1],
             prompt: ""
@@ -35,36 +39,24 @@ export default function DallEForm() {
                             <InputLabel label="Size" hint={`The size of the image to generate. \nDall-E 3 supports 1024x1024, 1024x1792, and 1792x1024. Dall-E 2 only supports 256x256, 512x512, and 1024x1024.`} />
                             <FormControl>
                             <>
-                            {currentModel === "dall-e-2" && (
+                            {currentModel === "de-2" && (
                                 <RadioGroup defaultValue={field.value} value={field.value} onValueChange={field.onChange} required>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="256x256" id="1" />
-                                        <Label htmlFor="1">256 x 256</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="512x512" id="2" />
-                                        <Label htmlFor="2">512 x 512</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="1024x1024" id="3" />
-                                        <Label htmlFor="3">1024 x 1024</Label>
-                                    </div>
+                                    {DE2_SIZES.map((size, index) => (
+                                        <div key={index} className="flex items-center space-x-2">
+                                            <RadioGroupItem value={size} id={`de2-${index + 1}`} />
+                                            <Label htmlFor={`de2-${index + 1}`}>{size.replace('x', ' x ')}</Label>
+                                        </div>
+                                    ))}
                                 </RadioGroup>
                             )}
-                            {currentModel === "dall-e-3" && (
+                            {currentModel === "de-3" && (
                                 <RadioGroup defaultValue="1024x1024" value={field.value} onValueChange={field.onChange} required>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="1024x1024" id="1" />
-                                        <Label htmlFor="1">1024 x 1024</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="1024x1792" id="2" />
-                                        <Label htmlFor="2">1024 x 1792</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="1792x1024" id="3" />
-                                        <Label htmlFor="3">1792 x 1024</Label>
-                                    </div>
+                                    {DE3_SIZES.map((size, index) => (
+                                        <div key={index} className="flex items-center space-x-2">
+                                            <RadioGroupItem value={size} id={`de3-${index + 1}`} />
+                                            <Label htmlFor={`de3-${index + 1}`}>{size.replace('x', ' x ')}</Label>
+                                        </div>
+                                    ))}
                                 </RadioGroup>
                             )}
                             </>
