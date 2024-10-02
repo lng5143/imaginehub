@@ -16,3 +16,7 @@ export const ModelsSettingsSchema = z.object({
         active: z.boolean()
     }))
 })
+
+export const DallEFormSchema = z.object({
+    size: z.enum(['256x256', '512x512', '1024x1024']),
+})

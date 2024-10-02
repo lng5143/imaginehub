@@ -64,14 +64,15 @@ export default function DallEForm() {
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name="quality"
-                    render={({ field }) => (
+                {currentModel === "de-3" && (
+                    <FormField
+                        control={form.control}
+                        name="quality"
+                        render={({ field }) => (
                         <FormItem>
                             <InputLabel label="Quality" hint={`The quality of the image to generate. \nHD is only supported on Dall-E 3.`} />
                             <FormControl>
-                                <RadioGroup defaultValue="standard" onValueChange={field.onChange} required disabled={currentModel !== "dall-e-3"}>
+                                <RadioGroup defaultValue="standard" onValueChange={field.onChange} required>
                                     <div className="flex items-center space-x-2">
                                         <RadioGroupItem value="standard" id="standard" />
                                         <Label htmlFor="standard">Standard</Label>
@@ -83,12 +84,14 @@ export default function DallEForm() {
                                 </RadioGroup>
                             </FormControl>
                         </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="samples"
-                    render={({ field }) => (
+                        )}
+                    />
+                )}
+                {currentModel === "de-2" && (
+                    <FormField
+                        control={form.control}
+                        name="samples"
+                        render={({ field }) => (
                         <FormItem>
                             <InputLabel label="Samples" hint={`The number of images to generate. \nDall-E 2 supports up to 10 samples. Dall-E 3 only support 1 at a time.`} />
                             <FormControl>
@@ -116,9 +119,10 @@ export default function DallEForm() {
                                         className="w-[40px] text-xs text-center" disabled={currentModel === "dall-e-3"}/>
                                 </div>
                             </FormControl>
-                        </FormItem>
-                    )}
-                />
+                            </FormItem>
+                        )}
+                    />
+                )}
                 <FormField
                     control={form.control}
                     name="prompt"

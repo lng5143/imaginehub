@@ -37,27 +37,29 @@ export default function StabilityForm() {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-10">
-                <FormField
-                    control={form.control}
-                    name="model"
-                    render={({ field }) => (
-                        <FormItem>
-                            <InputLabel label="Model" hint={`Model to use for generation. Only available for Stable Diffusion 3`} />
-                            <FormControl>
-                            <Select value={field.value} onValueChange={field.onChange}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select a SD3 model" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="sd3-large">sd3-large</SelectItem>
-                                    <SelectItem value="sd3-turbo">sd3-turbo</SelectItem>
-                                    <SelectItem value="sd3-medium">sd3-medium</SelectItem>
-                                </SelectContent>
-                            </Select>
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
+                {currentModel === "sd-3" && (
+                    <FormField
+                        control={form.control}
+                        name="model"
+                        render={({ field }) => (
+                            <FormItem>
+                                <InputLabel label="Model" hint={`Model to use for generation. Only available for Stable Diffusion 3`} />
+                                <FormControl>
+                                <Select value={field.value} onValueChange={field.onChange}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select a SD3 model" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="sd3-large">sd3-large</SelectItem>
+                                        <SelectItem value="sd3-turbo">sd3-turbo</SelectItem>
+                                        <SelectItem value="sd3-medium">sd3-medium</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                )}
                 <FormField
                     control={form.control}
                     name="aspect_ratio"
@@ -81,36 +83,38 @@ export default function StabilityForm() {
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name="style_preset"
-                    render={({ field }) => (
-                        <FormItem>
-                            <InputLabel label="Style Preset" hint={`Style preset to use for generation. Only available for Stable Image Core`} />
-                            <FormControl>
-                                <Popover open={openStylePresets} onOpenChange={setOpenStylePresets}>
-                                    <PopoverTrigger asChild>
-                                        <Button variant="outline" role="combobox" aria-expanded={openStylePresets} className="w-full justify-between">
-                                            {field.value ? field.value : "Select a style preset"}
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="">
-                                        <Command>
-                                            <CommandInput placeholder="Search style preset..." />
-                                            <CommandList>
-                                                {PRESETS.map((preset) => (
-                                                    <CommandItem key={preset} value={preset}>
-                                                        {preset}
-                                                    </CommandItem>
-                                                ))}
-                                            </CommandList>
-                                        </Command>
-                                    </PopoverContent>
-                                </Popover>
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
+                {currentModel === "si-core" && (
+                    <FormField
+                        control={form.control}
+                        name="style_preset"
+                        render={({ field }) => (
+                            <FormItem>
+                                <InputLabel label="Style Preset" hint={`Style preset to use for generation. Only available for Stable Image Core`} />
+                                <FormControl>
+                                    <Popover open={openStylePresets} onOpenChange={setOpenStylePresets}>
+                                        <PopoverTrigger asChild>
+                                            <Button variant="outline" role="combobox" aria-expanded={openStylePresets} className="w-full justify-between">
+                                                {field.value ? field.value : "Select a style preset"}
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="">
+                                            <Command>
+                                                <CommandInput placeholder="Search style preset..." />
+                                                <CommandList>
+                                                    {PRESETS.map((preset) => (
+                                                        <CommandItem key={preset} value={preset}>
+                                                            {preset}
+                                                        </CommandItem>
+                                                    ))}
+                                                </CommandList>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                )}
                 <FormField
                     control={form.control}
                     name="seed"
