@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { updateGeneralSettings } from "@/actions/general-settings";
+import { updateGeneralSettings } from "@/server/actions/general-settings";
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 

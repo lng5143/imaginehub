@@ -2,8 +2,8 @@ import NextAuth from "next-auth";
 import Resend from "next-auth/providers/resend";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import authConfig from "./auth.config";
-import { prisma } from "./lib/prisma";
-import { getUserByEmail } from "./data/user";
+import { prisma } from "./server/lib/prisma";
+import { getUserByEmail } from "./server/lib/user";
 
 export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
     pages: {

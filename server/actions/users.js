@@ -1,6 +1,6 @@
 'use server';
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/server/lib/prisma";
 import { auth } from "@/auth";
 
 export const getCurrentUserInfo = async () => {

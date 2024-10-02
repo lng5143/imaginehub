@@ -1,10 +1,59 @@
 "use server"
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/server/lib/prisma";
 import { auth } from "@/auth";
 import { generateStabilityImages } from "@/lib/stability";
 
 const PAGE_SIZE = 20;
+
+export const insertInitialGeneration = async (data) => {
+    const session = await auth();
+    
+    if (!session)
+        throw new Error("Unauthorized");
+
+    console.log("here");
+    // const response = await prisma.imageGeneration.create({
+    //     data: {
+    //         status: "PROCESSING",
+    //         ...data
+    //     }
+    // })
+
+    // return response;
+}
+
+export const updateImageGeneration = async (id, provider, data) => {
+    const session = await auth();
+    
+    if (!session)
+        throw new Error("Unauthorized");
+
+    const existingGen = await prisma.imageGeneration.findUnique({
+        where: { id: id }
+    })
+
+    if (!existingGen)
+        throw new Error("Image generation not found");
+
+    const response = await prisma.imageGeneration.update({
+        where: { id: id },
+        data: { status: "SUCCESS"}
+    })
+
+
+}
+
+const insertImages = async (id, provider, data) => {
+    if (provider === "openai") {
+        const res = await prisma.image.createMany({
+            data: data.map(item => ({
+                url: item.url,
+                imageGenerationId: id
+            }))
+        })
+    }
+}
 
 export const getGenerations = async (page) => {
     const session = await auth();
@@ -72,11 +121,12 @@ export const generateImages = async ( data ) => {
             genRes = null;
     }
 
-    if (genRes.success) 
+    if (genRes.success) {
         await prisma.imageGeneration.update({
             where: { id: initialRes.id },
             data: {
                 status: "SUCCESS",
             }
         })
+    }
 }

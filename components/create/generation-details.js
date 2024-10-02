@@ -13,7 +13,7 @@ import { CircleChevronRight } from "lucide-react";
 import { CircleChevronLeft } from "lucide-react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useQuery } from "@tanstack/react-query";
-import { getGenerations, getImages } from "@/actions/generations";
+import { getGenerations, getImages } from "@/server/actions/generations";
 
 const placeholderPrompt =
   "If you use a language different from English in you text prompts, pass the multi_lingual parameter with yes value in the request body. This will trigger an automatic language detection and translation during the processing of your request.";

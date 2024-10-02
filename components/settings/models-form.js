@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { ModelsSettingsSchema } from "@/schemas/index";
 import { useState } from "react";
-import { MODELS } from "@/.seed-data/models";
 import { toast } from "sonner";
 
 export default function ModelsForm() {

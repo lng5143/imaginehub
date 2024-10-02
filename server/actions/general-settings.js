@@ -1,7 +1,7 @@
 'use server'
 
 import useCurrentUser from "@/hooks/use-current-user";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/server/lib/prisma";
 import { GeneralSettingsSchema } from "@/schemas";
 import { auth } from "@/auth"
 

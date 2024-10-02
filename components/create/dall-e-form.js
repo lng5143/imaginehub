@@ -11,8 +11,12 @@ import { Input } from "../ui/input";
 import { DE2FormSchema, DE3FormSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DE2_SIZES, DE3_SIZES } from "@/const/imagine-box-consts";
+import { getProvider } from "@/lib/utils";
+import useCurrentUser from "@/hooks/use-current-user";
+import { generateImages } from "@/lib/generate";
 
 export default function DallEForm() {
+    const currentUser = useCurrentUser();
     const [currentModel, _setCurrentModel] = useCurrentModel();
 
     let resolver;
@@ -37,9 +41,12 @@ export default function DallEForm() {
         }
     });
 
-    const onSubmit = (data) => {
-        console.log("submit")
-        console.log(data);
+    const onSubmit = async (data) => {
+        data.model = currentModel;
+        data.provider = getProvider(currentModel);
+        data.userId = currentUser.id;
+
+        const res = await generateImages(currentUser.id, data);
     }
 
     return (

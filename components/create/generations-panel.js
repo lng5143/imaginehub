@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import PaginationContainer from "./pagination";
 import { useCurrentGenerationId } from "@/store/use-current-generation-id";
 import { useQuery } from "@tanstack/react-query";
-import { getGenerations } from "@/actions/generations";
+import { getGenerations } from "@/server/actions/generations";
 import { toast } from "sonner";
 
 const countCols = (width) => {

@@ -20,10 +20,8 @@ export const GeneralSettingsSchema = z.object({
 })
 
 export const ModelsSettingsSchema = z.object({
-    models: z.array(z.object({
-        name: z.string(),
-        active: z.boolean()
-    }))
+    openai_api_key: z.string().optional(),
+    stability_api_key: z.string().optional(),
 })
 
 export const DE2FormSchema = z.object({

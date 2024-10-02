@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import SocialLogin from "./social-login";
 import { useState, useTransition } from "react";
-import { login } from "@/actions/login";
+import { login } from "@/server/actions/login";
 import FormError from "../form-error";
 import FormSuccess from "../form-success";
 
