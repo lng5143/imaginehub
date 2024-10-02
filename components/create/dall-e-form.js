@@ -1,6 +1,6 @@
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
+import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { Slider } from "../ui/slider";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
@@ -8,23 +8,37 @@ import { useCurrentModel } from "@/store/use-current-model";
 import { Label } from "../ui/label";
 import InputLabel from "./input-label";
 import { Input } from "../ui/input";
-
-const DE2_SIZES = ["256x256", "512x512", "1024x1024"];
-const DE3_SIZES = ["1024x1024", "1024x1792", "1792x1024"];
+import { DE2FormSchema, DE3FormSchema } from "@/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { DE2_SIZES, DE3_SIZES } from "@/const/imagine-box-consts";
 
 export default function DallEForm() {
     const [currentModel, _setCurrentModel] = useCurrentModel();
 
+    let resolver;
+    switch(currentModel) {
+        case "de-2":
+            resolver = zodResolver(DE2FormSchema);
+            break;
+        case "de-3":
+            resolver = zodResolver(DE3FormSchema);
+            break;
+        default:
+            resolver = zodResolver(DE3FormSchema);
+    }
+
     const form = useForm({
+        resolver: resolver,
         defaultValues: {
             size: currentModel === "de-3" ? "1024x1024" : "256x256",
-            quality: "standard",
+            de_quality: "standard",
             samples: [1],
             prompt: ""
         }
     });
 
     const onSubmit = (data) => {
+        console.log("submit")
         console.log(data);
     }
 
@@ -67,7 +81,7 @@ export default function DallEForm() {
                 {currentModel === "de-3" && (
                     <FormField
                         control={form.control}
-                        name="quality"
+                        name="de_quality"
                         render={({ field }) => (
                         <FormItem>
                             <InputLabel label="Quality" hint={`The quality of the image to generate. \nHD is only supported on Dall-E 3.`} />
