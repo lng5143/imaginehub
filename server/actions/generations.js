@@ -3,7 +3,8 @@
 import { prisma } from "@/server/lib/prisma";
 import { auth } from "@/auth";
 import { generateStabilityImages } from "@/lib/stability";
-import { getUserById } from "../lib/user";
+import supabase, { uploadFileAndGetUrl } from "../lib/supabase";
+import { IMAGE_BUCKET_NAME } from "@/const/imagine-box-consts";
 
 const PAGE_SIZE = 20;
 
@@ -48,12 +49,33 @@ export const updateImageGeneration = async (id, provider, data) => {
 
 const insertImages = async (genId, provider, data) => {
     if (provider === "openai") {
+
+        let count = 1;
+        let imageUrls = [];
+        for (const item of data) {
+            const response = await fetch(item.url);
+
+            if (!response.ok) 
+                return { error: "Failed to fetch image"}
+
+            const imageBlob = await response.blob();
+            console.log(imageBlob);
+
+            const url = await uploadFileAndGetUrl(IMAGE_BUCKET_NAME, `${genId}/${count}`, imageBlob);
+            imageUrls.push(url);
+            count++;
+        }
+
+        console.log("done upload")
+
         const res = await prisma.image.createMany({
-            data: data.map(item => ({
-                url: item.url,
+            data: imageUrls.map(url => ({
+                url: url,
                 imageGenerationId: genId
             }))
         })
+
+        return { success: true, data: res }
     }
 }
 

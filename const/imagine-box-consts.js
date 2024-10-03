@@ -42,3 +42,5 @@ export const MODELS = [
         name: "Stable Image Ultra",
     }
 ]
+
+export const IMAGE_BUCKET_NAME = "generated-images";
