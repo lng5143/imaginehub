@@ -20,7 +20,7 @@ export default function CreatePage() {
           >
           <GenerationsPanel />
         </ResizablePanel>
-        {generationId && (
+        {/* {generationId && ( */}
           <>
             <ResizableHandle className="bg-transparent" />
             <ResizablePanel
@@ -30,7 +30,7 @@ export default function CreatePage() {
               <GenerationDetails />
             </ResizablePanel>
           </>
-        )}
+        {/* )} */}
       </ResizablePanelGroup>
     </main>
   );

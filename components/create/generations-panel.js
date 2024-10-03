@@ -78,7 +78,7 @@ export default function GenerationsPanel({}) {
       <div>
         <PaginationContainer 
           currentPage={currentPage}
-          total={response?.totalCount}
+          totalCount={response?.totalCount}
           onClick={page => handlePageChange(page)}
         />
       </div>
