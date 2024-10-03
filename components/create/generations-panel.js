@@ -65,7 +65,7 @@ export default function GenerationsPanel({}) {
       <div 
         style={{ display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: "10px" }} 
         ref={containerRef} 
-        className="mb-auto max-w-full"
+        className="mb-auto"
       >
         {response?.data?.map(generation => (
           <Generation key={generation.id} data={generation} onClick={() => handleSelectGeneration(generation)}/>
