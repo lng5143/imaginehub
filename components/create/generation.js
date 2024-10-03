@@ -3,20 +3,22 @@ import Image from "next/image";
 
 export default function Generation({ data }) {
 
+    if (data.status === "PROCESSING") {
+        console.log("processing")
+
+        return (
+            <div className="flex w-[272px] h-[272px] items-center justify-center hover:cursor-pointer">
+                <LoaderCircle className="size-10 animate-spin" />
+            </div>
+        )
+    }
+
     const thumbnail = data.images?.[0]?.url;
 
     if (!thumbnail) {
         return (
             <div className="flex w-[272px] h-[272px] items-center justify-center hover:cursor-pointer">
                 <ImageIcon className="size-10" />
-            </div>
-        )
-    }
-
-    if (data.status === "PROCESSING") {
-        return (
-            <div className="flex w-[272px] h-[272px] items-center justify-center hover:cursor-pointer">
-                <LoaderCircle className="size-10 animate-spin" />
             </div>
         )
     }
