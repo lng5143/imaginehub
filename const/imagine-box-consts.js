@@ -44,3 +44,5 @@ export const MODELS = [
 ]
 
 export const IMAGE_BUCKET_NAME = "generated-images";
+
+export const PAGE_SIZE = 20;

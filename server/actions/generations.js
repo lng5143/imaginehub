@@ -3,10 +3,9 @@
 import { prisma } from "@/server/lib/prisma";
 import { auth } from "@/auth";
 import { generateStabilityImages } from "@/lib/stability";
-import supabase, { uploadFileAndGetUrl } from "../lib/supabase";
+import { uploadFileAndGetUrl } from "../lib/supabase";
 import { IMAGE_BUCKET_NAME } from "@/const/imagine-box-consts";
-
-const PAGE_SIZE = 20;
+import { PAGE_SIZE } from "@/const/imagine-box-consts";
 
 export const insertInitialGeneration = async (data) => {
     console.log(data);

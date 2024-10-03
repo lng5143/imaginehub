@@ -1,5 +1,4 @@
 import { ImageIcon, LoaderCircle } from "lucide-react";
-import Image from "next/image";
 
 export default function Generation({ data }) {
     const thumbnail = data.images?.[0]?.url;
@@ -7,10 +6,10 @@ export default function Generation({ data }) {
     return (
         <div className="relative flex items-center justify-center hover:cursor-pointer hover:scale-105 hover:z-50 transition-all duration-300 aspect-square rounded-md shadow-xl">
             {data.status === "PROCESSING" && (
-                <LoaderCircle className="size-10 animate-spin" />
+                <LoaderCircle className="size-[10%] animate-spin" />
             )}
             {data.status === "SUCCESS" && !thumbnail && (
-                <ImageIcon className="size-10" />
+                <ImageIcon className="size-5 opacity-50" />
             )}
             {data.status === "SUCCESS" && thumbnail && (
                 <>
@@ -18,7 +17,7 @@ export default function Generation({ data }) {
                     <img
                         src={thumbnail}
                         alt={data?.prompt}
-                        className="relative z-30"
+                        className="relative z-30 rounded-md"
                     />
                 </>
                 
