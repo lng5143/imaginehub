@@ -3,7 +3,8 @@ import { PAGE_SIZE } from "@/const/imagine-box-consts";
 
 export default function PaginationContainer({ currentPage, totalCount, onClick}) {
 
-    totalCount = 45;
+    currentPage = 1;
+    totalCount = 200;
     const totalPages = Math.ceil(totalCount / PAGE_SIZE);
     console.log([...Array(totalPages)])
 
@@ -12,10 +13,10 @@ export default function PaginationContainer({ currentPage, totalCount, onClick})
     return (
         <Pagination>
             <PaginationContent>
-                <PaginationContent>
-                    <PaginationPrevious />
-                </PaginationContent>
-                {[...Array(totalPages).map((_, index) => {
+                <PaginationItem>
+                    <PaginationPrevious className="hover:border hover:border-gray-800 cursor-pointer" />
+                </PaginationItem>
+                {[...Array(totalPages)].map((_, index) => {
                     const page = index + 1;
 
                     if (
@@ -26,6 +27,9 @@ export default function PaginationContainer({ currentPage, totalCount, onClick})
                         return (
                             <PaginationItem key={page}>
                                 <PaginationLink
+                                    className={page === currentPage 
+                                        ? "bg-gray-800 text-white hover:bg-gray-800 hover:text-white" 
+                                        : "hover:border hover:border-gray-800 cursor-pointer"}
                                     onClick={() => onClick(page)}
                                 >
                                     {page}
@@ -37,12 +41,12 @@ export default function PaginationContainer({ currentPage, totalCount, onClick})
                         (page === currentPage + 2 && currentPage < totalPages - 2)
                     ) {
                         return (
-                            <PaginationEllipsis />
+                            <PaginationEllipsis key={page} />
                         )
                     }
-                })]}
+                })}
                 <PaginationItem>
-                    <PaginationNext />
+                    <PaginationNext className="hover:border hover:border-gray-800 cursor-pointer" />
                 </PaginationItem>
             </PaginationContent>
         </Pagination>
