@@ -26,9 +26,9 @@ export default function StabilityForm() {
     
     let resolver;
     switch(currentModel.code) {
-        case "sd-3-medium":
-        case "sd-3-large":
-        case "sd-3-turbo":
+        case "sd3-medium":
+        case "sd3-large":
+        case "sd3-large-turbo":
             resolver = zodResolver(SD3FormSchema);
             break;
         case "si-core":
@@ -54,7 +54,7 @@ export default function StabilityForm() {
 
     const onSubmit = async (data) => {
         console.log(data)
-        data.model = currentModel.code;
+        data.model = data.model ?? currentModel.code;
         data.provider = currentModel.provider;
         data.userId = currentUser.id;
         data.samples = 1;

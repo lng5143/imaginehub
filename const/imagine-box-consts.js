@@ -17,17 +17,17 @@ export const MODELS = [
         name: "DALL-E 3",
     },
     {
-        code: "sd-3-medium",
+        code: "sd3-medium",
         provider: "stability",
         name: "Stable Diffusion 3 Medium",
     },
     {
-        code: "sd-3-large",
+        code: "sd3-large",
         provider: "stability",
         name: "Stable Diffusion 3 Large",
     },
     {
-        code: "sd-3-large-turbo",
+        code: "sd3-large-turbo",
         provider: "stability",
         name: "Stable Diffusion 3 Turbo",
     },
