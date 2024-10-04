@@ -23,7 +23,6 @@ export const insertInitialGeneration = async (data) => {
 }
 
 export const updateImageGeneration = async (id, provider, data) => {
-    console.log(data)
     const session = await auth();
     
     if (!session)
@@ -78,7 +77,25 @@ const insertImages = async (genId, provider, data) => {
     }
 
     if (provider === "stability") {
-    
+        let count = 1;
+        let imageUrls = [];
+
+        const images = data.values();
+
+        for (const item of images) {
+            const url = await uploadFileAndGetUrl(IMAGE_BUCKET_NAME, `${genId}/${count}`, item);
+            imageUrls.push(url);
+            count++;
+        }
+
+        const res = await prisma.image.createMany({
+            data: imageUrls.map(url => ({
+                url: url,
+                imageGenerationId: genId
+            }))
+        })
+
+        return { success: true, data: res }
     }
 }
 
