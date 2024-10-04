@@ -13,7 +13,7 @@ import { CircleChevronRight } from "lucide-react";
 import { CircleChevronLeft } from "lucide-react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useQuery } from "@tanstack/react-query";
-import { getGenerations, getImages } from "@/server/actions/generations";
+import { getGenerationDetails } from "@/server/actions/generations";
 
 const placeholderPrompt =
   "If you use a language different from English in you text prompts, pass the multi_lingual parameter with yes value in the request body. This will trigger an automatic language detection and translation during the processing of your request.";
@@ -29,17 +29,7 @@ const images = [
   { src: "/placeholder.", alt: "Image 6" },
 ]
 
-const calculateCols = (width) => {
-  if (width > 1024) {
-    return 3;
-  } else if (width > 768) {
-    return 2;
-  } else {
-    return 1;
-  }
-};
-
-export default function GenerationDetails({ data: generation }) {
+export default function GenerationDetails({ }) {
   const [width, setWidth] = useState(0);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -47,26 +37,11 @@ export default function GenerationDetails({ data: generation }) {
   const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
 
   const { data: response, isLoading} = useQuery({
-    queryKey: ["generation", generation?.id],
-    queryFn: () => getImages(generation?.id)
+    queryKey: ["generation", currentGenerationId],
+    queryFn: () => getGenerationDetails(currentGenerationId)
   })
 
   const containerRef = useRef(null);
-
-  const cols = calculateCols(width);
-
-  useEffect(() => {
-    const updateWidth = () => {
-      if (containerRef.current) {
-        setWidth(containerRef.current.offsetWidth);
-      }
-    };
-
-    const resizeObserver = new ResizeObserver(updateWidth);
-    resizeObserver.observe(containerRef.current);
-
-    return () => resizeObserver.disconnect();
-  }, []);
 
   const handleClose = () => {
     setCurrentGenerationId(null);
@@ -83,13 +58,16 @@ export default function GenerationDetails({ data: generation }) {
         <CircleX className="size-4 text-gray-800 hover:cursor-pointer" onClick={handleClose} />
       </div>
       <div 
-        style={{
-          gridTemplateColumns: `repeat(${cols}, 1fr)`,
-        }}
         className="mb-auto overflow-y-auto p-5" 
         ref={containerRef}>
-        {response?.data.map((image, index) => (
-          <Image key={index} src={image.src} alt={image.alt} width={200} height={200} onClick={() => handleDialogOpen(index)}/>
+        {response?.data?.images.map((image, index) => (
+          <img 
+            key={index} 
+            src={image.url} 
+            alt={response?.data?.prompt} 
+            onClick={() => handleDialogOpen(index)}
+            className="aspect-square rounded-md hover:cursor-pointer hover:scale-105 transition-all duration-300 w-full"
+          />
         ))}
       </div>
       <Button className="w-full" onClick={() => setIsDetailsOpen(true)}>

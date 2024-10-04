@@ -5,7 +5,6 @@ export default function PaginationContainer({ currentPage, totalCount, onPageCha
 
     totalCount = 200;
     const totalPages = Math.ceil(totalCount / PAGE_SIZE);
-    console.log([...Array(totalPages)])
 
     if (totalPages <= 1) return null;
 

@@ -92,33 +92,46 @@ export const getGenerations = async (page) => {
         skip: (page - 1) * PAGE_SIZE,
         take: PAGE_SIZE,
         where: { userId: session.user.id },
-        include: {
+        orderBy: {
+            createdAt: "desc"
+        },
+        select: {
+            id: true,
             images: {
                 take: 1,
                 orderBy: {
                     createdAt: "desc"
                 }
-            }
-        },
-        orderBy: {
-            createdAt: "desc"
+            },
+            samples: true,
+            status: true
         }
     })
 
     return { totalCount: totalCount, data: generations };
 }
 
-export const getImages = async (generationId) => {
+export const getGenerationDetails = async (generationId) => {
     const session = await auth();
     
     if (!session)
         throw new Error("Unauthorized");
 
-    const images = await prisma.image.findMany({
-        where: { generationId: generationId }
+    const generation = await prisma.imageGeneration.findUnique({
+        where: { id: generationId }
     })
 
-    return { data: images}
+    const imagesRes = await getImages(generationId);
+
+    return { data: { ...generation, images: imagesRes.data } }
+}
+
+const getImages = async (generationId) => {
+    const images = await prisma.image.findMany({
+        where: { imageGenerationId: generationId }
+    })
+
+    return { success: true, data: images }
 }
 
 export const generateImages = async ( data ) => {

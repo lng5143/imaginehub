@@ -1,10 +1,13 @@
 import { ImageIcon, LoaderCircle } from "lucide-react";
 
-export default function Generation({ data }) {
+export default function Generation({ data, onClick }) {
     const thumbnail = data.images?.[0]?.url;
 
     return (
-        <div className="relative flex items-center justify-center hover:cursor-pointer hover:scale-105 hover:z-50 transition-all duration-300 aspect-square rounded-md shadow-xl">
+        <div 
+            className="relative flex items-center justify-center hover:cursor-pointer hover:scale-105 hover:z-50 transition-all duration-300 aspect-square rounded-md shadow-xl"
+            onClick={onClick}
+        >
             {data.status === "PROCESSING" && (
                 <LoaderCircle className="size-[10%] animate-spin" />
             )}

@@ -7,7 +7,7 @@ import GenerationsPanel from "@/components/create/generations-panel";
 import { useCurrentGenerationId } from "@/store/use-current-generation-id";
 
 export default function CreatePage() {
-  const [generationId, setGenerationId] = useCurrentGenerationId();
+  const [generationId, _setGenerationId] = useCurrentGenerationId();
 
   return (
     <main className="flex h-screen">

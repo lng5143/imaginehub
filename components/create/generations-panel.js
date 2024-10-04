@@ -32,10 +32,10 @@ export default function GenerationsPanel({}) {
     keepPreviousData: true
   })
 
-  console.log(response)
-
   let cols = countCols(width);
 
+  console.log(response)
+  
   useEffect(() => {
     const updateWidth = () => {
       if (containerRef.current) {
@@ -70,18 +70,14 @@ export default function GenerationsPanel({}) {
         {response?.data?.map(generation => (
           <Generation key={generation.id} data={generation} onClick={() => handleSelectGeneration(generation)}/>
         ))}
-        {/* <Generation thumbnail="/placeholder.png" count={1} onClick={() => setCurrentGenerationId(1)}/>
-        <Generation thumbnail="/placeholder.png" count={2} />
-        <Generation thumbnail="/placeholder.png" count={3} />
-        <Generation thumbnail="/placeholder.png" count={1} /> */}
       </div>
       <div>
         <PaginationContainer 
           currentPage={currentPage}
           totalCount={response?.totalCount}
-          onClick={page => handlePageChange(page)}
+          onPageChange={page => handlePageChange(page)}
         />
       </div>
-      </div>
+    </div>
   );
 }
