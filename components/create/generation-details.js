@@ -90,20 +90,20 @@ export default function GenerationDetails({ }) {
       </AnimatePresence>
 
       <Dialog className="p-0 m-0" open={isDialogOpen} onOpenChange={() => setIsDialogOpen()}>
-        <DialogContent className="p-0 m-0">
+        <DialogContent className="p-0 m-0 border-none">
           <VisuallyHidden>
             <DialogHeader>
               <DialogTitle></DialogTitle>
             </DialogHeader>
           </VisuallyHidden>
-          <CarouselWrapper selectedIndex={selectedImageIndex} />
+          <CarouselWrapper selectedIndex={selectedImageIndex} images={response?.data?.images} />
         </DialogContent>
       </Dialog>
     </div>
   );
 }
 
-function CarouselWrapper({ selectedIndex }) {
+function CarouselWrapper({ selectedIndex, images }) {
   const [emblaRef, emblaApi] = useEmblaCarousel();
   const [currentIndex, setCurrentIndex] = useState(selectedIndex);
 
@@ -124,14 +124,11 @@ function CarouselWrapper({ selectedIndex }) {
   }, [emblaApi]);
   
   return (
-    <div className="relative">
-      <div ref={emblaRef} className=" overflow-hidden">
-        <div className="flex">
+    <div className="relative bg-transparent">
+      <div ref={emblaRef} className=" overflow-hidden bg-transparent">
+        <div className="flex bg-transparent">
           {images.map((image, index) => (
-            <div className="min-w-0" style={{ flex: '0 0 100%' }}>
-              {/* <Image className="" key={index} src={image.src} alt={image.alt} width={200} height={200}/> */}
-              Slide {index + 1}
-            </div>
+              <img src={image.url} alt={image.url} className="w-full h-full object-cover rounded-md" />
           ))}
         </div>
       </div>
