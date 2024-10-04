@@ -1,9 +1,8 @@
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { PAGE_SIZE } from "@/const/imagine-box-consts";
 
-export default function PaginationContainer({ currentPage, totalCount, onClick}) {
+export default function PaginationContainer({ currentPage, totalCount, onPageChange}) {
 
-    currentPage = 1;
     totalCount = 200;
     const totalPages = Math.ceil(totalCount / PAGE_SIZE);
     console.log([...Array(totalPages)])
@@ -13,8 +12,17 @@ export default function PaginationContainer({ currentPage, totalCount, onClick})
     return (
         <Pagination>
             <PaginationContent>
-                <PaginationItem>
-                    <PaginationPrevious className="hover:border hover:border-gray-800 cursor-pointer" />
+                <PaginationItem
+                    onClick={(e) => {
+                        e.preventDefault();
+                        if (currentPage > 1) 
+                            onPageChange(currentPage - 1)
+                    }}
+                >
+                    <PaginationPrevious 
+                        className="hover:border hover:border-gray-800 cursor-pointer" 
+                        
+                    />
                 </PaginationItem>
                 {[...Array(totalPages)].map((_, index) => {
                     const page = index + 1;
@@ -30,7 +38,10 @@ export default function PaginationContainer({ currentPage, totalCount, onClick})
                                     className={page === currentPage 
                                         ? "bg-gray-800 text-white hover:bg-gray-800 hover:text-white" 
                                         : "hover:border hover:border-gray-800 cursor-pointer"}
-                                    onClick={() => onClick(page)}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        onPageChange(page)
+                                    }}
                                 >
                                     {page}
                                 </PaginationLink>
@@ -45,8 +56,16 @@ export default function PaginationContainer({ currentPage, totalCount, onClick})
                         )
                     }
                 })}
-                <PaginationItem>
-                    <PaginationNext className="hover:border hover:border-gray-800 cursor-pointer" />
+                <PaginationItem
+                    onClick={(e) => {
+                        e.preventDefault();
+                        if (currentPage < totalPages) 
+                            onPageChange(currentPage + 1)
+                    }}
+                >
+                    <PaginationNext 
+                        className="hover:border hover:border-gray-800 cursor-pointer" 
+                    />
                 </PaginationItem>
             </PaginationContent>
         </Pagination>
