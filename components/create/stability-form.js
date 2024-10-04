@@ -67,7 +67,7 @@ export default function StabilityForm() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-10">
                 <FormField
                     control={form.control}
-                    name="aspect_ratio"
+                    name="sd_aspectRatio"
                     render={({ field }) => (
                         <FormItem>
                             <InputLabel label="Aspect Ratio" hint={`Aspect ratio of the image to generate.`} />
@@ -91,7 +91,7 @@ export default function StabilityForm() {
                 {currentModel.code === "si-core" && (
                     <FormField
                         control={form.control}
-                        name="style_preset"
+                        name="sd_stylePreset"
                         render={({ field }) => (
                             <FormItem>
                                 <InputLabel label="Style Preset" hint={`Style preset to use for generation. Only available for Stable Image Core`} />
