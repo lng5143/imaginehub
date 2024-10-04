@@ -58,7 +58,7 @@ export default function GenerationDetails({ }) {
         <CircleX className="size-4 text-gray-800 hover:cursor-pointer" onClick={handleClose} />
       </div>
       <div 
-        className="mb-auto overflow-y-auto p-5" 
+        className="mb-auto overflow-y-auto p-5 flex flex-col gap-2" 
         ref={containerRef}>
         {response?.data?.images.map((image, index) => (
           <img 
@@ -90,13 +90,15 @@ export default function GenerationDetails({ }) {
       </AnimatePresence>
 
       <Dialog className="p-0 m-0" open={isDialogOpen} onOpenChange={() => setIsDialogOpen()}>
-        <DialogContent className="p-0 m-0 border-none">
+        <DialogContent  className="p-0 m-0 border-none">
           <VisuallyHidden>
             <DialogHeader>
               <DialogTitle></DialogTitle>
             </DialogHeader>
           </VisuallyHidden>
-          <CarouselWrapper selectedIndex={selectedImageIndex} images={response?.data?.images} />
+          <div className="">
+            <CarouselWrapper selectedIndex={selectedImageIndex} images={response?.data?.images} />
+          </div>
         </DialogContent>
       </Dialog>
     </div>
@@ -124,11 +126,17 @@ function CarouselWrapper({ selectedIndex, images }) {
   }, [emblaApi]);
   
   return (
-    <div className="relative bg-transparent">
-      <div ref={emblaRef} className=" overflow-hidden bg-transparent">
-        <div className="flex bg-transparent">
+    <div className="relative">
+      <div ref={emblaRef} className="overflow-hidden">
+        <div className="flex">
           {images.map((image, index) => (
-              <img src={image.url} alt={image.url} className="w-full h-full object-cover rounded-md" />
+            <div className="min-w-0" style={{ flex: '0 0 100%' }}>
+              <img 
+                src={image.url} 
+                alt={image.url} 
+                className="w-full h-full rounded-md" 
+              />
+            </div>
           ))}
         </div>
       </div>
