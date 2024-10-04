@@ -27,7 +27,7 @@ export const MODELS = [
         name: "Stable Diffusion 3 Large",
     },
     {
-        code: "sd-3-turbo",
+        code: "sd-3-large-turbo",
         provider: "stability",
         name: "Stable Diffusion 3 Turbo",
     },

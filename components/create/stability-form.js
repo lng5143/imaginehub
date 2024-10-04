@@ -14,8 +14,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SD_PRESETS, SD_RATIOS } from "@/const/imagine-box-consts";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import useCurrentUser from "@/hooks/use-current-user";
+import { useQueryClient } from "@tanstack/react-query";
+import { generateImages } from "@/lib/generate";
 
 export default function StabilityForm() {
+    const queryClient = useQueryClient();
+    const currentUser = useCurrentUser();
     const [currentModel, _setCurrentModel] = useCurrentModel();
     const [openStylePresets, setOpenStylePresets] = useState(false);
     
@@ -47,8 +52,14 @@ export default function StabilityForm() {
         },
     });
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
+        console.log(data)
+        data.model = currentModel.code;
+        data.provider = currentModel.provider;
+        data.userId = currentUser.id;
+        data.samples = 1;
+
+        const res = await generateImages(currentUser.id, data, queryClient);
     }
 
     return (
@@ -152,7 +163,7 @@ export default function StabilityForm() {
                         <FormItem>
                             <InputLabel label="Negative Prompt" hint={`Description of what you want to generate. \nEg. "A photograph of a white Siamese cat"`} />
                             <FormControl>
-                                <Textarea required className="h-16 bg-white" {...field} />
+                                <Textarea className="h-16 bg-white" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

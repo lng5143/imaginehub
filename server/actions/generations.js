@@ -23,6 +23,7 @@ export const insertInitialGeneration = async (data) => {
 }
 
 export const updateImageGeneration = async (id, provider, data) => {
+    console.log(data)
     const session = await auth();
     
     if (!session)
@@ -35,12 +36,12 @@ export const updateImageGeneration = async (id, provider, data) => {
     if (!existingGen)
         throw new Error("Image generation not found");
 
+    await insertImages(id, provider, data);
+
     await prisma.imageGeneration.update({
         where: { id: id },
         data: { status: "SUCCESS"}
     })
-
-    await insertImages(id, provider, data);
 
     console.log("done update")
     return { success: true }
@@ -48,7 +49,6 @@ export const updateImageGeneration = async (id, provider, data) => {
 
 const insertImages = async (genId, provider, data) => {
     if (provider === "openai") {
-
         let count = 1;
         let imageUrls = [];
         for (const item of data) {
@@ -75,6 +75,10 @@ const insertImages = async (genId, provider, data) => {
         })
 
         return { success: true, data: res }
+    }
+
+    if (provider === "stability") {
+    
     }
 }
 

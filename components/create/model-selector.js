@@ -16,21 +16,9 @@ export default function ModelSelector() {
     }
 
     return (
-        // <Select value={currentModel} onValueChange={setCurrentModel}>
-        //     <SelectTrigger>
-        //         <SelectValue placeholder="Select a model" />
-        //     </SelectTrigger>
-        //     <SelectContent>
-        //         <SelectItem value="de-3">DALL-E 3</SelectItem>
-        //         <SelectItem value="de-2">DALL-E 2</SelectItem>
-        //         <SelectItem value="sd-3">Stable Diffusion 3</SelectItem>
-        //         <SelectItem value="si-ultra">Stable Image Ultra</SelectItem>
-        //         <SelectItem value="si-core">Stable Image Core</SelectItem>
-        //     </SelectContent>
-        // </Select>
         <Popover open={openModelSelector} onOpenChange={setOpenModelSelector}>
             <PopoverTrigger asChild>
-                <Button variant="outline" role="combobox" aria-expanded={openModelSelector} className="w-full justify-between">
+                <Button variant="outline" role="combobox" aria-expanded={openModelSelector} className="w-full justify-between text-sm">
                     {currentModel.name ? currentModel.name : "Select a model"}
                 </Button>
             </PopoverTrigger>
@@ -42,6 +30,7 @@ export default function ModelSelector() {
                         <CommandGroup>
                             {MODELS.map((model) => (
                                 <CommandItem 
+                                    className="text-xs"
                                     key={model.code} 
                                     value={model.name}
                                     onSelect={() => {
