@@ -34,8 +34,6 @@ export default function GenerationsPanel({}) {
 
   let cols = countCols(width);
 
-  console.log(response)
-  
   useEffect(() => {
     const updateWidth = () => {
       if (containerRef.current) {

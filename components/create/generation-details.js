@@ -5,7 +5,6 @@ import { Button } from "../ui/button";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader,  } from "../ui/dialog";
-import Image from "next/image";
 import DetailsDrawer from "./details-drawer";
 import useEmblaCarousel from "embla-carousel-react";
 import { DialogTitle } from "@radix-ui/react-dialog";
@@ -30,7 +29,6 @@ const images = [
 ]
 
 export default function GenerationDetails({ }) {
-  const [width, setWidth] = useState(0);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -40,6 +38,8 @@ export default function GenerationDetails({ }) {
     queryKey: ["generation", currentGenerationId],
     queryFn: () => getGenerationDetails(currentGenerationId)
   })
+
+  console.log(response)
 
   const containerRef = useRef(null);
 
@@ -66,7 +66,7 @@ export default function GenerationDetails({ }) {
             src={image.url} 
             alt={response?.data?.prompt} 
             onClick={() => handleDialogOpen(index)}
-            className="aspect-square rounded-md hover:cursor-pointer hover:scale-105 transition-all duration-300 w-full"
+            className="aspect-square rounded-md hover:cursor-pointer hover:scale-105 transition-all duration-300 w-full shadow-md"
           />
         ))}
       </div>
@@ -84,7 +84,7 @@ export default function GenerationDetails({ }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           />
-            <DetailsDrawer data={generation} />
+            <DetailsDrawer data={response?.data} />
         </>
       )}
       </AnimatePresence>
