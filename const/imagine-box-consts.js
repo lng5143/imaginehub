@@ -46,3 +46,4 @@ export const MODELS = [
 export const IMAGE_BUCKET_NAME = "generated-images";
 
 export const PAGE_SIZE = 20;
+export const IMAGINEBOX_OTP_PRICE_ID = "pri_01j9dsw6nd5wwh39bcgse1gsqt";

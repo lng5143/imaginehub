@@ -14,20 +14,6 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useQuery } from "@tanstack/react-query";
 import { getGenerationDetails } from "@/server/actions/generations";
 
-const placeholderPrompt =
-  "If you use a language different from English in you text prompts, pass the multi_lingual parameter with yes value in the request body. This will trigger an automatic language detection and translation during the processing of your request.";
-const placeholderNegativePrompt =
-  "If you use a language different from English in you text prompts";
-
-const images = [
-  { src: "/placeholder.", alt: "Image 1" },
-  { src: "/placeholder.", alt: "Image 2" },
-  { src: "/placeholder.", alt: "Image 3" },
-  { src: "/placeholder.", alt: "Image 4" },
-  { src: "/placeholder.", alt: "Image 5" },
-  { src: "/placeholder.", alt: "Image 6" },
-]
-
 export default function GenerationDetails({ }) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
