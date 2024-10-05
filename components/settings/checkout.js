@@ -1,8 +1,10 @@
 import { initializePaddle } from "@paddle/paddle-js";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import useCurrentUserId from "@/hooks/use-current-user-id";
 
 export default function CheckoutButton({ label, priceId}) {
+    const userId = useCurrentUserId();
     const [paddle, setPaddle] = useState();
 
     useEffect(() => {
@@ -19,7 +21,11 @@ export default function CheckoutButton({ label, priceId}) {
 
     const openCheckout = () => {
         paddle?.Checkout.open({
-            items: [{ priceId: priceId, quantity: 1}]
+            items: [{ priceId: priceId, quantity: 1}],
+            customData: {
+                userId: userId,
+                paymentType: "otp"
+            }
         })
     }
 
