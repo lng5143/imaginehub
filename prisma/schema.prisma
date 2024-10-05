@@ -39,6 +39,7 @@ model User {
   tier          UserTier        @default(FREE)
   accounts      Account[]
   imageGenerations ImageGeneration[]
+  trialCredits    Int             @default(10)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
