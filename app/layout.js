@@ -19,7 +19,7 @@ export default async function RootLayout({ children }) {
   return (
     <SessionProvider session={session}>
       <html lang="en">
-        <body className={`${jetbrainsMono.className} h-screen`}>
+        <body className={`${jetbrainsMono.className} h-screen flex flex-col`}>
           {children}
           <Toaster />
         </body>
