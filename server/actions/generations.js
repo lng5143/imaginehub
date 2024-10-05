@@ -6,6 +6,7 @@ import { generateStabilityImages } from "@/lib/stability";
 import { uploadFileAndGetUrl } from "../lib/supabase";
 import { IMAGE_BUCKET_NAME } from "@/const/imagine-box-consts";
 import { PAGE_SIZE } from "@/const/imagine-box-consts";
+import { updateUserCredits } from "./users";
 
 export const insertInitialGeneration = async (data) => {
     console.log(data);
@@ -22,12 +23,7 @@ export const insertInitialGeneration = async (data) => {
     return { success: true, data: response }
 }
 
-export const updateImageGeneration = async (id, provider, data) => {
-    const session = await auth();
-    
-    if (!session)
-        throw new Error("Unauthorized");
-
+export const updateImageGeneration = async (id, provider, data, userId) => {
     const existingGen = await prisma.imageGeneration.findUnique({
         where: { id: id }
     })
@@ -43,6 +39,9 @@ export const updateImageGeneration = async (id, provider, data) => {
     })
 
     console.log("done update")
+
+    await updateUserCredits(userId);
+
     return { success: true }
 }
 
