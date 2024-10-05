@@ -1,4 +1,6 @@
+import CTASection from "@/components/landing-page/cta-section";
 import HomeNavBar from "../_component/home-nav-bar";
+import FooterSection from "@/components/landing-page/footer";
 
 
 export default function HomeLayout({ children }) {
@@ -6,6 +8,8 @@ export default function HomeLayout({ children }) {
     <div className="relative">
       <HomeNavBar />
       {children}
+      <CTASection />
+      <FooterSection />
     </div>
   );
 }
