@@ -17,13 +17,15 @@ import { cn } from "@/lib/utils";
 import useCurrentUser from "@/hooks/use-current-user";
 import { useQueryClient } from "@tanstack/react-query";
 import { generateImages } from "@/lib/generate";
+import { toast } from "sonner";
 
 export default function StabilityForm() {
     const queryClient = useQueryClient();
     const currentUser = useCurrentUser();
     const [currentModel, _setCurrentModel] = useCurrentModel();
     const [openStylePresets, setOpenStylePresets] = useState(false);
-    
+    const [isInitInsertInProgress, setIsInitInsertInProgress ] = useState(false);
+
     let resolver;
     switch(currentModel.code) {
         case "sd3-medium":
@@ -52,14 +54,39 @@ export default function StabilityForm() {
         },
     });
 
+    const handleInitInsertComplete = (data) => {
+        console.log("init insert complete", data);
+        setIsInitInsertInProgress(false);
+        toast.info("Image generation started, please wait...")
+    }
+
+    const handleUpdateComplete = (data) => {
+        console.log("update complete", data);
+        toast.success("Image generation complete!")
+    }
+
     const onSubmit = async (data) => {
-        console.log(data)
         data.model = data.model ?? currentModel.code;
         data.provider = currentModel.provider;
         data.userId = currentUser.id;
         data.samples = 1;
 
-        const res = await generateImages(currentUser.id, data, queryClient);
+        try {
+            setIsInitInsertInProgress(true);
+            const res = await generateImages(currentUser.id, data, queryClient, handleInitInsertComplete, handleUpdateComplete);
+
+            if (!res.success) {
+                toast.error("Failed to generate images");
+            }
+
+            if (res.success) {
+                handleUpdateComplete(res.data);
+            }
+        } catch (error) {
+            toast.error("Failed to generate images");
+        } finally {
+            setIsInitInsertInProgress(false);
+        }
     }
 
     return (
@@ -182,7 +209,7 @@ export default function StabilityForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Generate</Button>
+                <Button type="submit" disabled={isInitInsertInProgress}>Generate</Button>
             </form>
         </Form>
     );

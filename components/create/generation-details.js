@@ -78,7 +78,7 @@ export default function GenerationDetails({ }) {
       </AnimatePresence>
 
       <Dialog className="p-0 m-0" open={isDialogOpen} onOpenChange={() => setIsDialogOpen()}>
-        <DialogContent  className="p-0 m-0 border-none">
+        <DialogContent  className="p-0 m-0 border-none bg-transparent">
           <VisuallyHidden>
             <DialogHeader>
               <DialogTitle></DialogTitle>

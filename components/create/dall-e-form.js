@@ -14,11 +14,14 @@ import { DE2_SIZES, DE3_SIZES } from "@/const/imagine-box-consts";
 import useCurrentUser from "@/hooks/use-current-user";
 import { generateImages } from "@/lib/generate";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { useState } from "react";
 
 export default function DallEForm() {
     const queryClient = useQueryClient();
     const currentUser = useCurrentUser();
     const [currentModel, _setCurrentModel] = useCurrentModel();
+    const [isInitInsertInProgress, setIsInitInsertInProgress] = useState(false);
 
     let resolver;
     switch(currentModel.code) {
@@ -42,13 +45,39 @@ export default function DallEForm() {
         }
     });
 
+    const handleInitInsertComplete = (data) => {
+        console.log("init insert complete", data);
+        setIsInitInsertInProgress(false);
+        toast.info("Image generation started, please wait...")
+    }
+
+    const handleUpdateComplete = (data) => {
+        console.log("update complete");
+        toast.success("Image generation complete!")
+    }
+
     const onSubmit = async (data) => {
         data.model = currentModel.code;
         data.provider = currentModel.provider;
         data.userId = currentUser.id;
         data.samples = data.samples[0]
 
-        const res = await generateImages(currentUser.id, data, queryClient);
+        try {
+            setIsInitInsertInProgress(true);
+            const res = await generateImages(currentUser.id, data, queryClient, handleInitInsertComplete, handleUpdateComplete);
+
+            if (!res.success) {
+                toast.error("Failed to generate images");
+            }
+
+            if (res.success) {
+                handleUpdateComplete(res.data);
+            }
+        } catch (error) {
+            toast.error("Failed to generate images");
+        } finally {
+            setIsInitInsertInProgress(false);
+        }
     }
 
     return (
@@ -157,7 +186,7 @@ export default function DallEForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Generate</Button>
+                <Button type="submit" disabled={isInitInsertInProgress}>Generate</Button>
             </form>
         </Form>
     );
