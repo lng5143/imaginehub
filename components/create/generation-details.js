@@ -45,7 +45,7 @@ export default function GenerationDetails({ }) {
         <CircleX className="size-4 text-gray-800 hover:cursor-pointer" onClick={handleClose} />
       </div>
       <div 
-        className="mb-auto overflow-y-auto p-5 flex flex-col gap-2" 
+        className="mb-auto overflow-y-auto p-5 flex flex-col gap-2 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-800" 
         ref={containerRef}>
         {!isPending && response?.data?.images.map((image, index) => (
           <img 

@@ -61,11 +61,11 @@ export default function GenerationsPanel({}) {
   }
   
   return (
-    <div className="flex flex-col gap-10 p-5 h-full">
+    <div className="flex flex-col gap-10 h-full">
       <div 
         style={{ display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: "10px" }} 
         ref={containerRef} 
-        className="mb-auto"
+        className="mb-auto p-5 overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-800"
       >
         {!isPending && response?.data?.map(generation => (
           <Generation key={generation.id} data={generation} onClick={() => handleSelectGeneration(generation)}/>
