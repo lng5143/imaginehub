@@ -5,6 +5,8 @@ import { useCurrentGenerationId } from "@/store/use-current-generation-id";
 import { useQuery } from "@tanstack/react-query";
 import { getGenerations } from "@/server/actions/generations";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
+import { PAGE_SIZE } from "@/const/imagine-box-consts";
 
 const countCols = (width) => {
   if (width > 1200) {
@@ -24,7 +26,7 @@ export default function GenerationsPanel({}) {
   const [currentPage, setCurrentPage] = useState(1);
   const [_currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
 
-  const { data: response, isError, isLoading, isPending } = useQuery({
+  const { data: response, isError, isPending } = useQuery({
     queryKey: ["generations", currentPage],
     queryFn: async () => {
       return await getGenerations(currentPage);
@@ -65,8 +67,11 @@ export default function GenerationsPanel({}) {
         ref={containerRef} 
         className="mb-auto"
       >
-        {response?.data?.map(generation => (
+        {!isPending && response?.data?.map(generation => (
           <Generation key={generation.id} data={generation} onClick={() => handleSelectGeneration(generation)}/>
+        ))}
+        {isPending && Array.from({length: PAGE_SIZE}).map((_, index) => (
+          <Skeleton key={index} className="aspect-square" />
         ))}
       </div>
       <div>
