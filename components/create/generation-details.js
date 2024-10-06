@@ -13,6 +13,7 @@ import { CircleChevronLeft } from "lucide-react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useQuery } from "@tanstack/react-query";
 import { getGenerationDetails } from "@/server/actions/generations";
+import { Skeleton } from "../ui/skeleton";
 
 export default function GenerationDetails({ }) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -20,7 +21,7 @@ export default function GenerationDetails({ }) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
 
-  const { data: response, isLoading} = useQuery({
+  const { data: response, isPending} = useQuery({
     queryKey: ["generation", currentGenerationId],
     queryFn: () => getGenerationDetails(currentGenerationId)
   })
@@ -46,7 +47,7 @@ export default function GenerationDetails({ }) {
       <div 
         className="mb-auto overflow-y-auto p-5 flex flex-col gap-2" 
         ref={containerRef}>
-        {response?.data?.images.map((image, index) => (
+        {!isPending && response?.data?.images.map((image, index) => (
           <img 
             key={index} 
             src={image.url} 
@@ -55,6 +56,7 @@ export default function GenerationDetails({ }) {
             className="aspect-square rounded-md hover:cursor-pointer hover:scale-105 transition-all duration-300 w-full shadow-md"
           />
         ))}
+        {isPending && <Skeleton className="aspect-square w-full" />}
       </div>
       <Button className="w-full" onClick={() => setIsDetailsOpen(true)}>
         View Details
