@@ -53,7 +53,7 @@ export default function GenerationDetails({ }) {
             src={image.url} 
             alt={response?.data?.prompt} 
             onClick={() => handleDialogOpen(index)}
-            className="aspect-square rounded-md hover:cursor-pointer hover:scale-105 transition-all duration-300 w-full shadow-md"
+            className="rounded-md hover:cursor-pointer hover:scale-105 transition-all duration-300 w-full shadow-md"
           />
         ))}
         {isPending && <Skeleton className="aspect-square w-full" />}
