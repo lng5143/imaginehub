@@ -54,16 +54,17 @@ export const PRICING_PLANS = {
         price: null,
         features: [
             "10 trials generation",
-            "Access to DALL-E and Stable Diffusion",
+            "Limited access to models",
+            "30 days storage"
         ]
     },
     pro: {
         title: "Pro",
-        price: 19.97,
+        price: "$19.97",
         features: [
             "Unlimited image generation",
             "Access to all models",
-
+            "Unlimited storage"
         ]
     }
 }
