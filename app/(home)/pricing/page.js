@@ -1,6 +1,7 @@
 import PricingCard from "@/app/_component/pricing-card"
 import { PRICING_PLANS } from "@/const/imagine-box-consts"
 import { Button } from "@/components/ui/button"
+import FAQSection from "@/components/landing-page/faq"
 
 export default function PricingPage() {
   return (
@@ -29,8 +30,8 @@ export default function PricingPage() {
                 </div>
             </div>
         </div>
-        <div className="h-[600px] bg-white">
-
+        <div className="h-[600px] bg-white py-20">
+            <FAQSection />
         </div>
     </div>
   )
