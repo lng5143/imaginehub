@@ -25,7 +25,7 @@ export default function CreatePage() {
             <ResizableHandle className="bg-transparent" />
             <ResizablePanel
               minSize={30}
-              className="bg-gray-100"
+              className="bg-indigo-100"
             >
               <GenerationDetails />
             </ResizablePanel>

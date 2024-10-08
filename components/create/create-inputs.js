@@ -7,7 +7,7 @@ export default function CreateInputs() {
   const [currentModel] = useCurrentModel();
 
   return (
-    <div className="flex flex-col w-[360px] p-5 bg-gray-100 gap-10 h-auto">
+    <div className="flex flex-col w-[360px] p-5 bg-indigo-100 gap-10 h-auto">
         <ModelSelector />
         <div className="mt-auto">
             {currentModel.provider === "openai" ? <DallEForm /> : null}

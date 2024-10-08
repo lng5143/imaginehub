@@ -19,7 +19,7 @@ export default function PaginationContainer({ currentPage, totalCount, onPageCha
                     }}
                 >
                     <PaginationPrevious 
-                        className="hover:border hover:border-gray-800 cursor-pointer" 
+                        className="hover:bg-amber-500 hover:text-black cursor-pointer" 
                         
                     />
                 </PaginationItem>
@@ -35,8 +35,8 @@ export default function PaginationContainer({ currentPage, totalCount, onPageCha
                             <PaginationItem key={page}>
                                 <PaginationLink
                                     className={page === currentPage 
-                                        ? "bg-gray-800 text-white hover:bg-gray-800 hover:text-white" 
-                                        : "hover:border hover:border-gray-800 cursor-pointer"}
+                                        ? "bg-indigo-950 hover:bg-indigo-950 hover:text-white text-white cursor-default" 
+                                        : "hover:bg-amber-500 hover:text-black cursor-pointer"}
                                     onClick={(e) => {
                                         e.preventDefault();
                                         onPageChange(page)
@@ -63,7 +63,7 @@ export default function PaginationContainer({ currentPage, totalCount, onPageCha
                     }}
                 >
                     <PaginationNext 
-                        className="hover:border hover:border-gray-800 cursor-pointer" 
+                        className="hover:bg-amber-500 hover:text-black cursor-pointer" 
                     />
                 </PaginationItem>
             </PaginationContent>

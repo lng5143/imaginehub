@@ -1,4 +1,4 @@
-import { CircleX } from "lucide-react";
+import { ChevronUp, CircleX } from "lucide-react";
 import { useCurrentGenerationId } from "@/store/use-current-generation-id";
 import { useRef, useState, useEffect, useCallback, useTransition } from "react";
 import { Button } from "../ui/button";
@@ -42,7 +42,7 @@ export default function GenerationDetails({ }) {
   return (
     <div className="relative flex flex-col h-full">
       <div className="h-6 flex items-center justify-end p-1 absolute top-1 right-1">
-        <CircleX className="size-4 text-gray-800 hover:cursor-pointer" onClick={handleClose} />
+        <CircleX className="size-4 text-black hover:cursor-pointer" onClick={handleClose} />
       </div>
       <div 
         className="mb-auto overflow-y-auto p-5 flex flex-col gap-2 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-800" 
@@ -58,9 +58,10 @@ export default function GenerationDetails({ }) {
         ))}
         {isPending && <Skeleton className="aspect-square w-full" />}
       </div>
-      <Button className="w-full" onClick={() => setIsDetailsOpen(true)}>
-        View Details
-      </Button>
+      <div className="w-full flex items-center bg-indigo-950 text-white py-2 px-4 rounded-t-lg cursor-pointer" onClick={() => setIsDetailsOpen(true)}>
+        <p className="flex-grow text-sm">View Details</p>
+        <ChevronUp className="size-4" />
+      </div>
       <AnimatePresence>
       {isDetailsOpen && (
         <>

@@ -76,6 +76,7 @@ export default function StabilityForm() {
             const res = await generateImages(currentUser.id, data, queryClient, handleInitInsertComplete, handleUpdateComplete);
 
             if (!res.success) {
+                console.log("error", res.error);
                 toast.error("Failed to generate images");
             }
 
@@ -209,7 +210,7 @@ export default function StabilityForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" disabled={isInitInsertInProgress}>Generate</Button>
+                <Button type="submit" disabled={isInitInsertInProgress} variant="ibDark">Generate</Button>
             </form>
         </Form>
     );

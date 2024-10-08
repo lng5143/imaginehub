@@ -74,7 +74,7 @@ export default function GenerationsPanel({}) {
           <Skeleton key={index} className="aspect-square" />
         ))}
       </div>
-      <div>
+      <div className="pb-4">
         <PaginationContainer 
           currentPage={currentPage}
           totalCount={response?.totalCount}

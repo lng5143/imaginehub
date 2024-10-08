@@ -186,7 +186,7 @@ export default function DallEForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" disabled={isInitInsertInProgress}>Generate</Button>
+                <Button type="submit" disabled={isInitInsertInProgress} variant="ibDark">Generate</Button>
             </form>
         </Form>
     );
