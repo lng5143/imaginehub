@@ -5,17 +5,16 @@ import Link from "next/link";
 
 export default function FooterSection() {
     return (
-        <div className="flex flex-col px-20">
+        <div className="flex flex-col px-20 w-full">
             <div className="flex gap-20 w-full py-10 px-32">
                 <div className="flex-grow">
                     <Image src="/logo.svg" alt="logo" width={100} height={100} />
-                    <div className="flex gap-5">
+                    {/* <div className="flex gap-5">
                         <Image src="/instagram.svg" alt="instagram" width={20} height={20} />
                         <Image src="/facebook.svg" alt="facebook" width={20} height={20} />
                         <Image src="/twitter.svg" alt="twitter" width={20} height={20} />
-                    </div>
-                    <p>© 2024 All rights reserved.</p>
-                    
+                    </div> */}
+                    <p className="text-sm">© 2024 All rights reserved.</p>
                 </div>
                 <div className="flex gap-10">
                     <div className="flex flex-col gap-2">
@@ -28,7 +27,7 @@ export default function FooterSection() {
                     </div>
                 </div>
             </div>
-            <hr />
+            <hr className="w-full border-slate-300" />
             <div className="flex gap-5 py-5 px-20 text-sm text-gray-800">
                 <Link href="/privacy">Privacy Policy</Link>
                 <Link href="/terms">Terms & Conditions</Link>
