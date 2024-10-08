@@ -4,10 +4,12 @@ import BenefitsSection from "@/components/landing-page/benefits";
 import FAQSection from "@/components/landing-page/faq";
 import FooterSection from "@/components/landing-page/footer";
 import CTASection from "@/components/landing-page/cta-section";
+import HeroNavBar from "@/app/_component/hero-nav-bar";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center">
+    <main className="flex flex-col items-center relative">
+      <HeroNavBar />
       <HeroSection />
       <HowItWorksSection />
       <BenefitsSection />

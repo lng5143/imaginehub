@@ -21,7 +21,6 @@ export default async function RootLayout({ children }) {
     <SessionProvider session={session}>
       <html lang="en">
         <body className={`${jetbrainsMono.className} h-screen flex flex-col`}>
-          <HeroNavBar />
           {children}
           <Toaster />
         </body>
