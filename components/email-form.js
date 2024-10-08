@@ -34,8 +34,8 @@ export default function EmailForm() {
     }
 
     return (
-        <div className="flex flex-col gap-3">
-            <p className="text-sm">Subscribe to receive updates</p>
+        <div className="flex flex-col gap-3 w-full">
+            <p className="text">Subscribe to receive updates</p>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(handleSubmitEmail)} className="flex items-center gap-2">
                     <FormField

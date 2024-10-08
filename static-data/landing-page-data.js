@@ -1,3 +1,5 @@
+import { TRIAL_IMAGE_COUNT } from "@/const/imagine-box-consts"
+
 export const BENEFITS = [
     {
         "title": "Choose your own provider",
@@ -27,8 +29,12 @@ export const BENEFITS = [
 
 export const FAQs = [
     {
-        "question": "What image generation providers are supported?",
-        "answer": "42"
+        "question": "What are the requirements to use ImagineBox?",
+        "answer": `You need to have an API key from a supported image generation provider. You can create an account on providers like OpenAI, Stability AI, and get your API key. You also need a lifetime license after ${TRIAL_IMAGE_COUNT} trial generations.`
+    },
+    {
+        "question": "What image generation models are supported?",
+        "answer": "We currently support DALL-E 2, DALL-E 3, Stable Diffusion 3, Stable Image Core, and Stable Image Ultra. We have plans to add more models in the future."
     },
     {
         "question": "Do I need to subscribe to anything?",
@@ -36,28 +42,24 @@ export const FAQs = [
     },
     {
         "question": "Is my API key secure?",
-        "answer": "Yes. Your API keys are stored locally on your browser only. ImagineBox will directly use the locally stored key to interface with the image generation providers. We will NOT save your API keys."
+        "answer": "Yes. Your API keys are stored locally on your browser only. ImagineBox will directly use the locally stored key to interface with the image generation providers. Your API keys will NOT go through our servers or saved to our database."
     },
     {
-        "question": "What is the answer to life, the universe, and everything?",
-        "answer": "42"
+        "question": "What image features are supported at the moment?",
+        "answer": "Fow now we support image generation. Image editing and upscaling are coming soon."
     },
     {
-        "question": "What is the answer to life, the universe, and everything?",
-        "answer": "42"
+        "question": "Is my generated image stored on ImagineBox?",
+        "answer": "Yes. We store your generated images for better user experience. We currently do not have plans to charge for storage."
     },
     {
-        "question": "What is the answer to life, the universe, and everything?",
-        "answer": "42"
+        "question": "Can I get a refund if I am not satisfied with the service?",
+        "answer": "We currently do not offer refund, with the exception of very specific circumstances. Please refer to our Refund Policy for more details."
     },
     {
-        "question": "What is the answer to life, the universe, and everything?",
-        "answer": "42"
+        "question": "Do I have lifetime access to future updates?",
+        "answer": "Yes. Even though we may change the pricing plans and feature tiers in the future, we will do our best to guarantee access to all features added for customers who have purchased a lifetime license at the moment."
     },
-    {
-        "question": "What is the answer to life, the universe, and everything?",
-        "answer": "42"
-    }
 ]
 
 export const HOW_IT_WORKS = [

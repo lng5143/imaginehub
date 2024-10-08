@@ -7,7 +7,7 @@ export default function BenefitItem({ title, description, icon }) {
             {icon}
             <div className="flex flex-col gap-2">
                 <h3 className="font-bold text-lg">{title}</h3>
-                <p className="text-sm">{description}</p>
+                <p className="text-sm text-gray-800">{description}</p>
             </div>
         </div>
     )
