@@ -54,14 +54,17 @@ export const FAQs = [
 export const HOW_IT_WORKS = [
     {
         "title": "Get API Key",
-        "description": "Create an account on your preferred image generation provider and get your API key."
+        "description": "Create an account on your preferred image generation provider and get your API key.",
+        "image": "/steps/step-1.png"
     },
     {
         "title": "Save API key",
-        "description": "Save your API key on ImagineBox. Your API key is saved on the browser only and will NOT be saved to our servers."
+        "description": "Save your API key on ImagineBox. Your API key is saved on the browser only and will NOT be saved to our servers.",
+        "image": "/steps/step-2.png"
     },
     {
         "title": "Start generating",
-        "description": "Start generating images with the chat interface."
+        "description": "Start generating images with your model of choice.",
+        "image": "/steps/step-3.png"
     }
 ]

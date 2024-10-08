@@ -15,15 +15,15 @@ export default function SettingsDialog({ isOpen, setIsOpen }) {
                 <Tabs value={activeTab} onValueChange={setActiveTab} className="flex h-full">
                     <TabsList className="flex flex-col justify-start items-start h-full w-[200px] space-y-2 rounded-none border-r bg-muted p-4">
                         <TabsTrigger value="general" className="justify-start w-full">General</TabsTrigger>
-                        <TabsTrigger value="models" className="justify-start w-full">Models</TabsTrigger>
+                        <TabsTrigger value="models" className="justify-start w-full">API Keys</TabsTrigger>
                     </TabsList>
                     <div className="flex-1 p-6 overflow-auto">
                     <DialogHeader>
-                        <DialogTitle>{activeTab === "general" ? "General Settings" : "Model Settings"}</DialogTitle>
+                        <DialogTitle>{activeTab === "general" ? "General Settings" : "API Keys"}</DialogTitle>
                         <DialogDescription>
                         {activeTab === "general" 
                             ? "Manage your general account settings and preferences."
-                            : "Configure your AI model settings and parameters."}
+                            : "Configure your API keys for your AI models."}
                         </DialogDescription>
                     </DialogHeader>
                     <div className="py-6">

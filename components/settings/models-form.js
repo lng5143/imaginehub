@@ -53,7 +53,7 @@ export default function ModelsForm() {
                             name="stability_api_key"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="font-semibold text-base">StabilityAI API Key</FormLabel>
+                                    <FormLabel className="font-semibold text-base">Stability AI API Key</FormLabel>
                                     <FormControl>
                                         <Input placeholder="sk-..." {...field} disabled={isPending} />
                                     </FormControl>

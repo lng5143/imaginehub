@@ -1,6 +1,7 @@
 import { HOW_IT_WORKS } from "@/static-data/landing-page-data";
 import HowItem from "./how-item";
 import StepNumber from "./step-number";
+import { FolderKey, KeyRound, PackagePlus } from "lucide-react";
 
 export default function HowItWorksSection() {
     return (
@@ -13,9 +14,30 @@ export default function HowItWorksSection() {
                     <StepNumber variant="right" number="3" />
                 </div>
                 <div className="flex">
-                    {HOW_IT_WORKS.map((item, index) => (
-                        <HowItem key={index} title={item.title} description={item.description} />
-                    ))}
+                    {/* {HOW_IT_WORKS.map((item, index) => (
+                        <HowItem key={index} title={item.title} description={item.description} image={item.image} />
+                    ))} */}
+                    {<HowItem 
+                        title={HOW_IT_WORKS[0].title} 
+                        description={HOW_IT_WORKS[0].description} 
+                        icon={<KeyRound className="w-20 h-20" />} 
+                        alt={HOW_IT_WORKS[0].title} 
+                        className="w-60 h-60"
+                    />}
+                    {<HowItem 
+                        title={HOW_IT_WORKS[1].title} 
+                        description={HOW_IT_WORKS[1].description} 
+                        icon={<FolderKey className="w-20 h-20" />} 
+                        alt={HOW_IT_WORKS[1].title} 
+                        className="w-60 h-60"
+                    />}
+                    {<HowItem 
+                        title={HOW_IT_WORKS[2].title} 
+                        description={HOW_IT_WORKS[2].description} 
+                        icon={<PackagePlus className="w-20 h-20" />} 
+                        alt={HOW_IT_WORKS[2].title} 
+                        className="w-60 h-60"
+                    />}
                 </div>
             </div>
         </div>
