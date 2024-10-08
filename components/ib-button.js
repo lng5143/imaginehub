@@ -9,6 +9,7 @@ export default function IBButton({variant = "dark", children, ...props}) {
                 "bg-white text-slate-950": variant === "light",
                 ...props.className
             })}
+            {...props}
         >
             {children}
         </Button>

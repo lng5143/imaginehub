@@ -6,7 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { useTransition } from "react";
+
 export default function EmailForm() {
+    const [isPending, startTransition] = useTransition();
 
     const form = useForm({
         resolver: zodResolver(EmailFormSchema),
@@ -15,19 +18,19 @@ export default function EmailForm() {
         }
     })
 
-    const handleSubmitEmail = async (e) => {
-        e.preventDefault();
+    const handleSubmitEmail = async () => {
+        startTransition(async () => {
+            const { email } = form.getValues();
+            const { error, success } = await saveEmail(email);
 
-        const { email } = form.getValues();
-        const { error, success } = await saveEmail(email);
+            if (error) {
+                toast.error(error);
+            }
 
-        if (error) {
-            toast.error(error);
-        }
-
-        if (success) {
-            toast.success(success);
-        }
+            if (success) {
+                toast.success(success);
+            }
+        })
     }
 
     return (
@@ -45,12 +48,13 @@ export default function EmailForm() {
                                         placeholder="Enter your email"
                                         {...field}
                                         className="bg-white text-slate-950 text-xs border-2 rounded-md p-2"
+                                        disabled={isPending}
                                     />
                                 </FormControl>
                             </FormItem>
                         )}
                     />
-                    <IBButton variant="light" type="submit">Submit</IBButton>
+                    <IBButton variant="light" type="submit" disabled={isPending}>Submit</IBButton>
                 </form>
             </Form>
         </div>

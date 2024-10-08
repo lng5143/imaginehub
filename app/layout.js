@@ -22,7 +22,7 @@ export default async function RootLayout({ children }) {
       <html lang="en">
         <body className={`${jetbrainsMono.className} h-screen flex flex-col`}>
           {children}
-          <Toaster />
+          <Toaster richColors />
         </body>
       </html>
     </SessionProvider>

@@ -8,7 +8,7 @@ export default function NavigationBar() {
   const user = useCurrentUser();
 
   return (
-    <div className="flex p-2 gap-10 justify-end bg-gray-800 text-white">
+    <div className="flex p-2 gap-10 justify-end bg-indigo-950 text-white">
       {!user && <Login />}
       {user && 
         <UserButton user={user} />
