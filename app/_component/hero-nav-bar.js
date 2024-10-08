@@ -28,9 +28,14 @@ export default function HeroNavBar() {
       <Link href="/" className="flex items-center flex-grow">
         <img src="/logo/logo-dark-text.png" alt="logo" className="w-40" />
       </Link>
-      <Button className="shadow-xl bg-indigo-950 text-white hover:bg-amber-500 hover:text-slate-950 hover:scale-105 transition-all duration-300">
-          <Link href="/pricing">Pricing</Link>
-      </Button>
+      <div className="flex gap-5 items-center">
+        <Button variant="ghost" className="text-black hover:bg-amber-500 hover:text-slate-950 hover:scale-105 transition-all duration-300">
+          <Link href="/blog">Blog</Link>
+        </Button>
+        <Button className="shadow-xl bg-indigo-950 text-white hover:bg-amber-500 hover:text-slate-950 hover:scale-105 transition-all duration-300">
+            <Link href="/pricing">Pricing</Link>
+        </Button>
+      </div>
     </div>
   );
 }

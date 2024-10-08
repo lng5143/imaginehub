@@ -1,19 +1,22 @@
-const BENEFITS = [
+export const BENEFITS = [
     {
+        "title": "Choose your provider",
         "description": "Use any image generation provider you want.",
         "image": ""
     },
     {
+        "title": "",
         "description": "No need to pay monthly subscription. Bring your own API key and pay only for what you use.",
         "image": ""
     },
     {
+        "title": "",
         "description": "Complete control over your API keys. We will NOT store your API keys.",
         "image": ""
     },
 ]
 
-const FAQs = [
+export const FAQs = [
     {
         "question": "What image generation providers are supported?",
         "answer": "42"
@@ -48,4 +51,17 @@ const FAQs = [
     }
 ]
 
-export { BENEFITS, FAQs }
+export const HOW_IT_WORKS = [
+    {
+        "title": "Get API Key",
+        "description": "Create an account on your preferred image generation provider and get your API key."
+    },
+    {
+        "title": "Save API key",
+        "description": "Save your API key on ImagineBox. Your API key is saved on the browser only and will NOT be saved to our servers."
+    },
+    {
+        "title": "Start generating",
+        "description": "Start generating images with the chat interface."
+    }
+]

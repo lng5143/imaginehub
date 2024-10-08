@@ -6,7 +6,7 @@ export default function CTAButton({variant = "dark", ...props}) {
     const session = useSession();
 
     return (
-        <IBButton variant={variant}>
+        <IBButton variant={variant} className="w-60 text-lg font-semibold">
             <Link href={session.data ? "/create" : "/auth/signin"}>
                 Get Started
             </Link>

@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
-
+import { cn } from "@/lib/utils";
 export default function FaqItem({ question, answer }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -13,14 +12,14 @@ export default function FaqItem({ question, answer }) {
 
   return (
     <div
-      className={`
-                    ${isOpen ? "bg-slate-800 text-white" : "bg-slate-200 text-slate-800"}
-                    m-1.5 cursor-pointer rounded-md
-                    hover:bg-blue-800 hover:text-slate-200`}
+      className={cn(
+        "m-1.5 cursor-pointer rounded-md hover:bg-amber-500 hover:text-black",
+        isOpen ? "bg-indigo-950 text-white shadow-lg" : "bg-white text-black"
+      )}
       onClick={toggleAnswer}
     >
       <div className="flex py-2 px-4">
-        <p className="grow">{question}</p>
+        <p className="grow font-semibold">{question}</p>
         <motion.svg
           className="fill-current"
           width="24px"
@@ -39,7 +38,7 @@ export default function FaqItem({ question, answer }) {
       </div>
         {isOpen && (
           <motion.p
-            className="py-2 px-4"
+            className="py-2 px-4 text-sm"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}

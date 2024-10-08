@@ -1,10 +1,14 @@
-import Image from "next/image";
+import { Zap } from "lucide-react"
 
-export default function BenefitItem({ description, image }) {
+
+export default function BenefitItem({ title, description, icon }) {
     return (
-        <div className="flex flex-col items-center gap-10 basis-1/3">
-            <Image src={image} alt="benefit" width={100} height={100} />
-            <p>{description}</p>
+        <div className="flex flex-col gap-5 basis-1/3 rounded-lg shadow-md border border-slate-300 p-10">
+            <Zap className="w-10 h-10" />
+            <div className="flex flex-col gap-2">
+                <h3 className="font-bold">{title}</h3>
+                <p className="text">{description}</p>
+            </div>
         </div>
     )
 }
