@@ -1,11 +1,19 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-
-export default function CTAButton() {
+import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
+export default function CTAButton({variant = "dark"}) {
     const session = useSession();
     return (
-        <Link href={session.data ? "/create" : "/auth/signin"} className="bg-blue-500 text-white px-4 py-2 rounded-md">
-            Get Started
-        </Link>
+        <Button 
+            className={cn("hover:scale-105 transition-all duration-300  hover:bg-amber-500 hover:text-slate-950", {
+                "bg-indigo-950 text-white": variant === "dark",
+                "bg-white text-slate-950": variant === "light",
+            })}
+        >
+            <Link href={session.data ? "/create" : "/auth/signin"}>
+                Get Started
+            </Link>
+        </Button>
     )
 }

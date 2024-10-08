@@ -9,9 +9,9 @@ export default function CTASection() {
     }
 
     return(
-        <div className="flex items-center gap-20 py-10 bg-blue-500 px-32 w-full">
+        <div className="flex items-center gap-20 py-10 bg-indigo-950 px-32 w-full">
                 <div className="flex-grow">
-                    <CTAButton />
+                    <CTAButton variant="light" />
                 </div>
                 <div className="flex flex-col gap-3">
                     <p>Subscribe to receive updates</p>
