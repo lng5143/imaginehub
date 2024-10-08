@@ -3,7 +3,7 @@ export default function RefundPage() {
     <div className="flex flex-col gap-20 py-40 px-60 ">
       <div className="flex flex-col gap-2">
         <h1 className="text-6xl font-bold">Refund Policy</h1>
-        <p className="text-sm text-gray-500">Last updated: 2024-03-01</p>
+        <p className="text-sm text-gray-500">Last updated: 8th October 2024</p>
       </div>
       <div className="flex flex-col gap-10">
         <p>Thank you for using ImagineBox. This Refund Policy explains when and how refunds are issued for purchases made through our website (the “Service”). By making a purchase, you agree to this policy.</p>

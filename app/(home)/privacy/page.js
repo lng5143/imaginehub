@@ -3,7 +3,7 @@ export default function PrivacyPage() {
     <div className="flex flex-col gap-20 py-40 px-60 ">
       <div className="flex flex-col gap-2">
         <h1 className="text-6xl font-bold">Privacy Policy</h1>
-        <p className="text-sm text-gray-500">Last updated: 2024-02-20</p>
+        <p className="text-sm text-gray-500">Last updated: 8th October 2024</p>
       </div>
       <div className="flex flex-col gap-10">
         <p>ImagineBox ("we," "us," or "our") respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, and protect your information when you use the web client for image generation models (the “Service”). By using the Service, you agree to the collection and use of your information in accordance with this Privacy Policy.</p>

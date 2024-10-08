@@ -7,7 +7,10 @@ export default function PricingPage() {
   return (
     <div>
         <div className="flex relative pt-40 justify-center bg-[url('/pricing-bg.jpg')] bg-cover bg-center bg-no-repeat">
-            <h1 className="text-6xl h-[500px] font-bold text-white">Pay once, use forever</h1>
+            <div className="flex flex-col gap-10 h-[550px] text-center">
+                <h1 className="text-6xl font-bold text-white">Pay once, use forever</h1>
+                <p className="text-white">No subscription, no hidden fees, no monthly charges.</p>
+            </div>
             <div className="flex absolute -bottom-8 items-center justify-center w-full">
                 <div className="w-3/12 h-80">
                     <PricingCard 
@@ -30,9 +33,7 @@ export default function PricingPage() {
                 </div>
             </div>
         </div>
-        <div className="h-[600px] bg-white py-20">
-            <FAQSection />
-        </div>
+        <FAQSection />
     </div>
   )
 }  

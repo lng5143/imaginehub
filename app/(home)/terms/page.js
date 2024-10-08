@@ -4,7 +4,7 @@ export default function TermsPage() {
     <div className="flex flex-col gap-20 py-40 px-60 ">
       <div className="flex flex-col gap-2">
         <h1 className="text-6xl font-bold">Terms & Conditions</h1>
-        <p className="text-sm text-gray-500">Last updated: 2024-02-20</p>
+        <p className="text-sm text-gray-500">Last updated: 8th October 2024</p>
       </div>
       <div className="flex flex-col gap-10">
         <p>Welcome to ImagineBox! These Terms of Service (“Terms”) govern your access to and use of our web client for image generation models (the “Service”). By accessing or using the Service, you agree to these Terms. If you do not agree, please do not use the Service.</p>
