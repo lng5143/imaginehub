@@ -59,3 +59,9 @@ export const SIUltraFormSchema = z.object({
     sd_negativePrompt: z.string().optional(),
     prompt: z.string().min(1, { message: "Prompt is required" }),
 })
+
+export const EmailFormSchema = z.object({
+    email: z.string().email({
+        message: 'Email is required'
+    })
+})
