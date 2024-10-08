@@ -1,18 +1,27 @@
 export const BENEFITS = [
     {
-        "title": "Choose your provider",
-        "description": "Use any image generation provider you want.",
-        "image": ""
+        "title": "Choose your own provider",
+        "description": "Use any image generation provider (OpenAI, Stability AI, etc.) you want.",
     },
     {
-        "title": "",
-        "description": "No need to pay monthly subscription. Bring your own API key and pay only for what you use.",
-        "image": ""
+        "title": "Pay once, use forever",
+        "description": "No need to pay monthly subscription. You only pay once for the lifetime access, including future updates.",
     },
     {
-        "title": "",
+        "title": "Safe & secure keys",
         "description": "Complete control over your API keys. We will NOT store your API keys.",
-        "image": ""
+    },
+    {
+        "title": "Control over your API costs",
+        "description": "You have full control over your API costs. Access the dashboard of model providers to manage your costs.",
+    },
+    {
+        "title": "Simple interface",
+        "description": "Intuitive and simple interface to start generating images as fast as possible.",
+    },
+    {
+        "title": "Unlimited storage",
+        "description": "We store generated images for better user experience. We currently do not have plan to charge for storage.",
     },
 ]
 
@@ -55,16 +64,13 @@ export const HOW_IT_WORKS = [
     {
         "title": "Get API Key",
         "description": "Create an account on your preferred image generation provider and get your API key.",
-        "image": "/steps/step-1.png"
     },
     {
         "title": "Save API key",
         "description": "Save your API key on ImagineBox. Your API key is saved on the browser only and will NOT be saved to our servers.",
-        "image": "/steps/step-2.png"
     },
     {
         "title": "Start generating",
         "description": "Start generating images with your model of choice.",
-        "image": "/steps/step-3.png"
     }
 ]

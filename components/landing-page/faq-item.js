@@ -13,7 +13,7 @@ export default function FaqItem({ question, answer }) {
   return (
     <div
       className={cn(
-        "m-1.5 cursor-pointer rounded-md hover:bg-amber-500 hover:text-black",
+        "m-1.5 cursor-pointer rounded-md hover:bg-amber-500 hover:text-black hover:scale-105 transition-all duration-300",
         isOpen ? "bg-indigo-950 text-white shadow-lg" : "bg-white text-black"
       )}
       onClick={toggleAnswer}
