@@ -1,9 +1,11 @@
+import { TRIAL_IMAGE_COUNT } from "../const/imagine-box-consts";
+
 export const PRICING_PLANS = {
     free: {
         title: "Free",
         price: null,
         features: [
-            "10 trials generation",
+            `${TRIAL_IMAGE_COUNT} trials generation`,
             "Limited access to models",
             "30 days storage"
         ]
