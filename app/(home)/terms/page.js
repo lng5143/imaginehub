@@ -1,8 +1,8 @@
 
 export default function TermsPage() {
   return (
-    <div className="flex flex-col gap-20 py-40 items-center px-60 ">
-      <div className="flex flex-col gap-2 items-center">
+    <div className="flex flex-col gap-20 py-40 px-60 ">
+      <div className="flex flex-col gap-2">
         <h1 className="text-6xl font-bold">Terms & Conditions</h1>
         <p className="text-sm text-gray-500">Last updated: 2024-02-20</p>
       </div>
@@ -21,14 +21,13 @@ export default function TermsPage() {
          </div>
          <div className="flex flex-col gap-1">
             <h3 className="text-xl font-bold">1.4 Prohibited Activities</h3>
-            <p>You agree not to: 
-              <ul className="list-disc pl-4">
-                <li>Use the Service for any unlawful purpose.</li>
-                <li>Violate the intellectual property rights of others.</li>
-                <li>Generate content that is harmful, abusive, harassing, or defamatory.</li>
-                <li>Attempt to gain unauthorized access to the Service or any systems or networks connected to it.</li>
-              </ul>
-            </p>
+            <p>You agree not to:</p>
+            <ul className="list-disc pl-4">
+              <li>Use the Service for any unlawful purpose.</li>
+              <li>Violate the intellectual property rights of others.</li>
+              <li>Generate content that is harmful, abusive, harassing, or defamatory.</li>
+              <li>Attempt to gain unauthorized access to the Service or any systems or networks connected to it.</li>
+            </ul>
          </div>
         </div>
       </div>

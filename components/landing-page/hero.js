@@ -1,3 +1,5 @@
+"use client"
+
 import CTAButton from "./cta-button";
 
 export default function HeroSection() {
