@@ -3,10 +3,9 @@
 import { prisma } from "@/server/lib/prisma";
 import { auth } from "@/auth";
 import { generateStabilityImages } from "@/lib/stability";
-import { uploadFileAndGetUrl } from "../lib/supabase";
-import { IMAGE_BUCKET_NAME } from "@/const/imagine-box-consts";
 import { PAGE_SIZE } from "@/const/imagine-box-consts";
 import { updateUserCredits } from "./users";
+import { uploadFileToS3AndGetUrl } from "../lib/aws";
 
 export const insertInitialGeneration = async (data) => {
     console.log(data);
@@ -47,7 +46,6 @@ export const updateImageGeneration = async (id, provider, data, userId) => {
 
 const insertImages = async (genId, provider, data) => {
     if (provider === "openai") {
-        let count = 1;
         let imageUrls = [];
         for (const item of data) {
             const response = await fetch(item.url);
@@ -55,12 +53,16 @@ const insertImages = async (genId, provider, data) => {
             if (!response.ok) 
                 return { error: "Failed to fetch image"}
 
-            const imageBlob = await response.blob();
-            console.log(imageBlob);
+            const imageBuffer = await response.arrayBuffer();
+            console.log(imageBuffer);
 
-            const url = await uploadFileAndGetUrl(IMAGE_BUCKET_NAME, `${genId}/${count}`, imageBlob);
-            imageUrls.push(url);
-            count++;
+            const urlRes = await uploadFileToS3AndGetUrl(process.env.AWS_S3_BUCKET, genId, imageBuffer);
+
+            console.log(urlRes);
+            if (urlRes.error)
+                continue;
+
+            imageUrls.push(urlRes.data);
         }
 
         console.log("done upload")
@@ -76,15 +78,18 @@ const insertImages = async (genId, provider, data) => {
     }
 
     if (provider === "stability") {
-        let count = 1;
         let imageUrls = [];
 
         const images = data.values();
 
         for (const item of images) {
-            const url = await uploadFileAndGetUrl(IMAGE_BUCKET_NAME, `${genId}/${count}`, item);
-            imageUrls.push(url);
-            count++;
+            const urlRes = await uploadFileToS3AndGetUrl(process.env.AWS_S3_BUCKET, genId, item);
+
+            console.log(urlRes);
+            if (urlRes.error)
+                continue;
+
+            imageUrls.push(urlRes.data);
         }
 
         const res = await prisma.image.createMany({

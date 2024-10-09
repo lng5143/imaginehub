@@ -5,7 +5,7 @@ const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-export const uploadFileAndGetUrl = async (bucketName, path, file) => {
+export const uploadFileToSupabaseAndGetUrl = async (bucketName, path, file) => {
     const { data, error } = await supabase.storage
         .from(bucketName)
         .upload(path, file, {
