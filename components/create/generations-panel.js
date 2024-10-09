@@ -61,7 +61,7 @@ export default function GenerationsPanel({}) {
   }
   
   return (
-    <div className="flex flex-col gap-10 h-full">
+    <div className="flex flex-col gap-10 h-full p-2">
       <div 
         style={{ display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: "10px" }} 
         ref={containerRef} 

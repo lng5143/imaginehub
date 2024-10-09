@@ -6,7 +6,7 @@ export default function PrivacyPage() {
         <p className="text-sm text-gray-500">Last updated: 8th October 2024</p>
       </div>
       <div className="flex flex-col gap-10">
-        <p>ImagineBox ("we," "us," or "our") respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, and protect your information when you use the web client for image generation models (the “Service”). By using the Service, you agree to the collection and use of your information in accordance with this Privacy Policy.</p>
+        <p>ImagineBox (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, and protect your information when you use the web client for image generation models (the &quot;Service&quot;). By using the Service, you agree to the collection and use of your information in accordance with this Privacy Policy.</p>
         <div className="flex flex-col gap-2">
           <h2 className="text-2xl font-bold">1. Information We Do Not Collect</h2>
           <p>You are required to enter your API keys provided by image model providers (eg. OpenAI, Stability AI, etc) to use the Service. However, your API keys will only be stored locally on your browser. We will not have access to your API keys under any circumstances</p>
@@ -21,7 +21,7 @@ export default function PrivacyPage() {
             <h3 className="text-xl font-bold">2.2 Automatically Collected Information</h3>
             <p>We may collect certain information automatically when you use the Service, including:</p>
             <ul className="list-disc pl-4">
-              <li>Device Information: Your device’s IP address, browser type, and operating system.</li>
+              <li>Device Information: Your device&apos;s IP address, browser type, and operating system.</li>
               <li>Usage Data: Information about your interactions with the Service, such as the features you use and the time spent on the platform.</li>
             </ul>
           </div>

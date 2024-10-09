@@ -26,6 +26,7 @@ export default function CreatePage() {
             <ResizablePanel
               minSize={30}
               className="bg-indigo-100"
+              style={{ boxShadow: '-4px 0 6px 1px rgba(0, 0, 0, 0.2)' }}
             >
               <GenerationDetails />
             </ResizablePanel>
