@@ -7,6 +7,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'zgukhjdutmmrcxpattxr.supabase.co',
       },
+      {
+        protocol: 'https',
+        hostname: 'ib-generated-images.s3.eu-central-1.amazonaws.com',
+      },
     ],
   },
 };

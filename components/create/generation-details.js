@@ -14,6 +14,7 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useQuery } from "@tanstack/react-query";
 import { getGenerationDetails } from "@/server/actions/generations";
 import { Skeleton } from "../ui/skeleton";
+import Image from "next/image";
 
 export default function GenerationDetails({ }) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -48,12 +49,16 @@ export default function GenerationDetails({ }) {
         className="mb-auto overflow-y-auto p-5 flex flex-col gap-2 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-800" 
         ref={containerRef}>
         {!isPending && response?.data?.images.map((image, index) => (
-          <img 
+          <Image 
             key={index} 
             src={image.url} 
             alt={response?.data?.prompt} 
             onClick={() => handleDialogOpen(index)}
             className="rounded-md hover:cursor-pointer hover:scale-105 transition-all duration-300 w-full shadow-lg"
+            width={1000}
+            height={1000}
+            layout="responsive"
+            priority
           />
         ))}
         {isPending && <Skeleton className="aspect-square w-full" />}
@@ -119,11 +124,15 @@ function CarouselWrapper({ selectedIndex, images }) {
       <div ref={emblaRef} className="overflow-hidden">
         <div className="flex">
           {images.map((image, index) => (
-            <div className="min-w-0" style={{ flex: '0 0 100%' }}>
-              <img 
+            <div key={index} className="min-w-0" style={{ flex: '0 0 100%' }}>
+              <Image 
                 src={image.url} 
                 alt={image.url} 
                 className="w-full h-full rounded-md" 
+                width={1000}
+                height={1000}
+                layout="responsive"
+                priority
               />
             </div>
           ))}
@@ -133,7 +142,7 @@ function CarouselWrapper({ selectedIndex, images }) {
         <Button 
           variant="ghost"
           onClick={scrollPrev} 
-          className="absolute top-1/2 -left-20 transform -translate-y-1/2 text-gray-200 hover:text-gray-800"
+          className="absolute top-1/2 -left-20 transform -translate-y-1/2 text-white hover:text-black hover:bg-amber-500"
         >
           <CircleChevronLeft className="size-4" />
         </Button>
@@ -142,7 +151,7 @@ function CarouselWrapper({ selectedIndex, images }) {
         <Button 
           variant="ghost"
           onClick={scrollNext} 
-          className="absolute top-1/2 -right-20 transform -translate-y-1/2 text-gray-200 hover:text-gray-800"
+          className="absolute top-1/2 -right-20 transform -translate-y-1/2 text-white hover:text-black hover:bg-amber-500"
         >
           <CircleChevronRight className="size-4" />
         </Button>

@@ -1,7 +1,7 @@
 "use client"
 
 import CTAButton from "./cta-button";
-
+import Image from "next/image";
 export default function HeroSection() {
     return (
         <div className="bg-[url('/hero-bg.jpg')] flex items-center bg-cover bg-center bg-no-repeat w-full">
@@ -13,7 +13,10 @@ export default function HeroSection() {
                 <CTAButton />
             </div>
             <div className="pr-20 pl-8 py-40 basis-2/3">
-                <img src="/hero-image.png" alt="hero-image" 
+                <Image src="/hero-image.png" alt="hero-image" 
+                    width={1000}
+                    height={1000}
+                    priority
                     className="w-full rounded-lg shadow-xl hover:scale-105 transition-all duration-300" />
             </div>
         </div>

@@ -18,7 +18,7 @@ export default function Modal({children, onClose}) {
         return () => {
             document.removeEventListener('click', handleClick);
         }
-    }, []);
+    }, [onClose]);
 
     return (
         <dialog ref={dialog} className="h-4/6 w-4/6">
