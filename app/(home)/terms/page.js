@@ -16,7 +16,7 @@ export default function TermsPage() {
          <div className="flex flex-col gap-1">
             <h3 className="text-xl font-bold">1.3 Use of APIs</h3>
             <p>The Service allows you to interface with image generation models (such as DALL-E, Stable Diffusion, etc.) using your own API keys. You agree to comply with the terms and conditions of the APIs you use and are responsible for maintaining your own API keys. </p>
-            <p>Your API keys will only be stored locally on your browser, and will not be saved to our server under any circumstances. </p>
+            <p>Your API keys will only be stored locally on your browser, and will not be saved to our server under any circumstances.</p>
          </div>
          <div className="flex flex-col gap-1">
             <h3 className="text-xl font-bold">1.4 Prohibited Activities</h3>
@@ -77,7 +77,7 @@ export default function TermsPage() {
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold">6. Indemnification</h2>
-        <p>To the fullest extent permitted by law, we shall not be liable for any indirect, incidental, special, or consequential damages, including loss of profits, revenue, data, or use, arising out of your use of the Service.</p>
+        <p>You agree to indemnify and hold us harmless from any claims, damages, liabilities, costs, or expenses arising from your use of the Service, violation of these Terms, or infringement of any third-party rights.</p>
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold">7. Termination</h2>
@@ -89,7 +89,7 @@ export default function TermsPage() {
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold">9. Governing Law</h2>
-        <p>These Terms are governed by and construed in accordance with the laws of [Your Jurisdiction], without regard to its conflict of laws principles.</p>
+        <p>These Terms are governed by and construed in accordance with the laws of Vietnam, without regard to its conflict of laws principles.</p>
       </div>
     </div>
   )

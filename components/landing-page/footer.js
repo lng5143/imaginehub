@@ -7,7 +7,7 @@ export default function FooterSection() {
     return (
         <div className="flex flex-col px-32 w-full">
             <div className="flex gap-20 w-full py-10">
-                <div className="w-40">
+                <div className="w-50">
                     <Image src="/logo/logo-dark-text.png" alt="logo" width={0} height={0} layout="responsive" />
                     {/* <div className="flex gap-5">
                         <Image src="/instagram.svg" alt="instagram" width={20} height={20} />
