@@ -80,10 +80,12 @@ const insertImages = async (genId, provider, data) => {
     if (provider === "stability") {
         let imageUrls = [];
 
-        const images = data.values();
+        const imageBlobs = data.values();
 
-        for (const item of images) {
-            const urlRes = await uploadFileToS3AndGetUrl(process.env.AWS_S3_BUCKET, genId, item);
+        for (const item of imageBlobs) {
+            const itemBuffer = await item.arrayBuffer();    
+            console.log(itemBuffer);
+            const urlRes = await uploadFileToS3AndGetUrl(process.env.AWS_S3_BUCKET, genId, itemBuffer);
 
             console.log(urlRes);
             if (urlRes.error)
