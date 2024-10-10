@@ -10,9 +10,10 @@ export default function NavigationBar() {
 
   return (
     <div className="flex py-2 px-4 items-center bg-indigo-950 text-white">
-      <Link href="/create" className="flex-grow items-center w-20">
+      <Link href="/create" className=" items-center w-20">
         <Image src="/logo/logo-white.png" alt="logo" className="w-10" width={40} height={40} />
       </Link>
+      <div className="flex-grow" />
       <div className="flex gap-10 items-center ">
         {!user && <Login />}
         {user && 
