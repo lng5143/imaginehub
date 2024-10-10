@@ -1,15 +1,21 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
+import { toast } from "sonner";
 
-export default function ConfirmDialog({ open, setOpen, title, message, confirmFn }) {
-
+export default function ConfirmDialog({ open, setOpen, title, message, confirmFn, optimisticUpdateFn }) {
     const [isPending, startTransition] = useTransition();
 
     const handleConfirm = () => {
         startTransition(async () => {
-            await confirmFn();
-            setOpen(false);
+            const res = await confirmFn();
+            if (res.success) {
+                toast.success(res.message);
+                optimisticUpdateFn();
+                setOpen(false);
+            } else {
+                toast.error(res.message);
+            }
         })
     }
 

@@ -12,18 +12,17 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteGeneration, getGenerationDetails } from "@/server/actions/generations";
 import { Skeleton } from "../ui/skeleton";
 import Image from "next/image";
-import ConfirmDialog from "../confirm-dialog";
-import { toast } from "sonner";
 import { useCurrentPage } from "@/store/use-current-page";
+import ConfirmDialog from "../confirm-dialog";
 
 export default function GenerationDetails({ }) {
+  const queryClient = useQueryClient();
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isCarouselDialogOpen, setIsCarouselDialogOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
   const [currentPage, _setCurrentPage] = useCurrentPage();
-  const queryClient = useQueryClient();
 
   const { data: response, isPending: isPendingDetails} = useQuery({
     queryKey: ["generation", currentGenerationId],
@@ -41,16 +40,21 @@ export default function GenerationDetails({ }) {
     setIsCarouselDialogOpen(true);
   }
 
-  const handleDelete = async () => {
-    const res = await deleteGeneration(currentGenerationId);
+  const handleDeleteOptimisticUpdate = async () => {
+    queryClient.setQueryData(["generations", currentPage], (old) => {
+      if (!old) return;
 
-    if (res.success) {
-      toast.success(res.message);
-    } else {
-      toast.error(res.message);
-    }
+      const deletedItem = old.data.find(item => item.id === currentGenerationId);
+      if (deletedItem) {
+        const newData = old.data.filter(item => item.id !== deletedItem.id);
+        return { ...old, data: newData };
+      }
+
+      return old;
+    });
 
     queryClient.invalidateQueries({ queryKey: ["generations", currentPage] });
+
     handleClose();
   }
 
@@ -109,10 +113,10 @@ export default function GenerationDetails({ }) {
         open={isDeleteConfirmOpen}
         setOpen={setIsDeleteConfirmOpen}
         title="You are about to delete this generation"
-        message="This action cannot be undone."
-        confirmFn={handleDelete}
+        message="This action cannot be undone"
+        confirmFn={() => deleteGeneration(currentGenerationId)}
+        optimisticUpdateFn={handleDeleteOptimisticUpdate}
       />
-
       <Dialog className="p-0 m-0" open={isCarouselDialogOpen} onOpenChange={() => setIsCarouselDialogOpen()}>
         <DialogContent  className="p-0 m-0 border-none bg-transparent">
           <VisuallyHidden>
