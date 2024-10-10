@@ -8,24 +8,11 @@ import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PAGE_SIZE } from "@/const/imagine-box-consts";
 import { cn } from "@/lib/utils";
-
-const countCols = (width) => {
-  if (width > 1200) {
-    return 8;
-  } else if (width > 800) {
-    return 6;
-  } else if (width > 400) {
-    return 4;
-  } else {
-    return 2;
-  }
-}
-
+import { useCurrentPage } from "@/store/use-current-page";
 export default function GenerationsPanel({}) {
   console.log("GenerationsPanel");
   const containerRef = useRef(null);
-  // const [width, setWidth] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useCurrentPage();
   const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
 
   const { data: response, isError, isPending } = useQuery({
@@ -35,21 +22,6 @@ export default function GenerationsPanel({}) {
     },
     keepPreviousData: true
   })
-
-  // let cols = countCols(width);
-
-  // useEffect(() => {
-  //   const updateWidth = () => {
-  //     if (containerRef.current) {
-  //       setWidth(containerRef.current.offsetWidth);
-  //     }
-  //   }
-
-  //   const resizeObserver = new ResizeObserver(updateWidth);
-  //   resizeObserver.observe(containerRef.current);
-
-  //   return () => resizeObserver.disconnect();
-  // }, []);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);

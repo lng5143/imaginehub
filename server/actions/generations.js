@@ -196,3 +196,14 @@ export const generateImages = async ( data ) => {
         })
     }
 }
+
+export const deleteGeneration = async (generationId) => {
+    const res = await prisma.imageGeneration.delete({
+        where: { id: generationId }
+    })
+
+    if (res.error)
+        return { success: false, message: "Failed to delete image generation!" }
+
+    return { success: true, message: "Image generation deleted successfully!" }
+}
