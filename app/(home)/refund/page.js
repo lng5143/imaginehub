@@ -1,6 +1,6 @@
 export default function RefundPage() {
   return (
-    <div className="flex flex-col gap-20 py-40 px-60 ">
+    <div className="flex flex-col gap-20 py-40 px-10 md:px-20 lg:px-60 ">
       <div className="flex flex-col gap-2">
         <h1 className="text-6xl font-bold">Refund Policy</h1>
         <p className="text-sm text-gray-500">Last updated: 8th October 2024</p>
