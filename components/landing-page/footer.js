@@ -5,9 +5,9 @@ import Image from "next/image";
 
 export default function FooterSection() {
     return (
-        <div className="flex flex-col px-32 w-full">
+        <div className="flex flex-col px-10 md:px-32 w-full">
             <div className="flex gap-20 w-full py-10">
-                <div className="w-50">
+                <div className="basis-1/3">
                     <Image src="/logo/logo-dark-text.png" alt="logo" width={0} height={0} layout="responsive" />
                     {/* <div className="flex gap-5">
                         <Image src="/instagram.svg" alt="instagram" width={20} height={20} />
@@ -16,7 +16,7 @@ export default function FooterSection() {
                     </div> */}
                     <p className="text-sm">© 2024 All rights reserved.</p>
                 </div>
-                <div className="flex-grow"></div>
+                <div className="hidden md:block flex-grow"></div>
                 <div className="flex gap-10">
                     <div className="flex flex-col gap-2">
                         <h3 className="font-bold">Product</h3>
