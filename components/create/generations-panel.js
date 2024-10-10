@@ -7,6 +7,7 @@ import { getGenerations } from "@/server/actions/generations";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PAGE_SIZE } from "@/const/imagine-box-consts";
+import { cn } from "@/lib/utils";
 
 const countCols = (width) => {
   if (width > 1200) {
@@ -21,10 +22,11 @@ const countCols = (width) => {
 }
 
 export default function GenerationsPanel({}) {
+  console.log("GenerationsPanel");
   const containerRef = useRef(null);
-  const [width, setWidth] = useState(0);
+  // const [width, setWidth] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [_currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
+  const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
 
   const { data: response, isError, isPending } = useQuery({
     queryKey: ["generations", currentPage],
@@ -34,20 +36,20 @@ export default function GenerationsPanel({}) {
     keepPreviousData: true
   })
 
-  let cols = countCols(width);
+  // let cols = countCols(width);
 
-  useEffect(() => {
-    const updateWidth = () => {
-      if (containerRef.current) {
-        setWidth(containerRef.current.offsetWidth);
-      }
-    }
+  // useEffect(() => {
+  //   const updateWidth = () => {
+  //     if (containerRef.current) {
+  //       setWidth(containerRef.current.offsetWidth);
+  //     }
+  //   }
 
-    const resizeObserver = new ResizeObserver(updateWidth);
-    resizeObserver.observe(containerRef.current);
+  //   const resizeObserver = new ResizeObserver(updateWidth);
+  //   resizeObserver.observe(containerRef.current);
 
-    return () => resizeObserver.disconnect();
-  }, []);
+  //   return () => resizeObserver.disconnect();
+  // }, []);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -61,11 +63,10 @@ export default function GenerationsPanel({}) {
   }
   
   return (
-    <div className="flex flex-col gap-10 h-full p-2">
+    <div className={cn("flex flex-col gap-10 h-full p-2", currentGenerationId ? "basis-2/3" : "basis-full")}>
       <div 
-        style={{ display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: "10px" }} 
         ref={containerRef} 
-        className="mb-auto p-5 overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-800"
+        className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6 mb-auto p-5 overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-800"
       >
         {!isPending && response?.data?.map(generation => (
           <Generation key={generation.id} data={generation} onClick={() => handleSelectGeneration(generation)}/>

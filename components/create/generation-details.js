@@ -27,8 +27,6 @@ export default function GenerationDetails({ }) {
     queryFn: () => getGenerationDetails(currentGenerationId)
   })
 
-  console.log(response)
-
   const containerRef = useRef(null);
 
   const handleClose = () => {
@@ -41,7 +39,7 @@ export default function GenerationDetails({ }) {
   }
 
   return (
-    <div className="relative flex flex-col h-full">
+    <div className="relative flex flex-col h-full basis-1/3">
       <div className="h-6 flex items-center justify-end p-1 absolute top-1 right-1">
         <CircleX className="size-4 text-black hover:cursor-pointer" onClick={handleClose} />
       </div>
