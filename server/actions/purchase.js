@@ -26,9 +26,9 @@ export const createLicenseCheckout = async (userId) => {
         }
     }
 
-    const checkoutData = await createCheckout(checkoutPayload);
-    if (!checkoutData.success)
-        return checkoutData;
+    const checkout = await createCheckout(checkoutPayload);
+    if (!checkout.success)
+        return checkout;
 
-    return { success: true, data: { url: checkoutData?.data?.attributes?.url }}
+    return { success: true, data: { url: checkout?.data?.attributes?.url }}
 }
