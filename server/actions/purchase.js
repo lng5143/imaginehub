@@ -2,6 +2,7 @@
 
 import { createOrder } from "../lib/order";
 import { createCheckout } from "../lib/lemon-squeezy";
+import { PRIMARY_COLOR_HEX } from "@/const/imagine-box-consts";
 const price = 19.97;
 
 export const createLicenseCheckout = async (userId) => {
@@ -9,7 +10,16 @@ export const createLicenseCheckout = async (userId) => {
 
     const checkoutPayload = {
         type: 'checkout',
-        attributes: {},
+        attributes: {
+            checkout_options: {
+                button_color: PRIMARY_COLOR_HEX
+            },
+            checkout_data: {
+                custom: {
+                    user_id: userId
+                }
+            }
+        },
         relationships: {
             store: {
                 data: {
