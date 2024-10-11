@@ -3,7 +3,6 @@ import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { Toaster } from "sonner";
-import HeroNavBar from "./_component/hero-nav-bar";
 import Script from "next/script";
 
 const jetbrainsMono = JetBrains_Mono({
