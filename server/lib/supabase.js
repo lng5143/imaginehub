@@ -1,8 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
 );
 
 export const uploadFileToSupabaseAndGetUrl = async (bucketName, path, file) => {
@@ -15,7 +15,7 @@ export const uploadFileToSupabaseAndGetUrl = async (bucketName, path, file) => {
     if (error)
         return { error: error.message }
 
-    return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${data.path}`
+    return `${process.env.SUPABASE_URL}/storage/v1/object/public/${bucketName}/${data.path}`
 }
 
 export default supabase;
