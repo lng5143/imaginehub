@@ -36,6 +36,21 @@ enum OrderStatus {
   FAILED
 }
 
+enum WebhookEventType {
+  ORDER_CREATED
+  ORDER_REFUNDED
+}
+
+enum WebhookProvider {
+  LEMON_SQUEEZY
+}
+
+enum WebhookStatus {
+  PENDING
+  PROCESSED
+  FAILED
+}
+
 model User {
   id            String          @id @default(cuid())
   name          String?
@@ -126,4 +141,15 @@ model Order {
   amount Decimal
   paymentMethod String
   currency String @default("USD")
+}
+
+model Webhook {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  provider WebhookProvider
+  eventType WebhookEventType
+  payload String
+  status WebhookStatus @default(PENDING)
+  retries Int @default(0)
 }
