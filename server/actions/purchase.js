@@ -16,7 +16,8 @@ export const createLicenseCheckout = async (userId) => {
             },
             checkout_data: {
                 custom: {
-                    user_id: userId
+                    user_id: userId,
+                    order_id: order?.id
                 }
             }
         },
