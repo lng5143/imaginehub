@@ -36,11 +36,6 @@ enum OrderStatus {
   FAILED
 }
 
-enum WebhookEventType {
-  ORDER_CREATED
-  ORDER_REFUNDED
-}
-
 enum WebhookProvider {
   LEMON_SQUEEZY
 }
@@ -148,7 +143,7 @@ model Webhook {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   provider WebhookProvider
-  eventType WebhookEventType
+  eventType String
   payload String
   status WebhookStatus @default(PENDING)
   retries Int @default(0)
