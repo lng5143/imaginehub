@@ -27,3 +27,11 @@ const paymentWorker = new Worker('payment-webhooks', async (job) => {
     connection: connection,
     concurrency: 5
 });
+
+paymentWorker.on('completed', (jobId) => {
+    console.log(`Payment webhook ${jobId} completed`);
+});
+
+paymentWorker.on('failed', (jobId, error) => {
+    console.error(`Payment webhook ${jobId} failed: ${error.message}`);
+});
