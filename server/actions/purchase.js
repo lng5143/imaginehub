@@ -6,7 +6,7 @@ import { PRIMARY_COLOR_HEX } from "@/const/imagine-box-consts";
 const price = 19.97;
 
 export const createLicenseCheckout = async (userId) => {
-    const order = await createOrder(userId, price);
+    const orderRes = await createOrder(userId, price);
 
     const checkoutPayload = {
         data: {
@@ -18,7 +18,7 @@ export const createLicenseCheckout = async (userId) => {
                 checkout_data: {
                     custom: {
                         user_id: userId,
-                        order_id: order?.id
+                        order_id: orderRes?.data?.id
                     }
                 }
             },
@@ -39,9 +39,9 @@ export const createLicenseCheckout = async (userId) => {
         }
     }
 
-    const checkout = await createCheckout(checkoutPayload);
-    if (!checkout.success)
-        return checkout;
+    const checkoutRes = await createCheckout(checkoutPayload);
+    if (!checkoutRes.success)
+        return checkoutRes;
 
-    return { success: true, data: { url: checkout?.data?.attributes?.url }}
+    return { success: true, data: { url: checkoutRes?.data?.url }}
 }
