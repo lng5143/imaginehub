@@ -134,8 +134,8 @@ model Order {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   status OrderStatus @default(PENDING)
   amount Decimal
-  paymentMethod String
-  currency String @default("USD")
+  paymentMethod String?
+  currency String?
 }
 
 model Webhook {
