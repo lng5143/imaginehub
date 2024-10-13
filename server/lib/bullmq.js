@@ -22,7 +22,7 @@ export async function createPaymentWebhooksQueue() {
     return paymentQueue;
 }
 
-async function addPaymentWebhookToQueue(paymentQueue, webhook) {
+export async function addPaymentWebhookToQueue(paymentQueue, webhook) {
     await paymentQueue.add('process-payment-webhook', {
         webhookId: webhook.id,
         payload: webhook.payload,
@@ -31,11 +31,3 @@ async function addPaymentWebhookToQueue(paymentQueue, webhook) {
         priority: 1
     })
 }
-
-paymentWorker.on('completed', (jobId) => {
-    console.log(`Payment webhook ${jobId} completed`);
-});
-
-paymentWorker.on('failed', (jobId, error) => {
-    console.error(`Payment webhook ${jobId} failed: ${error.message}`);
-});

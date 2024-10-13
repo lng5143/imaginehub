@@ -1,9 +1,12 @@
+import { addPaymentWebhookToQueue, createPaymentWebhooksQueue } from '@/server/lib/bullmq'
 import { prisma } from '@/server/lib/prisma'
 import { WebhookProvider, WebhookStatus } from '@prisma/client'
 
 const crypto = require('crypto')
 
-export const POST = async (req) => {
+const paymentQueue = await createPaymentWebhooksQueue();
+
+export const POST = async (req, res) => {
     // validate signature
     const rawBody = await new Response(req.body).text();
     const secret = process.env.LM_SIGNING_SECRET
@@ -15,16 +18,22 @@ export const POST = async (req) => {
         throw new Error('Invalid signature');
     }
 
-    // save to DB 
-    await prisma.webhook.create({
-        data: {
+    // save to DB and add to queue
+    try {
+        const webhook = await prisma.webhook.create({
+            data: {
             eventType: req.headers.get('x-event-name'),
             provider: WebhookProvider.LEMON_SQUEEZY,
             payload: rawBody,
             status: WebhookStatus.PENDING,
             retries: 0,
         }
-    })
+        })
+
+        await addPaymentWebhookToQueue(paymentQueue, webhook);
+    } catch (error) {
+        console.error(error);
+    }
 
     // return 200
     return new Response(null, { status: 200 })
