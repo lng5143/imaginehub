@@ -13,8 +13,11 @@ export const createCheckout = async (payload) => {
 
     const resData = await response.json();
 
-    if (response.errors)
-        return { success: false, errors: response.errors }
+    console.log(resData);
+    if (resData.errors)
+        return { success: false, errors: resData.errors }
 
-    return { success: true, data: resData.data }
+    const url = resData?.data?.attributes?.url;
+    console.log(url);
+    return { success: true, data: { url } }
 }

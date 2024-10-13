@@ -7,6 +7,7 @@ export const createOrder = async (userId, amount) => {
             userId,
             amount,
             status: OrderStatus.PENDING,
+            currency: "USD",
         }
     })
 

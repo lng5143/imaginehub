@@ -19,6 +19,7 @@ export async function markWebhookAsProcessed(webhookId) {
 }
 
 export async function handlePaymentSuccess(payload) {
+    console.log('handling payment success');
     const data = JSON.parse(payload);
     const orderId = data?.meta?.custom_data?.order_id;
     const userId = data?.meta?.custom_data?.user_id;

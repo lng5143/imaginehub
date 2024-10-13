@@ -5,6 +5,7 @@ import ModelsForm from "./models-form";
 import { useState } from "react";
 import CheckoutButton from "./checkout";
 import { IMAGINEBOX_OTP_PRICE_ID } from "@/const/imagine-box-consts";
+import UpgradeButton from "./upgrade-button";
 
 export default function SettingsDialog({ isOpen, setIsOpen }) {
     const [activeTab, setActiveTab] = useState("general");
@@ -29,7 +30,7 @@ export default function SettingsDialog({ isOpen, setIsOpen }) {
                     <div className="py-6">
                         <TabsContent value="general" className="mt-0">
                             <GeneralForm />
-                            <CheckoutButton label="Upgrade" priceId={IMAGINEBOX_OTP_PRICE_ID} />
+                            <UpgradeButton />
                         </TabsContent>
                         <TabsContent value="models" className="mt-0">
                             <ModelsForm />
