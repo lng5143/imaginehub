@@ -1,8 +1,7 @@
 'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { CircleCheckBig, CircleX, Loader, TriangleAlertIcon, TriangleRightIcon } from "lucide-react";
-import Link from "next/link";
+import { CircleCheckBig, CircleX, Loader, TriangleAlertIcon } from "lucide-react";
 import { useState } from "react";
 
 const statuses = {
@@ -63,9 +62,6 @@ export default function UpgradeWait() {
                 <CardContent className="mb-8">
                     {content()}
                 </CardContent>
-                {/* <CardFooter className="flex justify-center">
-                    <Link href="/create" className="text-sm text-blue-500 hover:text-blue-600 underline">Go back to main app</Link>
-                </CardFooter> */}
             </Card>
         </div>
     )
