@@ -12,6 +12,9 @@ export const createLicenseCheckout = async (userId) => {
         data: {
             type: 'checkouts',
             attributes: {
+                product_options: {
+                    redirect_url: `${process.env.HOST_URL}/upgrade-wait`
+                },
                 checkout_options: {
                     button_color: PRIMARY_COLOR_HEX
                 },
