@@ -11,11 +11,11 @@ export async function createPaymentWebhooksQueue() {
             attempts: 5,
             backoff: {
                 type: 'exponential',
-                delay: 30000
+                delay: 2000
             },
             removeOnComplete: true,
             removeOnFail: false,
-            timeout: 30000
+            timeout: 10000
         }
     });
 

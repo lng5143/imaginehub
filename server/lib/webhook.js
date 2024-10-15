@@ -18,13 +18,42 @@ export async function markWebhookAsProcessed(webhookId) {
     })
 }
 
-export async function handlePaymentSuccess(payload) {
-    console.log('handling payment success');
-    const data = JSON.parse(payload);
-    const orderId = data?.meta?.custom_data?.order_id;
-    const userId = data?.meta?.custom_data?.user_id;
+export async function markWebhookAsProcessing(webhookId) {
+    await prisma.webhook.update({
+        where: { id: webhookId },
+        data: { status: WebhookStatus.PROCESSING }
+    })
+}
 
-    console.log(data);
+export async function handleWebhookFailure(webhookId, orderId) {
+    const webhook = await prisma.webhook.findUnique({
+        where: { id: webhookId }
+    })
+
+    if (!webhook) {
+        throw new Error('Webhook not found');
+    }
+
+    if (webhook.retries >= 4) {
+        await prisma.webhook.update({
+            where: { id: webhookId },
+            data: { status: WebhookStatus.FAILED }
+        })
+        await prisma.order.update({
+            where: { id: orderId },
+            data: { status: OrderStatus.FAILED }
+        })
+    } else {
+        await prisma.webhook.update({
+            where: { id: webhookId },
+            data: { retries: webhook.retries + 1 }
+        })
+
+    }
+}
+
+export async function handlePaymentSuccess(userId, orderId) {
+    console.log('handling payment success');
 
     // update order status 
     await prisma.order.update({
