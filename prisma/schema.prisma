@@ -42,6 +42,7 @@ enum WebhookProvider {
 
 enum WebhookStatus {
   PENDING
+  PROCESSING
   PROCESSED
   FAILED
 }
