@@ -3,7 +3,7 @@
 import { createOrder } from "../lib/order";
 import { createCheckout } from "../lib/lemon-squeezy";
 import { PRIMARY_COLOR_HEX } from "@/const/imagine-box-consts";
-import prisma from "@/lib/prisma";
+import { prisma } from "../lib/prisma";
 import { UserTier } from "@prisma/client";
 
 const price = 19.97;
@@ -30,7 +30,7 @@ export const createLicenseCheckout = async (userId) => {
             type: 'checkouts',
             attributes: {
                 product_options: {
-                    redirect_url: `${process.env.HOST_URL}/upgrade-wait`
+                    redirect_url: `${process.env.HOST_URL}/upgrade-wait?orderId=${orderRes?.data?.id}`
                 },
                 checkout_options: {
                     button_color: PRIMARY_COLOR_HEX

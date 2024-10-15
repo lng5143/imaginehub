@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { CircleCheckBig, CircleX, Loader } from "lucide-react";
 import { useEffect } from "react";
 import { PAYMENT_UPDATES_STATUS } from "@/const/imagine-box-consts";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { usePaymentUpdates } from "@/hooks/use-payment-updates";
 
 const StatusContent = ({ status }) => {
@@ -47,7 +47,11 @@ const StatusContent = ({ status }) => {
 }
 
 export default function UpgradeWait() {
-    const status = usePaymentUpdates();
+    const searchParams = useSearchParams();
+
+    const orderId = searchParams.get('orderId');
+    const status = usePaymentUpdates(orderId);
+    
     const router = useRouter();
 
     useEffect(() => {

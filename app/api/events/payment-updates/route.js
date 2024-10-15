@@ -1,5 +1,6 @@
 import { prisma } from "@/server/lib/prisma";
 import { OrderStatus, UserTier } from "@prisma/client";
+import { PAYMENT_UPDATES_STATUS } from "@/const/imagine-box-consts";
 
 const MAX_DURATION = 2 * 60 * 1000;
 const INTERVAL = 2000;
@@ -45,7 +46,7 @@ export async function GET(req) {
                         lastStatus = order.status;
 
                         if (order.status === OrderStatus.COMPLETED && order.user.tier === UserTier.PAID) {
-                            controller.enqueue(encodeText(`data: ${PAYMENT_UPDATES_STATUS.success}\n\n`));
+                            controller.enqueue(encodeText(`data: {"status": "${PAYMENT_UPDATES_STATUS.success}", "orderId": "${order?.id}"}\n\n`));
                             clearInterval(intervalId);
                             controller.close();
                             return;
@@ -53,7 +54,7 @@ export async function GET(req) {
                     }
 
                     if (Date.now() - startTime > MAX_DURATION) {
-                        controller.enqueue(encodeText(`data: ${PAYMENT_UPDATES_STATUS.timeOut}\n\n`));
+                        controller.enqueue(encodeText(`data: {"status": "${PAYMENT_UPDATES_STATUS.timeOut}", "orderId": "${order?.id}"}\n\n`));
                         clearInterval(intervalId);
                         controller.close();
                         return;
@@ -61,7 +62,7 @@ export async function GET(req) {
 
                 } catch (error) {
                     console.error(error);
-                    controller.enqueue(encodeText(`data: ${PAYMENT_UPDATES_STATUS.failed}\n\n`));
+                    controller.enqueue(encodeText(`data: {"status": "${PAYMENT_UPDATES_STATUS.failed}"}\n\n`));
                     clearInterval(intervalId);
                     controller.close();
                 }
@@ -75,6 +76,8 @@ export async function GET(req) {
             })
         }
     })
+
+    return new Response(stream, { headers });
 }
 
 function encodeText(text) {

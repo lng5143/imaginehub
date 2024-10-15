@@ -9,8 +9,13 @@ export const usePaymentUpdates = (orderId) => {
   
       eventSource.onmessage = (event) => {
         console.log(event);
-        const newStatus = JSON.parse(event.data);
-        setStatus(newStatus);
+        const resData = JSON.parse(event.data);
+
+        if (resData?.status) {
+            setStatus(resData?.status);
+        } else {
+            setStatus(PAYMENT_UPDATES_STATUS.failed);
+        }
       }
   
       return () => eventSource.close();

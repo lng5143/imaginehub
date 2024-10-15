@@ -6,8 +6,9 @@ const crypto = require('crypto')
 
 const paymentQueue = await createPaymentWebhooksQueue();
 
-export const POST = async (req, res) => {
+export const POST = async (req) => {
     // validate signature
+    console.log("webhook", req)
     const rawBody = await new Response(req.body).text();
     const secret = process.env.LM_SIGNING_SECRET
     const hmac = crypto.createHmac('sha256', secret)
@@ -22,12 +23,12 @@ export const POST = async (req, res) => {
     try {
         const webhook = await prisma.webhook.create({
             data: {
-            eventType: req.headers.get('x-event-name'),
-            provider: WebhookProvider.LEMON_SQUEEZY,
-            payload: rawBody,
-            status: WebhookStatus.PENDING,
-            retries: 0,
-        }
+                eventType: req.headers.get('x-event-name'),
+                provider: WebhookProvider.LEMON_SQUEEZY,
+                payload: rawBody,
+                status: WebhookStatus.PENDING,
+                retries: 0,
+            }
         })
 
         await addPaymentWebhookToQueue(paymentQueue, webhook);
