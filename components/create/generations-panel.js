@@ -9,6 +9,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { PAGE_SIZE } from "@/const/imagine-box-consts";
 import { cn } from "@/lib/utils";
 import { useCurrentPage } from "@/store/use-current-page";
+import useCurrentUserId from "@/hooks/use-current-user-id";
+
 export default function GenerationsPanel({}) {
   console.log("GenerationsPanel");
   const containerRef = useRef(null);
@@ -38,7 +40,7 @@ export default function GenerationsPanel({}) {
     <div className={cn("flex flex-col gap-10 h-full p-2", currentGenerationId ? "basis-2/3" : "basis-full")}>
       <div 
         ref={containerRef} 
-        className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6 mb-auto p-5 overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-800"
+        className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6 mb-auto p-5 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-800"
       >
         {!isPending && response?.data?.map(generation => (
           <Generation key={generation.id} data={generation} onClick={() => handleSelectGeneration(generation)}/>

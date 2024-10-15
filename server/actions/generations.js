@@ -106,10 +106,11 @@ const insertImages = async (genId, provider, data) => {
 }
 
 export const getGenerations = async (page) => {
+    console.log("getGenerations", page);
     const session = await auth();
     
     if (!session)
-        throw new Error("Unauthorized");
+        return { success: false, message: "Unauthorized" }
 
     const totalCount = await prisma.imageGeneration.count({
         where: { userId: session.user.id }
