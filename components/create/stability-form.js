@@ -101,10 +101,10 @@ export default function StabilityForm() {
                             <InputLabel label="Aspect Ratio" hint={`Aspect ratio of the image to generate.`} />
                             <FormControl>
                             <Select value={field.value} onValueChange={field.onChange}>
-                                <SelectTrigger>
+                                <SelectTrigger className="bg-white">
                                     <SelectValue placeholder="Select an aspect ratio" />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className="shadow-lg p-2">
                                     {SD_RATIOS.map((ratio) => (
                                         <SelectItem key={ratio} value={ratio}>
                                             {ratio}
@@ -126,7 +126,7 @@ export default function StabilityForm() {
                                 <FormControl>
                                     <Popover open={openStylePresets} onOpenChange={setOpenStylePresets}>
                                         <PopoverTrigger asChild>
-                                            <Button variant="outline" role="combobox" aria-expanded={openStylePresets} className="w-full justify-between">
+                                            <Button variant="outline" role="combobox" aria-expanded={openStylePresets} className="w-full justify-between font-normal">
                                                 {field.value ? field.value : "Select a style preset"}
                                             </Button>
                                         </PopoverTrigger>
@@ -138,6 +138,7 @@ export default function StabilityForm() {
                                                     <CommandGroup>
                                                         {SD_PRESETS.map((preset) => (
                                                             <CommandItem 
+                                                                className="flex items-center"
                                                                 key={preset} 
                                                                 value={preset}
                                                                 onSelect={(currentValue) => {
@@ -145,13 +146,13 @@ export default function StabilityForm() {
                                                                     setOpenStylePresets(false)
                                                                 }}
                                                             >
+                                                                <p className="flex-grow">{preset}</p>
                                                                 <Check
                                                                     className={cn(
                                                                     "mr-2 h-4 w-4",
                                                                     field.value === preset ? "opacity-100" : "opacity-0"
                                                                     )}
                                                                 />
-                                                                {preset}
                                                             </CommandItem>
                                                         ))}
                                                     </CommandGroup>
@@ -171,7 +172,7 @@ export default function StabilityForm() {
                         <FormItem>
                             <InputLabel label="Seed" hint={`A specific value that is used to guide the 'randomness' of the generation: [0 .. 4294967294]`} />
                             <FormControl>
-                                <Input type="number" {...field} onBlur={() => {
+                                <Input className="bg-white" type="number" {...field} onBlur={() => {
                                     if (field.value < 0) {
                                         field.onChange(0);
                                     }

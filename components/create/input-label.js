@@ -5,11 +5,11 @@ import { Info } from "lucide-react";
 export default function InputLabel({ label, hint }) {
     return (
         <FormLabel className="flex justify-between items-center">
-            <p>{label}</p>
+            <p className="">{label}</p>
             {hint && <Hint 
                 text={hint}
                 side="right"
-                align="start"
+                sideOffset={8}
             >
                 <Info className="size-3.5 text-muted-foreground" />
             </Hint>}

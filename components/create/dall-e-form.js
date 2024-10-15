@@ -87,7 +87,7 @@ export default function DallEForm() {
                     control={form.control}
                     name="de_size"
                     render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="">
                             <InputLabel label="Size" hint={`The size of the image to generate. \nDall-E 3 supports 1024x1024, 1024x1792, and 1792x1024. Dall-E 2 only supports 256x256, 512x512, and 1024x1024.`} />
                             <FormControl>
                             <>
@@ -95,8 +95,8 @@ export default function DallEForm() {
                                 <RadioGroup defaultValue={field.value} value={field.value} onValueChange={field.onChange} required>
                                     {DE2_SIZES.map((size, index) => (
                                         <div key={index} className="flex items-center space-x-2">
-                                            <RadioGroupItem value={size} id={`de2-${index + 1}`} />
-                                            <Label htmlFor={`de2-${index + 1}`}>{size.replace('x', ' x ')}</Label>
+                                            <RadioGroupItem className="bg-white border-none" value={size} id={`de2-${index + 1}`} />
+                                            <Label className="font-normal" htmlFor={`de2-${index + 1}`}>{size.replace('x', ' x ')}</Label>
                                         </div>
                                     ))}
                                 </RadioGroup>
@@ -105,8 +105,8 @@ export default function DallEForm() {
                                 <RadioGroup defaultValue="1024x1024" value={field.value} onValueChange={field.onChange} required>
                                     {DE3_SIZES.map((size, index) => (
                                         <div key={index} className="flex items-center space-x-2">
-                                            <RadioGroupItem value={size} id={`de3-${index + 1}`} />
-                                            <Label htmlFor={`de3-${index + 1}`}>{size.replace('x', ' x ')}</Label>
+                                            <RadioGroupItem className="bg-white border-none" value={size} id={`de3-${index + 1}`} />
+                                            <Label className="font-normal" htmlFor={`de3-${index + 1}`}>{size.replace('x', ' x ')}</Label>
                                         </div>
                                     ))}
                                 </RadioGroup>
@@ -167,7 +167,7 @@ export default function DallEForm() {
                                                 field.onChange(1);
                                             }
                                         }}
-                                        className="w-[40px] text-xs text-center"/>
+                                        className="w-[40px] text-xs text-center bg-white"/>
                                 </div>
                             </FormControl>
                             </FormItem>
