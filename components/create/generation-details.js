@@ -59,7 +59,7 @@ export default function GenerationDetails({ }) {
   }
 
   return (
-    <div className="relative flex flex-col h-full basis-1/3">
+    <div className="relative flex flex-col h-full basis-1/3 bg-violet-100 shadow-xl">
       <div className="px-3 py-2 pb-0 flex items-center justify-end">
         <Button 
           variant="outline" 
@@ -80,7 +80,7 @@ export default function GenerationDetails({ }) {
             src={image.url} 
             alt={response?.data?.prompt} 
             onClick={() => handleCarouselDialogOpen(index)}
-            className="rounded-md hover:cursor-pointer hover:scale-105 transition-all duration-300 w-full shadow-lg"
+            className="rounded-md hover:cursor-pointer hover:scale-[1.02] transition-all duration-300 w-full shadow-md"
             width={1000}
             height={1000}
             layout="responsive"

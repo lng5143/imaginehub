@@ -126,12 +126,12 @@ export default function DallEForm() {
                             <FormControl>
                                 <RadioGroup defaultValue="standard" onValueChange={field.onChange} required>
                                     <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="standard" id="standard" />
-                                        <Label htmlFor="standard">Standard</Label>
+                                        <RadioGroupItem className="bg-white border-none" value="standard" id="standard" />
+                                        <Label className="font-normal" htmlFor="standard">Standard</Label>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="hd" id="hd" />
-                                        <Label htmlFor="hd">HD</Label>
+                                        <RadioGroupItem className="bg-white border-none" value="hd" id="hd" />
+                                        <Label className="font-normal" htmlFor="hd">HD</Label>
                                     </div>
                                 </RadioGroup>
                             </FormControl>
