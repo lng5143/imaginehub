@@ -8,8 +8,6 @@ import { updateUserCredits } from "./users";
 import { uploadFileToS3AndGetUrl } from "../lib/aws";
 
 export const insertInitialGeneration = async (data) => {
-    console.log(data);
-
     const response = await prisma.imageGeneration.create({
         data: {
             status: "PROCESSING",
@@ -17,27 +15,16 @@ export const insertInitialGeneration = async (data) => {
         }
     })
 
-    console.log("done initial insert")
-
     return { success: true, data: response }
 }
 
-export const updateImageGeneration = async (id, provider, data, userId) => {
-    const existingGen = await prisma.imageGeneration.findUnique({
-        where: { id: id }
-    })
-
-    if (!existingGen)
-        throw new Error("Image generation not found");
-
-    await insertImages(id, provider, data);
+export const updateImageGeneration = async (genId, provider, data, userId) => {
+    await insertImages(genId, provider, data);
 
     await prisma.imageGeneration.update({
-        where: { id: id },
+        where: { id: genId },
         data: { status: "SUCCESS"}
     })
-
-    console.log("done update")
 
     await updateUserCredits(userId);
 
@@ -45,68 +32,49 @@ export const updateImageGeneration = async (id, provider, data, userId) => {
 }
 
 const insertImages = async (genId, provider, data) => {
+    let imageUrls = [];
+
     if (provider === "openai") {
-        let imageUrls = [];
         for (const item of data) {
             const response = await fetch(item.url);
-
             if (!response.ok) 
-                return { error: "Failed to fetch image"}
+                continue;
 
-            const imageBuffer = await response.arrayBuffer();
-            console.log(imageBuffer);
+            const buffer = await response.arrayBuffer();
 
-            const urlRes = await uploadFileToS3AndGetUrl(process.env.AWS_S3_BUCKET, genId, imageBuffer);
-
-            console.log(urlRes);
-            if (urlRes.error)
+            const urlRes = await uploadFileToS3AndGetUrl(process.env.AWS_S3_BUCKET, genId, buffer);
+            if (!urlRes.success)
                 continue;
 
             imageUrls.push(urlRes.data);
         }
-
-        console.log("done upload")
-
-        const res = await prisma.image.createMany({
-            data: imageUrls.map(url => ({
-                url: url,
-                imageGenerationId: genId
-            }))
-        })
-
-        return { success: true, data: res }
     }
 
     if (provider === "stability") {
-        let imageUrls = [];
-
         const imageBlobs = data.values();
 
         for (const item of imageBlobs) {
-            const itemBuffer = await item.arrayBuffer();    
-            console.log(itemBuffer);
-            const urlRes = await uploadFileToS3AndGetUrl(process.env.AWS_S3_BUCKET, genId, itemBuffer);
+            const buffer = await item.arrayBuffer();
 
-            console.log(urlRes);
-            if (urlRes.error)
+            const urlRes = await uploadFileToS3AndGetUrl(process.env.AWS_S3_BUCKET, genId, buffer);
+            if (!urlRes.success)
                 continue;
 
             imageUrls.push(urlRes.data);
         }
-
-        const res = await prisma.image.createMany({
-            data: imageUrls.map(url => ({
-                url: url,
-                imageGenerationId: genId
-            }))
-        })
-
-        return { success: true, data: res }
     }
+
+    const res = await prisma.image.createMany({
+        data: imageUrls.map(url => ({
+            url: url,
+            imageGenerationId: genId
+        }))
+    })
+
+    return { success: true, data: res }
 }
 
 export const getGenerations = async (page) => {
-    console.log("getGenerations", page);
     const session = await auth();
     
     if (!session)
@@ -143,7 +111,7 @@ export const getGenerationDetails = async (generationId) => {
     const session = await auth();
     
     if (!session)
-        throw new Error("Unauthorized");
+        return { success: false, message: "Unauthorized" }
 
     const generation = await prisma.imageGeneration.findUnique({
         where: { id: generationId }
@@ -160,42 +128,6 @@ const getImages = async (generationId) => {
     })
 
     return { success: true, data: images }
-}
-
-export const generateImages = async ( data ) => {
-    const session = await auth();
-    
-    if (!session)
-        throw new Error("Unauthorized");
-
-    const initialRes = await prisma.imageGeneration.create({
-        status: "PROCESSING",
-        ...data
-    })
-
-    data.id = initialRes.id;
-
-    let genRes;
-
-    switch (data?.provider) {
-        case "stability":
-            genRes = await generateStabilityImages(data);
-            break;
-        case "openai":
-            genRes = await generateDalleImages(data);
-            break;
-        default:
-            genRes = null;
-    }
-
-    if (genRes.success) {
-        await prisma.imageGeneration.update({
-            where: { id: initialRes.id },
-            data: {
-                status: "SUCCESS",
-            }
-        })
-    }
 }
 
 export const deleteGeneration = async (generationId) => {

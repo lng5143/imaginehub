@@ -21,16 +21,14 @@ export const uploadFileToS3AndGetUrl = async (bucketName, genId, file) => {
 
         const res = await s3Client.send(command);
 
-        console.log(res);
-
         if (res.$metadata.httpStatusCode !== 200) {
-            return { error: "Failed to upload file" };
+            return { success: false, message: "Failed to upload file" };
         }
 
         return { data: `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}` };
 
     } catch (error) {
         console.log(error);
-        return { error: error.message };
+        return { success: false, message: error.message };
     }
 }

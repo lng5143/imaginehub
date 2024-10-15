@@ -38,7 +38,7 @@ export default function DallEForm() {
     const form = useForm({
         resolver: resolver,
         defaultValues: {
-            de_size: currentModel.code === "de-3" ? "1024x1024" : "256x256",
+            de_size: "1024x1024",
             de_quality: "standard",
             samples: [1],
             prompt: ""
@@ -64,7 +64,7 @@ export default function DallEForm() {
 
         try {
             setIsInitInsertInProgress(true);
-            const res = await generateImages(currentUser.id, data, queryClient, handleInitInsertComplete, handleUpdateComplete);
+            const res = await generateImages(currentUser.id, data, queryClient, handleInitInsertComplete);
 
             if (!res.success) {
                 toast.error("Failed to generate images");

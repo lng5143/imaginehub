@@ -89,7 +89,7 @@ export default function GenerationDetails({ }) {
         ))}
         {isPendingDetails && <Skeleton className="aspect-square w-full" />}
       </div>
-      <div className="w-full flex items-center bg-indigo-950 text-white py-2 px-4 rounded-t-lg cursor-pointer" onClick={() => setIsDetailsOpen(true)}>
+      <div className="w-full flex items-center bg-indigo-950 text-white py-2 px-4 rounded-t-lg cursor-pointer hover:h-10 transition-all duration-300" onClick={() => setIsDetailsOpen(true)}>
         <p className="flex-grow text-sm">View Details</p>
         <ChevronUp className="size-4" />
       </div>

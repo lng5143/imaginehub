@@ -24,11 +24,11 @@ export const validateGenerateImage = async (userId) => {
     })
 
     if (!user) {
-        return { error: "User not found" }
+        return { success: false, message: "User not found" }
     }
 
     if (user.trialCredits <= 0 && user.tier === UserTier.FREE) {
-        return { error: "You have run out of trial credits" }
+        return { success: false, message: "You have run out of trial credits" }
     }
 
     return { success: true }
