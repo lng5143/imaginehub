@@ -13,6 +13,7 @@ export default function UpgradeWait() {
         const eventSource = new EventSource('/api/events/payment-updates');
 
         eventSource.onmessage = (event) => {
+            console.log(event.data);
             const status = JSON.parse(event.data);
             setStatus(status);
         }
