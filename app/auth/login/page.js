@@ -1,7 +1,7 @@
 "use client"
 
 import CardWrapper from "@/components/auth/card-wrapper";
-import LoginForm from "@/components/auth/login-form";
+import AuthForm from "@/components/auth/login-form";
 import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
@@ -12,7 +12,7 @@ export default function LoginPage() {
     return (
         <div className="flex h-screen p-40">
             <CardWrapper headerLabel="Login">
-                <LoginForm urlError={urlError} />
+                <AuthForm urlError={urlError} />
             </CardWrapper>
         </div>
     )

@@ -1,4 +1,3 @@
-import IBButton from "./ib-button";
 import { saveEmail } from "@/server/actions/emails";
 import { EmailFormSchema } from "@/schemas";
 import { useForm } from "react-hook-form";
@@ -7,6 +6,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useTransition } from "react";
+import { Button } from "./ui/button";
 
 export default function EmailForm() {
     const [isPending, startTransition] = useTransition();
@@ -47,14 +47,14 @@ export default function EmailForm() {
                                     <Input
                                         placeholder="Enter your email"
                                         {...field}
-                                        className="bg-white text-slate-950 text-xs border-2 rounded-md p-2"
+                                        className="bg-white text-black text-xs border-2 rounded-md p-2"
                                         disabled={isPending}
                                     />
                                 </FormControl>
                             </FormItem>
                         )}
                     />
-                    <IBButton variant="light" type="submit" disabled={isPending}>Submit</IBButton>
+                    <Button variant="ibLight" type="submit" disabled={isPending}>Submit</Button>
                 </form>
             </Form>
         </div>

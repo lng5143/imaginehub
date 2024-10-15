@@ -1,18 +1,20 @@
-import IBButton from "../ib-button";
-import LoginForm from "./login-form";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import AuthForm from "./login-form";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { Button } from "../ui/button";
 
 export default function Login() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <IBButton variant="light">Login</IBButton>
+                <Button variant="ibLight">Login</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="flex flex-col gap-6 text-white bg-indigo-950 border-none">
                 <DialogHeader>
-                    <DialogTitle>Login</DialogTitle>
+                    <DialogTitle className="text-2xl">Login</DialogTitle>
+                    <VisuallyHidden><DialogDescription/></VisuallyHidden>
                 </DialogHeader>
-                <LoginForm />
+                <AuthForm />
             </DialogContent>
         </Dialog>
     )

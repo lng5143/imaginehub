@@ -13,12 +13,12 @@ export default function SocialLogin() {
 
     return (
         <div className="flex items-center w-full gap-2">
-            <Button size="lg" className="w-full" variant="outline" onClick={() => onClick('google')}>
+            <Button size="lg" className="w-full hover:scale-[1.02]" variant="ibLight" onClick={() => onClick('google')}>
                 <FcGoogle className="w-5 h-5" />
             </Button>
-            <Button size="lg" className="w-full" variant="outline" onClick={() => onClick('facebook')}>
+            {/* <Button size="lg" className="w-full" variant="outline" onClick={() => onClick('facebook')}>
                 <FaFacebook className="w-5 h-5" />
-            </Button>
+            </Button> */}
         </div>
     )
 }

@@ -1,12 +1,12 @@
 import Link from "next/link";
-import IBButton from "../ib-button";
+import { Button } from "../ui/button";
 
-export default function CTAButton({variant = "dark"}) {
+export default function CTAButton({variant = "ibDark"}) {
     return (
-        <IBButton variant={variant} className="w-60 text-lg font-semibold">
+        <Button variant={variant} className="w-60 text-lg font-semibold">
             <Link href="/create">
                 Get Started
             </Link>
-        </IBButton>
+        </Button>
     )
 }
