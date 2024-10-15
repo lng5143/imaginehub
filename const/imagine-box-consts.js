@@ -52,7 +52,7 @@ export const TRIAL_IMAGE_COUNT = 20;
 export const PRIMARY_COLOR_HEX = '#1e1b4b';
 export const PAYMENT_UPDATES_STATUS = {
     loading: 'loading',
-    firstFail: 'firstFail',
     failed: 'failed',
-    success: 'success'
+    success: 'success',
+    timeOut: 'timeOut'
 }

@@ -1,7 +1,7 @@
 import { prisma } from "@/server/lib/prisma";
 import { OrderStatus, UserTier } from "@prisma/client";
 
-const MAX_DURATION = 5 * 60 * 1000;
+const MAX_DURATION = 2 * 60 * 1000;
 const INTERVAL = 2000;
 
 export async function GET(req) {
@@ -20,7 +20,7 @@ export async function GET(req) {
 
     const stream = new ReadableStream({
         async start(controller) {
-            controller.enqueue(encodeText('data: connected\n\n'));
+            controller.enqueue(encodeText('connected\n\n'));
 
             let lastStatus = null;
             let intervalId;
@@ -45,7 +45,7 @@ export async function GET(req) {
                         lastStatus = order.status;
 
                         if (order.status === OrderStatus.COMPLETED && order.user.tier === UserTier.PAID) {
-                            
+                            controller.enqueue(encodeText(`data: ${PAYMENT_UPDATES_STATUS.success}\n\n`));
                             clearInterval(intervalId);
                             controller.close();
                             return;
@@ -53,7 +53,7 @@ export async function GET(req) {
                     }
 
                     if (Date.now() - startTime > MAX_DURATION) {
-                        controller.enqueue(encodeText(`data: timeout\n\n`));
+                        controller.enqueue(encodeText(`data: ${PAYMENT_UPDATES_STATUS.timeOut}\n\n`));
                         clearInterval(intervalId);
                         controller.close();
                         return;
@@ -61,7 +61,7 @@ export async function GET(req) {
 
                 } catch (error) {
                     console.error(error);
-                    controller.enqueue(encodeText(`data: error\n\n`));
+                    controller.enqueue(encodeText(`data: ${PAYMENT_UPDATES_STATUS.failed}\n\n`));
                     clearInterval(intervalId);
                     controller.close();
                 }
