@@ -54,14 +54,12 @@ export default function StabilityForm() {
         },
     });
 
-    const handleInitInsertComplete = (data) => {
-        console.log("init insert complete", data);
+    const handleInitInsertComplete = () => {
         setIsInitInsertInProgress(false);
         toast.info("Image generation started, please wait...")
     }
 
-    const handleUpdateComplete = (data) => {
-        console.log("update complete", data);
+    const handleFinalUpdateComplete = () => {
         toast.success("Image generation complete!")
     }
 
@@ -73,15 +71,14 @@ export default function StabilityForm() {
 
         try {
             setIsInitInsertInProgress(true);
-            const res = await generateImages(currentUser.id, data, queryClient, handleInitInsertComplete, handleUpdateComplete);
+            const res = await generateImages(currentUser.id, data, queryClient, handleInitInsertComplete, handleFinalUpdateComplete);
 
             if (!res.success) {
-                console.log("error", res.error);
-                toast.error("Failed to generate images");
+                toast.error(res.message);
             }
 
             if (res.success) {
-                handleUpdateComplete(res.data);
+                handleFinalUpdateComplete();
             }
         } catch (error) {
             toast.error("Failed to generate images");

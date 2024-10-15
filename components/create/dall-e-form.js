@@ -45,14 +45,12 @@ export default function DallEForm() {
         }
     });
 
-    const handleInitInsertComplete = (data) => {
-        console.log("init insert complete", data);
+    const handleInitInsertComplete = () => {
         setIsInitInsertInProgress(false);
         toast.info("Image generation started, please wait...")
     }
 
-    const handleUpdateComplete = (data) => {
-        console.log("update complete");
+    const handleFinalUpdateComplete = () => {
         toast.success("Image generation complete!")
     }
 
@@ -64,14 +62,10 @@ export default function DallEForm() {
 
         try {
             setIsInitInsertInProgress(true);
-            const res = await generateImages(currentUser.id, data, queryClient, handleInitInsertComplete);
+            const res = await generateImages(currentUser.id, data, queryClient, handleInitInsertComplete, handleFinalUpdateComplete);
 
             if (!res.success) {
-                toast.error("Failed to generate images");
-            }
-
-            if (res.success) {
-                handleUpdateComplete(res.data);
+                toast.error(res.message);
             }
         } catch (error) {
             toast.error("Failed to generate images");

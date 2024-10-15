@@ -4,7 +4,6 @@ import { PAGE_SIZE } from "@/const/imagine-box-consts";
 export default function PaginationContainer({ currentPage, totalCount, onPageChange}) {
     const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
-    console.log("totalPages", totalPages);
     if (!totalCount || totalCount <= 0 ||totalPages <= 1) return null;
 
     return (

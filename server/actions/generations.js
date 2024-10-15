@@ -2,7 +2,6 @@
 
 import { prisma } from "@/server/lib/prisma";
 import { auth } from "@/auth";
-import { generateStabilityImages } from "@/lib/stability";
 import { PAGE_SIZE } from "@/const/imagine-box-consts";
 import { updateUserCredits } from "./users";
 import { uploadFileToS3AndGetUrl } from "../lib/aws";
