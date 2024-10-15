@@ -20,6 +20,7 @@ export default function CreatePage() {
             {generationId && <GenerationDetails />}
           </>
         )}
+        {!userId && <div className="flex justify-center items-center w-full"><p className="text-2xl">Please login to use the app</p></div>}
       </div>
     </main>
   );

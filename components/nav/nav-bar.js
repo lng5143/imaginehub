@@ -5,8 +5,17 @@ import useCurrentUser from "@/hooks/use-current-user";
 import UserButton from "./user-button";
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+
 export default function NavigationBar() {
   const user = useCurrentUser();
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      setIsLoginOpen(true);
+    }
+  }, [user]);
 
   return (
     <div className="flex py-2 px-4 items-center bg-indigo-950 text-white">
@@ -15,7 +24,7 @@ export default function NavigationBar() {
       </Link>
       <div className="flex-grow" />
       <div className="flex items-center justify-end">
-        {!user && <Login />}
+        {!user && <Login open={isLoginOpen} setOpen={setIsLoginOpen} />}
         {user && 
           <UserButton user={user} />
         }

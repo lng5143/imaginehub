@@ -3,9 +3,9 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Button } from "../ui/button";
 
-export default function Login() {
+export default function Login({open, setOpen}) {
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant="ibLight">Login</Button>
             </DialogTrigger>
