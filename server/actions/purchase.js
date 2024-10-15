@@ -3,9 +3,26 @@
 import { createOrder } from "../lib/order";
 import { createCheckout } from "../lib/lemon-squeezy";
 import { PRIMARY_COLOR_HEX } from "@/const/imagine-box-consts";
+import prisma from "@/lib/prisma";
+import { UserTier } from "@prisma/client";
+
 const price = 19.97;
 
 export const createLicenseCheckout = async (userId) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            id: userId
+        }
+    });
+
+    if (!user) {
+        return { success: false, error: 'User not found' };
+    }
+
+    if (user.tier === UserTier.PAID) {
+        return { success: false, error: 'User already has a license' };
+    }
+
     const orderRes = await createOrder(userId, price);
 
     const checkoutPayload = {
