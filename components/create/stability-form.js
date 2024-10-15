@@ -11,7 +11,7 @@ import { Command, CommandInput, CommandList, CommandItem, CommandEmpty, CommandG
 import { Input } from "../ui/input";
 import { SD3FormSchema, SICoreFormSchema, SIUltraFormSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SD_PRESETS, SD_RATIOS } from "@/const/imagine-box-consts";
+import { HINTS, SD_PRESETS, SD_RATIOS } from "@/const/imagine-box-consts";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useCurrentUser from "@/hooks/use-current-user";
@@ -98,7 +98,7 @@ export default function StabilityForm() {
                     name="sd_aspectRatio"
                     render={({ field }) => (
                         <FormItem>
-                            <InputLabel label="Aspect Ratio" hint={`Aspect ratio of the image to generate.`} />
+                            <InputLabel label="Aspect Ratio" hint={HINTS.SD_RATIOS} />
                             <FormControl>
                             <Select value={field.value} onValueChange={field.onChange}>
                                 <SelectTrigger className="bg-white">
@@ -122,7 +122,7 @@ export default function StabilityForm() {
                         name="sd_stylePreset"
                         render={({ field }) => (
                             <FormItem>
-                                <InputLabel label="Style Preset" hint={`Style preset to use for generation. Only available for Stable Image Core`} />
+                                <InputLabel label="Style Preset" hint={HINTS.SD_PRESETS} />
                                 <FormControl>
                                     <Popover open={openStylePresets} onOpenChange={setOpenStylePresets}>
                                         <PopoverTrigger asChild>
@@ -170,7 +170,7 @@ export default function StabilityForm() {
                     name="sd_seed"
                     render={({ field }) => (
                         <FormItem>
-                            <InputLabel label="Seed" hint={`A specific value that is used to guide the 'randomness' of the generation: [0 .. 4294967294]`} />
+                            <InputLabel label="Seed" hint={HINTS.SD_SEED} />
                             <FormControl>
                                 <Input className="bg-white" type="number" {...field} onBlur={() => {
                                     if (field.value < 0) {
@@ -190,7 +190,7 @@ export default function StabilityForm() {
                     name="negative_prompt"
                     render={({ field }) => (
                         <FormItem>
-                            <InputLabel label="Negative Prompt" hint={`Description of what you want to generate. \nEg. "A photograph of a white Siamese cat"`} />
+                            <InputLabel label="Negative Prompt" hint={HINTS.SD_NEGATIVE_PROMPT} />
                             <FormControl>
                                 <Textarea className="h-16 bg-white" {...field} />
                             </FormControl>
@@ -203,7 +203,7 @@ export default function StabilityForm() {
                     name="prompt"
                     render={({ field }) => (
                         <FormItem>
-                            <InputLabel label="Prompt" hint={`Description of what you want to generate. \nEg. "A photograph of a white Siamese cat"`} />
+                            <InputLabel label="Prompt" hint={HINTS.PROMPT} />
                             <FormControl>
                                 <Textarea required className="h-28 bg-white" {...field} />
                             </FormControl>

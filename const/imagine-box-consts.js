@@ -56,3 +56,14 @@ export const PAYMENT_UPDATES_STATUS = {
     success: 'success',
     timeOut: 'timeOut'
 }
+
+export const HINTS = {
+    PROMPT: `Description of what you want to generate. \nEg. "A photograph of a white Siamese cat"`,
+    DE_SIZE: `The size of the image to generate. \nDall-E 3 supports 1024x1024, 1024x1792, and 1792x1024. Dall-E 2 only supports 256x256, 512x512, and 1024x1024.`,
+    DE_QUALITY: `HD is only supported on Dall-E 3.`,
+    DE_SAMPLES: `The number of images to generate. Only supported on DALL-E 2`,
+    SD_PRESETS: `Style preset to use for generation. Only available for Stable Image Core.`,
+    SD_RATIOS: `Aspect ratio of the image to generate.`,
+    SD_SEED: `A specific value that is used to guide the 'randomness' of the generation: [0 .. 4294967294]`,
+    SD_NEGATIVE_PROMPT: `Description of what you don't want to generate.`,
+}

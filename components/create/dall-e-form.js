@@ -10,7 +10,7 @@ import InputLabel from "./input-label";
 import { Input } from "../ui/input";
 import { DE2FormSchema, DE3FormSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DE2_SIZES, DE3_SIZES } from "@/const/imagine-box-consts";
+import { DE2_SIZES, DE3_SIZES, HINTS } from "@/const/imagine-box-consts";
 import useCurrentUser from "@/hooks/use-current-user";
 import { generateImages } from "@/lib/generate";
 import { useQueryClient } from "@tanstack/react-query";
@@ -88,7 +88,7 @@ export default function DallEForm() {
                     name="de_size"
                     render={({ field }) => (
                         <FormItem className="">
-                            <InputLabel label="Size" hint={`The size of the image to generate. \nDall-E 3 supports 1024x1024, 1024x1792, and 1792x1024. Dall-E 2 only supports 256x256, 512x512, and 1024x1024.`} />
+                            <InputLabel label="Size" hint={HINTS.DE_SIZE} />
                             <FormControl>
                             <>
                             {currentModel.code === "de-2" && (
@@ -122,7 +122,7 @@ export default function DallEForm() {
                         name="de_quality"
                         render={({ field }) => (
                         <FormItem>
-                            <InputLabel label="Quality" hint={`The quality of the image to generate. \nHD is only supported on Dall-E 3.`} />
+                            <InputLabel label="Quality" hint={HINTS.DE_QUALITY} />
                             <FormControl>
                                 <RadioGroup defaultValue="standard" onValueChange={field.onChange} required>
                                     <div className="flex items-center space-x-2">
@@ -145,7 +145,7 @@ export default function DallEForm() {
                         name="samples"
                         render={({ field }) => (
                         <FormItem>
-                            <InputLabel label="Samples" hint={`The number of images to generate. \nDall-E 2 supports up to 10 samples. Dall-E 3 only support 1 at a time.`} />
+                            <InputLabel label="Samples" hint={HINTS.DE_SAMPLES} />
                             <FormControl>
                                 <div className="flex items-center gap-x-4">
                                     <Slider 
@@ -179,7 +179,7 @@ export default function DallEForm() {
                     name="prompt"
                     render={({ field }) => (
                         <FormItem>
-                            <InputLabel label="Prompt" hint={`Description of what you want to generate. \nEg. "A photograph of a white Siamese cat"`} />
+                            <InputLabel label="Prompt" hint={HINTS.PROMPT} />
                             <FormControl>
                                 <Textarea required className="h-28 bg-white" {...field} />
                             </FormControl>
