@@ -14,7 +14,7 @@ export default function NavigationBar() {
         <Image src="/logo/logo-white.png" alt="logo" className="w-10" width={40} height={40} />
       </Link>
       <div className="flex-grow" />
-      <div className="flex gap-10 items-center ">
+      <div className="flex items-center justify-end">
         {!user && <Login />}
         {user && 
           <UserButton user={user} />

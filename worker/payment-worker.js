@@ -1,6 +1,12 @@
 import { Worker } from 'bullmq';
 import { connection } from '../server/lib/redis.js';
-import { isWebhookProcessed, markWebhookAsProcessed, handlePaymentSuccess, markWebhookAsProcessing, handleWebhookFailure } from '../server/lib/webhook.js';
+import { 
+    isWebhookProcessed, 
+    markWebhookAsProcessed, 
+    handlePaymentSuccess, 
+    markWebhookAsProcessing, 
+    handleWebhookFailure 
+} from '../server/lib/webhook.js';
 
 const paymentWorker = new Worker('payment-webhooks', async (job) => {
     const { webhookId, payload, eventType } = job.data;
