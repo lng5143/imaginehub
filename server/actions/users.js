@@ -28,7 +28,7 @@ export const validateGenerateImage = async (userId) => {
     }
 
     if (user.trialCredits <= 0 && user.tier === UserTier.FREE) {
-        return { success: false, message: "You have run out of trial credits" }
+        return { success: false, message: "You have run out of trial credits. Please upgrade to continue generating images." }
     }
 
     return { success: true }
