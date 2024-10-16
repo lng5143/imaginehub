@@ -45,7 +45,7 @@ const insertImages = async (genId, provider, data) => {
             if (!urlRes.success)
                 continue;
 
-            imageUrls.push(urlRes.data);
+            imageUrls = [...imageUrls, urlRes.data];
         }
     }
 
@@ -59,7 +59,7 @@ const insertImages = async (genId, provider, data) => {
             if (!urlRes.success)
                 continue;
 
-            imageUrls.push(urlRes.data);
+            imageUrls = [...imageUrls, urlRes.data];
         }
     }
 
