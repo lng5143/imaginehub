@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { PAGE_SIZE } from "@/const/imagine-box-consts";
 import { cn } from "@/lib/utils";
 import { useCurrentPage } from "@/store/use-current-page";
-import useCurrentUserId from "@/hooks/use-current-user-id";
+import { ImageGenerationStatus } from "@prisma/client";
 
 export default function GenerationsPanel({}) {
   console.log("GenerationsPanel");
@@ -17,7 +17,7 @@ export default function GenerationsPanel({}) {
   const [currentPage, setCurrentPage] = useCurrentPage();
   const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
 
-  const { data: response, isError, isPending } = useQuery({
+  const { data: response, isPending } = useQuery({
     queryKey: ["generations", currentPage],
     queryFn: async () => {
       return await getGenerations(currentPage);
@@ -30,11 +30,13 @@ export default function GenerationsPanel({}) {
   }
 
   const handleSelectGeneration = (generation) => {
-    if (generation.status === "PROCESSING")
+    if (generation.status === ImageGenerationStatus.PROCESSING)
       toast.info("Image generation in progress");
-    else if (generation.status === "SUCCESS")
+    else if (generation.status === ImageGenerationStatus.COMPLETED)
       setCurrentGenerationId(generation.id);
   }
+
+  console.log("response", response);
   
   return (
     <div className={cn("flex flex-col gap-10 h-full p-2", currentGenerationId ? "basis-2/3" : "basis-full")}>

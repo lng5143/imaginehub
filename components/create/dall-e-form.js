@@ -16,6 +16,7 @@ import { generateImages } from "@/lib/generate";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useState } from "react";
+import { markGenerationAsFailed } from "@/server/actions/generations";
 
 export default function DallEForm() {
     const queryClient = useQueryClient();
@@ -66,6 +67,7 @@ export default function DallEForm() {
 
             if (!res.success) {
                 toast.error(res.message);
+                await markGenerationAsFailed(res.data?.genId);
             }
         } catch (error) {
             toast.error("Failed to generate images");
