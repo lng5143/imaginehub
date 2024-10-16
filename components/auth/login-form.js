@@ -3,18 +3,15 @@
 import { LoginSchema } from "@/schemas/index";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormField, FormLabel, FormControl, FormItem } from "../ui/form";
+import { Form, FormField, FormControl, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
 import SocialLogin from "./social-login";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { login } from "@/server/actions/login";
-import FormError from "../form-error";
-import FormSuccess from "../form-success";
 import { Button } from "../ui/button";
+import { toast } from "sonner";
 
 export default function AuthForm({ urlError }) {
-    const [error, setError] = useState(urlError);
-    const [success, setSuccess] = useState(null);
     const [isPending, startTransition] = useTransition();
 
     const form = useForm({
@@ -25,22 +22,17 @@ export default function AuthForm({ urlError }) {
     })
 
     function onSubmit(values) {
-        setError(null);
-        setSuccess(null);
-
         startTransition(async () => {
             await login(values)
             .then(data => {
-                console.log("Login form submitted");
-                console.log(data);
                 form.reset();
 
-                if (data.error) {
-                    setError(data.error);
+                if (!data.success) {
+                    toast.error(data.message);
                 }
 
                 if (data.success) {
-                    setSuccess(data.success);
+                    toast.success(data.message);
                 }
             })
         })
@@ -55,15 +47,12 @@ export default function AuthForm({ urlError }) {
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                {/* <FormLabel>Email</FormLabel> */}
                                 <FormControl>
                                     <Input placeholder="email@xample.com" {...field} disabled={isPending} className="bg-white text-black text-xs border-2 rounded-md p-2" />
                                 </FormControl>
                             </FormItem>
                         )}
                     />
-                    <FormError error={error} />
-                    <FormSuccess success={success} />
                     <Button variant="ibLight" className="w-full hover:scale-[1.02]" type="submit" disabled={isPending}>Login with email</Button>
                 </form>
             </Form>

@@ -2,7 +2,7 @@ import PricingCard from "@/app/_component/pricing-card"
 import { PRICING_PLANS } from "@/static-data/pricing"
 import { Button } from "@/components/ui/button"
 import FAQSection from "@/components/landing-page/faq"
-
+import Link from "next/link"
 export default function PricingPage() {
   return (
     <div>
@@ -28,7 +28,13 @@ export default function PricingPage() {
                         price={PRICING_PLANS.pro.price} 
                         features={PRICING_PLANS.pro.features} 
                         className="w-full h-full border-none shadow-2xl"
-                        cta={<Button className="w-full bg-white text-slate-950 shadow-xl hover:bg-amber-500 hover:scale-105 transition-all duration-300">Buy Pro License</Button>}
+                        cta={
+                            <Button className="w-full bg-white text-slate-950 shadow-xl hover:bg-amber-500 hover:scale-105 transition-all duration-300">
+                                <Link href="/create">
+                                    Buy Pro License
+                                </Link>
+                            </Button>
+                        }
                     />
                 </div>
             </div>

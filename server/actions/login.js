@@ -8,7 +8,7 @@ export async function login(values) {
     const validatedFields = LoginSchema.safeParse(values)
 
     if (!validatedFields.success) {
-            return { error: "Invalid email!"};
+            return { success: false, message: "Invalid email!"};
     }
 
     const { email } = validatedFields.data;
@@ -20,11 +20,8 @@ export async function login(values) {
             redirectTo: DEFAULT_LOGIN_REDIRECT
         })
     } catch (error) {
-        console.log(error);
         throw error;
     }
     
-    
-
-    return { success: "Email sent!"};
+    return { success: true, message: "Email sent!"};
 }
