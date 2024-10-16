@@ -43,7 +43,8 @@ export default function DallEForm() {
             de_quality: "standard",
             samples: [1],
             prompt: ""
-        }
+        },
+        mode: "onSubmit"
     });
 
     const handleInitInsertComplete = () => {

@@ -52,6 +52,7 @@ export default function StabilityForm() {
             sd_negativePrompt: "",
             prompt: ""
         },
+        mode: "onSubmit"
     });
 
     const handleInitInsertComplete = () => {
@@ -169,14 +170,24 @@ export default function StabilityForm() {
                         <FormItem>
                             <InputLabel label="Seed" hint={HINTS.SD_SEED} />
                             <FormControl>
-                                <Input className="bg-white" type="number" {...field} onBlur={() => {
-                                    if (field.value < 0) {
-                                        field.onChange(0);
-                                    }
-                                    if (field.value > 4294967294) {
-                                        field.onChange(4294967294);
-                                    }
-                                }} />
+                                <Input 
+                                    className="bg-white" 
+                                    type="number" 
+                                    {...field} 
+                                    onSubmit={(e) => {
+                                        field.onChange(e.target.valueAsNumber)
+                                    }}
+                                    onBlur={() => {
+                                        field.onChange(Math.round(field.value));
+
+                                        if (field.value < 0) {
+                                            field.onChange(0);
+                                        }
+                                        if (field.value > 4294967294) {
+                                            field.onChange(4294967294);
+                                        }
+                                    }} 
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

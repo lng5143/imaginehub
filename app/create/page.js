@@ -11,7 +11,7 @@ export default function CreatePage() {
   const userId = useCurrentUserId();
 
   return (
-    <main className="flex h-screen">
+    <main className="flex h-full">
       <CreateInputs />
       <div className="flex w-full">
         {userId && (

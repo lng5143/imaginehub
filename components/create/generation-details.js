@@ -59,7 +59,7 @@ export default function GenerationDetails({ }) {
   }
 
   return (
-    <div className="relative flex flex-col h-full basis-1/3 bg-violet-100 shadow-xl">
+    <div className="relative flex flex-col h-auto basis-1/3 bg-violet-100 shadow-xl">
       <div className="px-3 py-2 pb-0 flex items-center justify-end">
         <Button 
           variant="outline" 
@@ -72,8 +72,9 @@ export default function GenerationDetails({ }) {
         <CircleX className="size-4 text-black hover:cursor-pointer" onClick={handleClose} />
       </div>
       <div 
-        className="mb-auto overflow-y-auto p-3 flex flex-col gap-2 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-800" 
-        ref={containerRef}>
+        className="overflow-y-auto p-3 flex flex-col gap-2 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-800" 
+        ref={containerRef}
+      >
         {!isPendingDetails && response?.data?.images.map((image, index) => (
           <Image 
             key={index} 
@@ -89,24 +90,25 @@ export default function GenerationDetails({ }) {
         ))}
         {isPendingDetails && <Skeleton className="aspect-square w-full" />}
       </div>
+      <div className="flex-grow" />
       <div className="w-full flex items-center bg-indigo-950 text-white py-2 px-4 rounded-t-lg cursor-pointer hover:h-10 transition-all duration-300" onClick={() => setIsDetailsOpen(true)}>
         <p className="flex-grow text-sm">View Details</p>
         <ChevronUp className="size-4" />
       </div>
       <AnimatePresence>
-      {isDetailsOpen && (
-        <>
-          <motion.div
-            className="h-full w-full absolute z-40 bg-gray-600/60"
-            onClick={() => setIsDetailsOpen(false)}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.6 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          />
-            <DetailsDrawer data={response?.data} />
-        </>
-      )}
+        {isDetailsOpen && (
+          <>
+            <motion.div
+              className="h-full w-full absolute z-40 bg-gray-600/60"
+              onClick={() => setIsDetailsOpen(false)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.6 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            />
+              <DetailsDrawer data={response?.data} />
+          </>
+        )}
       </AnimatePresence>
 
       <ConfirmDialog
