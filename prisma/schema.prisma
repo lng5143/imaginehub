@@ -105,7 +105,7 @@ model ImageGeneration {
   de_quality        DallEQuality?
   de_size           String?
   sd_negativePrompt String?
-  sd_seed           Int?
+  sd_seed           BigInt?
   sd_aspectRatio    String?
   sd_stylePreset    String?
 }
