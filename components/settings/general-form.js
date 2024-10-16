@@ -7,17 +7,15 @@ import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { updateGeneralSettings } from "@/server/actions/general-settings";
-import { signIn } from "next-auth/react";
-import { useSession } from "next-auth/react";
+import useCurrentUser from "@/hooks/use-current-user";
 
-export default function GeneralForm() {
+export default function GeneralForm({user}) {
     const [isPending, startTransition] = useTransition();
-    const { update, data: session } = useSession();
 
     const form = useForm({
         resolver: zodResolver(GeneralSettingsSchema),
         defaultValues: {
-            name: "",
+            name: user?.name,
         }
     })
 
@@ -48,28 +46,7 @@ export default function GeneralForm() {
                         </FormItem>
                     )}
                 />
-
-                {/* <FormField
-                    control={form.control}
-                    name="theme"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Theme</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select a theme" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        <SelectItem value="light">Light</SelectItem>
-                                        <SelectItem value="dark">Dark</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                        </FormItem>
-                    )}
-                /> */}
-                <Button className="w-40 self-end" type="submit" disabled={isPending}>Save</Button>
+                <Button variant="ibDark" className="w-40 self-end" type="submit" disabled={isPending}>Save</Button>
             </form>
         </Form>
     )

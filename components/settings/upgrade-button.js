@@ -2,8 +2,9 @@ import { createLicenseCheckout } from "@/server/actions/purchase"
 import { Button } from "../ui/button"
 import useCurrentUserId from "@/hooks/use-current-user-id"
 import { useTransition } from "react"
+import { cn } from "@/lib/utils"
 
-export default function UpgradeButton() {
+export default function UpgradeButton({className}) {
     const [isPending, startTransition] = useTransition();
     const userId = useCurrentUserId();
 
@@ -11,8 +12,6 @@ export default function UpgradeButton() {
         startTransition(async () => {
             const checkoutResponse = await createLicenseCheckout(userId);
             const checkoutUrl = checkoutResponse?.data?.url;
-            console.log(checkoutResponse);
-            console.log(checkoutUrl)
             if (checkoutUrl) {
                 window.location.href = checkoutUrl;
             }
@@ -20,7 +19,7 @@ export default function UpgradeButton() {
     }
 
     return (
-        <Button onClick={handleUpgrade} disabled={isPending}>
+        <Button className={cn("bg-amber-500 hover:bg-amber-600 hover:scale-105 transition-all duration-300 text-black", className)} onClick={handleUpgrade} disabled={isPending}>
             {isPending ? "Processing..." : "Upgrade"}
         </Button>
     )

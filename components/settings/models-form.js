@@ -7,7 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/
 import { ModelsSettingsSchema } from "@/schemas/index";
 import { toast } from "sonner";
 
-export default function ModelsForm() {
+export default function KeysForm() {
     const [isPending, startTransition] = useTransition();
 
     const form = useForm({
@@ -35,13 +35,16 @@ export default function ModelsForm() {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="gap-10 flex flex-col">
                 <div className="flex flex-col gap-10">
-                    <div className="flex flex-col gap-8">
+                    <div className="flex flex-col gap-10">
                         <FormField
                             control={form.control}
                             name="openai_api_key"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="font-semibold text-base">OpenAI API Key</FormLabel>
+                                    <div className="flex flex-col gap-1">
+                                        <FormLabel className="font-semibold">OpenAI API Key</FormLabel>
+                                        <p className="text-xs text-gray-500">For DALL-E models</p>
+                                    </div>
                                     <FormControl>
                                         <Input placeholder="sk-..." {...field} disabled={isPending} />
                                     </FormControl>
@@ -53,7 +56,10 @@ export default function ModelsForm() {
                             name="stability_api_key"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="font-semibold text-base">Stability AI API Key</FormLabel>
+                                    <div className="flex flex-col gap-1">
+                                        <FormLabel className="font-semibold">Stability AI API Key</FormLabel>
+                                        <p className="text-xs text-gray-500">For Stable Diffusion, Stable Image models</p>
+                                    </div>
                                     <FormControl>
                                         <Input placeholder="sk-..." {...field} disabled={isPending} />
                                     </FormControl>
@@ -62,7 +68,7 @@ export default function ModelsForm() {
                         />
                     </div>
                 </div>
-                <Button className="w-40 self-end" type="submit" disabled={isPending}>Save</Button>
+                <Button variant="ibDark" className="w-40 self-end" type="submit" disabled={isPending}>Save</Button>
             </form>
         </Form>
     )
