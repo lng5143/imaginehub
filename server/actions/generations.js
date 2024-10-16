@@ -5,11 +5,12 @@ import { auth } from "@/auth";
 import { PAGE_SIZE } from "@/const/imagine-box-consts";
 import { updateUserCredits } from "./users";
 import { uploadFileToS3AndGetUrl } from "../lib/aws";
+import { ImageGenerationStatus } from "@prisma/client";
 
 export const insertInitialGeneration = async (data) => {
     const response = await prisma.imageGeneration.create({
         data: {
-            status: "PROCESSING",
+            status: ImageGenerationStatus.PROCESSING,
             ...data
         }
     })
@@ -22,7 +23,7 @@ export const updateImageGeneration = async (genId, provider, data, userId) => {
 
     await prisma.imageGeneration.update({
         where: { id: genId },
-        data: { status: "SUCCESS"}
+        data: { status: ImageGenerationStatus.COMPLETED}
     })
 
     await updateUserCredits(userId);
@@ -130,12 +131,18 @@ const getImages = async (generationId) => {
 }
 
 export const deleteGeneration = async (generationId) => {
-    const res = await prisma.imageGeneration.delete({
+    await prisma.imageGeneration.delete({
         where: { id: generationId }
     })
 
-    if (res.error)
-        return { success: false, message: "Failed to delete image generation!" }
-
     return { success: true, message: "Image generation deleted successfully!" }
+}
+
+export const markGenerationAsFailed = async (generationId) => {
+    const res = await prisma.imageGeneration.update({
+        where: { id: generationId },
+        data: { status: ImageGenerationStatus.FAILED }
+    })
+
+    return { success: true, data: res }
 }
