@@ -36,8 +36,6 @@ export default function GenerationsPanel({}) {
       setCurrentGenerationId(generation.id);
   }
 
-  console.log("response", response);
-  
   return (
     <div className={cn("flex flex-col gap-10 h-full p-2", currentGenerationId ? "basis-2/3" : "basis-full")}>
       <div 

@@ -29,6 +29,8 @@ export default function GenerationDetails({ }) {
     queryFn: () => getGenerationDetails(currentGenerationId)
   })
 
+  console.log("response", response)
+
   const containerRef = useRef(null);
 
   const handleClose = () => {
@@ -106,7 +108,7 @@ export default function GenerationDetails({ }) {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             />
-              <DetailsDrawer data={response?.data} />
+              <DetailsDrawer data={response?.data} isLoading={isPendingDetails} />
           </>
         )}
       </AnimatePresence>
