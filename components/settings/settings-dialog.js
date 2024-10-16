@@ -3,14 +3,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "../ui/tabs";
 import GeneralForm from "./general-form";
 import KeysForm from "./models-form";
 import { useState } from "react";
-import UpgradeButton from "./upgrade-button";
-import { UserTier } from "@prisma/client";
-import useCurrentUser from "@/hooks/use-current-user";
-import { TRIAL_IMAGE_COUNT } from "@/const/imagine-box-consts";
 
 export default function SettingsDialog({ isOpen, setIsOpen }) {
-    const user = useCurrentUser();
-    const userTier = user?.tier;
     const [activeTab, setActiveTab] = useState("general");
 
     return (
@@ -32,14 +26,7 @@ export default function SettingsDialog({ isOpen, setIsOpen }) {
                         </DialogHeader>
                         <div>
                             <TabsContent value="general" className="mt-0 space-y-12">
-                                <GeneralForm user={user} />
-                                {userTier === UserTier.FREE &&
-                                    <div className="flex flex-col gap-2">
-                                        <p>Trials: {user?.trialCredits}/{TRIAL_IMAGE_COUNT}</p>
-                                        <p className="text-sm">Upgrade for unlimited generations and storage.</p>
-                                        <UpgradeButton className="w-40" />
-                                    </div>
-                                }
+                                <GeneralForm />                                
                             </TabsContent>
                             <TabsContent value="models" className="mt-0">
                                 <KeysForm />

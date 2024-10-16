@@ -29,8 +29,6 @@ export default function GenerationDetails({ }) {
     queryFn: () => getGenerationDetails(currentGenerationId)
   })
 
-  console.log("response", response)
-
   const containerRef = useRef(null);
 
   const handleClose = () => {
@@ -86,7 +84,6 @@ export default function GenerationDetails({ }) {
             className="rounded-md hover:cursor-pointer hover:scale-[1.02] transition-all duration-300 w-full shadow-md"
             width={1000}
             height={1000}
-            layout="responsive"
             priority
           />
         ))}
@@ -169,7 +166,6 @@ function CarouselWrapper({ selectedIndex, images }) {
                 className="w-full h-full rounded-md" 
                 width={1000}
                 height={1000}
-                layout="responsive"
                 priority
               />
             </div>

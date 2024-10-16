@@ -6,6 +6,8 @@ import UserButton from "./user-button";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import UpgradeButton from "../settings/upgrade-button";
+import { UserTier } from "@prisma/client";
 
 export default function NavigationBar() {
   const user = useCurrentUser();
@@ -18,11 +20,14 @@ export default function NavigationBar() {
   }, [user]);
 
   return (
-    <div className="flex py-2 px-4 items-center bg-indigo-950 text-white">
+    <div className="flex py-2 px-4 items-center bg-indigo-950 text-white gap-2">
       <Link href="/create" className=" items-center w-20">
         <Image src="/logo/logo-white.png" alt="logo" className="w-10" width={40} height={40} />
       </Link>
       <div className="flex-grow" />
+      {user?.tier === UserTier.FREE &&
+        <UpgradeButton className="h-full" />
+      }
       <div className="flex items-center justify-end">
         {!user && <Login open={isLoginOpen} setOpen={setIsLoginOpen} />}
         {user && 

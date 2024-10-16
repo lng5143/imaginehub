@@ -8,12 +8,7 @@ export default function FooterSection() {
         <div className="flex flex-col px-10 md:px-32 w-full">
             <div className="flex gap-20 w-full py-10">
                 <div className="basis-1/3">
-                    <Image src="/logo/logo-dark-text.png" alt="logo" width={0} height={0} layout="responsive" />
-                    {/* <div className="flex gap-5">
-                        <Image src="/instagram.svg" alt="instagram" width={20} height={20} />
-                        <Image src="/facebook.svg" alt="facebook" width={20} height={20} />
-                        <Image src="/twitter.svg" alt="twitter" width={20} height={20} />
-                    </div> */}
+                    <Image src="/logo/logo-dark-text.png" alt="logo" width={200} height={0} />
                     <p className="text-sm">© 2024 All rights reserved.</p>
                 </div>
                 <div className="hidden md:block flex-grow"></div>

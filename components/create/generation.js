@@ -24,11 +24,10 @@ export default function Generation({ data, onClick }) {
                     <div className="flex z-40 items-center justify-center absolute top-2 right-2 bg-white text-gray-800 shadow-2xl border-gray-800 p-1 rounded-full w-6 h-6 text-xs font-semibold">{data.samples}</div>
                     <Image
                         src={thumbnail}
-                        alt={data?.prompt}
+                        alt="generated image"
                         className="relative z-30 rounded-md aspect-square object-cover"
                         width={1000}
                         height={1000}
-                        layout="responsive"
                         priority
                     />
                 </>

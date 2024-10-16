@@ -5,6 +5,7 @@ import LogoutButton from "../auth/logout-button";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import SettingsDialog from "../settings/settings-dialog";
+
 export default function UserButton({ user }) {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -29,8 +30,8 @@ export default function UserButton({ user }) {
                         </div>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => setIsSettingsOpen(true)}>
-                        <button className="w-full text-left">Settings</button>
+                    <DropdownMenuItem className="text-left cursor-pointer" onClick={() => setIsSettingsOpen(true)}>
+                        Settings
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>

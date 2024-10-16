@@ -29,6 +29,7 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
                 session.user.name = token.user.name;
                 session.user.email = token.user.email;
                 session.user.image = token.user.image;
+                session.user.trialCredits = token.user.trialCredits;
             }
 
             return session;
