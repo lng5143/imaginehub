@@ -14,10 +14,9 @@ enum UserTier {
 }
 
 enum ImageGenerationStatus {
-  PENDING
   PROCESSING
-  SUCCESS
-  ERROR
+  COMPLETED
+  FAILED
 }
 
 enum DallEQuality {
