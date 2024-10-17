@@ -1,0 +1,5 @@
+[phases.setup]
+nixPkgs = ['...', 'pm2']
+
+[start]
+cmd = "pm2-runtime start pm2.config.cjs"
