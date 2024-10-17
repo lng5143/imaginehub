@@ -10,10 +10,8 @@ import { updateGeneralSettings } from "@/server/actions/general-settings";
 import { UserTier } from "@prisma/client";
 import UpgradeButton from "./upgrade-button";
 import { TRIAL_IMAGE_COUNT } from "@/const/imagine-box-consts";
-import useCurrentUser from "@/hooks/use-current-user";
 
-export default function GeneralForm() {
-    const user = useCurrentUser();
+export default function GeneralForm({ user }) {
     const [isPending, startTransition] = useTransition();
 
     const form = useForm({

@@ -4,7 +4,7 @@ import GeneralForm from "./general-form";
 import KeysForm from "./models-form";
 import { useState } from "react";
 
-export default function SettingsDialog({ isOpen, setIsOpen }) {
+export default function SettingsDialog({ isOpen, setIsOpen, user }) {
     const [activeTab, setActiveTab] = useState("general");
 
     return (
@@ -26,7 +26,7 @@ export default function SettingsDialog({ isOpen, setIsOpen }) {
                         </DialogHeader>
                         <div>
                             <TabsContent value="general" className="mt-0 space-y-12">
-                                <GeneralForm />                                
+                                <GeneralForm user={user} />                                
                             </TabsContent>
                             <TabsContent value="models" className="mt-0">
                                 <KeysForm />

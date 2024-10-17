@@ -40,7 +40,7 @@ export default function UserButton({ user }) {
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            <SettingsDialog isOpen={isSettingsOpen} setIsOpen={setIsSettingsOpen} />
+            <SettingsDialog isOpen={isSettingsOpen} setIsOpen={setIsSettingsOpen} user={user} />
         </>
     )
 }
