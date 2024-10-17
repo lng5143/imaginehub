@@ -1,7 +1,5 @@
-const { Queue } = require('bullmq')
-const IORedis = require('ioredis');
-
-const redisConnection = new IORedis();
+import { Queue } from "bullmq";
+import { connection as redisConnection } from "./redis.js";
 
 // create queue and add job to queue functions are called in api routes for webhooks
 export async function createPaymentWebhooksQueue() {
