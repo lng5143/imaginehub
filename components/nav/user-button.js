@@ -8,10 +8,16 @@ import SettingsDialog from "../settings/settings-dialog";
 
 export default function UserButton({ user }) {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [isUserButtonOpen, setIsUserButtonOpen] = useState(false);
+
+    const handleOpenSettings = () => {
+        setIsSettingsOpen(true);
+        setIsUserButtonOpen(false);
+    }
 
     return (
         <>
-            <DropdownMenu>
+            <DropdownMenu open={isUserButtonOpen} onOpenChange={setIsUserButtonOpen}>
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-sm">
                         <Avatar className="w-10 h-10 rounded-sm">
@@ -30,7 +36,7 @@ export default function UserButton({ user }) {
                         </div>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-left cursor-pointer" onClick={() => setIsSettingsOpen(true)}>
+                    <DropdownMenuItem className="text-left cursor-pointer" onClick={handleOpenSettings}>
                         Settings
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
