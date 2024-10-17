@@ -11,6 +11,12 @@ export default function UpgradeButton({className}) {
     const handleUpgrade = async () => {
         startTransition(async () => {
             const checkoutResponse = await createLicenseCheckout(userId);
+
+            if (!checkoutResponse.success) {
+                toast.error("Upgrading failed! Please try again later.")
+                return;
+            }
+
             const checkoutUrl = checkoutResponse?.data?.url;
             if (checkoutUrl) {
                 window.location.href = checkoutUrl;
