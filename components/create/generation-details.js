@@ -1,4 +1,4 @@
-import { ChevronUp, CircleX, CircleChevronRight, CircleChevronLeft, Trash2 } from "lucide-react";
+import { ChevronUp, CircleX, CircleChevronRight, CircleChevronLeft, Trash2, Download } from "lucide-react";
 import { useCurrentGenerationId } from "@/store/use-current-generation-id";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Button } from "../ui/button";
@@ -58,15 +58,26 @@ export default function GenerationDetails({ }) {
     handleClose();
   }
 
+  const handleDownloadImages = () => {
+
+  }
+
   return (
     <div className="relative flex flex-col h-auto basis-1/3 bg-violet-100 shadow-xl">
-      <div className="px-3 py-2 pb-0 flex items-center justify-end">
+      <div className="px-3 py-2 pb-0 flex items-center justify-end gap-2">
         <Button 
           variant="outline" 
           className="text-sm hover:bg-amber-500 hover:scale-105 hover:border-none transition-all duration-300" 
           onClick={() => setIsDeleteConfirmOpen(true)}
         >
           <Trash2 className="size-4 text-black" />
+        </Button>
+        <Button 
+          variant="outline" 
+          className="text-sm hover:bg-amber-500 hover:scale-105 hover:border-none transition-all duration-300" 
+          onClick={handleDownloadImages}
+        >
+          <Download className="size-4 text-black" />
         </Button>
         <div className="flex-grow" />
         <CircleX className="size-4 text-black hover:cursor-pointer" onClick={handleClose} />
