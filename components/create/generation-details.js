@@ -64,24 +64,27 @@ export default function GenerationDetails({ }) {
 
   return (
     <div className="relative flex flex-col h-auto basis-1/3 bg-violet-100 shadow-xl">
-      <div className="px-3 py-2 pb-0 flex items-center justify-end gap-2">
-        <Button 
-          variant="outline" 
-          className="text-sm hover:bg-amber-500 hover:scale-105 hover:border-none transition-all duration-300" 
-          onClick={() => setIsDeleteConfirmOpen(true)}
-        >
-          <Trash2 className="size-4 text-black" />
-        </Button>
-        <Button 
-          variant="outline" 
-          className="text-sm hover:bg-amber-500 hover:scale-105 hover:border-none transition-all duration-300" 
-          onClick={handleDownloadImages}
-        >
-          <Download className="size-4 text-black" />
-        </Button>
-        <div className="flex-grow" />
-        <CircleX className="size-4 text-black hover:cursor-pointer" onClick={handleClose} />
-      </div>
+      {/* {isPendingDetails && <Skeleton className="" />} */}
+      {!isPendingDetails && (
+        <div className="px-3 py-2 pb-0 flex items-center justify-end gap-2">
+          <Button 
+            variant="outline" 
+            className="text-sm hover:bg-amber-500 hover:scale-105 hover:border-none transition-all duration-300" 
+            onClick={() => setIsDeleteConfirmOpen(true)}
+          >
+            <Trash2 className="size-4 text-black" />
+          </Button>
+          <Button 
+            variant="outline" 
+            className="text-sm hover:bg-amber-500 hover:scale-105 hover:border-none transition-all duration-300" 
+            onClick={handleDownloadImages}
+          >
+            <Download className="size-4 text-black" />
+          </Button>
+          <div className="flex-grow" />
+          <CircleX className="size-4 text-black hover:cursor-pointer" onClick={handleClose} />
+        </div>
+      )}
       <div 
         className="overflow-y-auto p-3 flex flex-col gap-2 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-800" 
         ref={containerRef}
