@@ -1,6 +1,6 @@
 import { ChevronUp, CircleX, CircleChevronRight, CircleChevronLeft, Trash2, Download } from "lucide-react";
 import { useCurrentGenerationId } from "@/store/use-current-generation-id";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback, useTransition } from "react";
 import { Button } from "../ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
@@ -14,6 +14,8 @@ import { Skeleton } from "../ui/skeleton";
 import Image from "next/image";
 import { useCurrentPage } from "@/store/use-current-page";
 import ConfirmDialog from "../confirm-dialog";
+import { downloadImages } from "@/lib/downloads";
+import { toast } from "sonner";
 
 export default function GenerationDetails({ }) {
   const queryClient = useQueryClient();
@@ -23,6 +25,7 @@ export default function GenerationDetails({ }) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
   const [currentPage, _setCurrentPage] = useCurrentPage();
+  const [isPending, startTransition] = useTransition();
 
   const { data: response, isPending: isPendingDetails} = useQuery({
     queryKey: ["generation", currentGenerationId],
@@ -58,18 +61,15 @@ export default function GenerationDetails({ }) {
     handleClose();
   }
 
-  const handleDownloadImages = () => {
-    const imageUrls = response?.data?.images.map(image => image.url);
+  const handleDownloadImages = async () => {
+    startTransition(async () => {
+      console.log(isPending);
+      const imageUrls = response?.data?.images.map(image => image.url);
 
-    console.log(imageUrls);
-
-    imageUrls.forEach((url, index) => {
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${response?.data?.id}-${index}.png`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      const res = await downloadImages(imageUrls, response?.data?.id);
+      if (!res.success) {
+        toast.error(res.message);
+      }
     });
   }
 
@@ -89,7 +89,7 @@ export default function GenerationDetails({ }) {
             className="text-sm hover:bg-amber-500 hover:scale-105 hover:border-none transition-all duration-300" 
             onClick={handleDownloadImages}
           >
-            <Download className="size-4 text-black" />
+            <Download disabled={isPending} className="size-4 text-black" />
           </Button>
           <div className="flex-grow" />
           <CircleX className="size-4 text-black hover:cursor-pointer" onClick={handleClose} />
