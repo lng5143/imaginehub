@@ -1,6 +1,6 @@
-import { ChevronUp, CircleX, CircleChevronRight, CircleChevronLeft, Trash2, Download } from "lucide-react";
+import { ChevronUp, CircleChevronRight, CircleChevronLeft } from "lucide-react";
 import { useCurrentGenerationId } from "@/store/use-current-generation-id";
-import { useRef, useState, useEffect, useCallback, useTransition } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { Button } from "../ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
@@ -8,22 +8,17 @@ import DetailsDrawer from "./details-drawer";
 import useEmblaCarousel from "embla-carousel-react";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteGeneration, getGenerationDetails } from "@/server/actions/generations";
+import { useQuery } from "@tanstack/react-query";
+import { getGenerationDetails } from "@/server/actions/generations";
 import { Skeleton } from "../ui/skeleton";
 import Image from "next/image";
-import { useCurrentPage } from "@/store/use-current-page";
-import ConfirmDialog from "../confirm-dialog";
 import DetailsToolbar from "./details-toolbar";
 
 export default function GenerationDetails({ }) {
-  const queryClient = useQueryClient();
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isCarouselDialogOpen, setIsCarouselDialogOpen] = useState(false);
-  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
-  const [currentPage, _setCurrentPage] = useCurrentPage();
 
   const { data: response, isPending: isPendingDetails} = useQuery({
     queryKey: ["generation", currentGenerationId],
@@ -40,26 +35,6 @@ export default function GenerationDetails({ }) {
     setSelectedImageIndex(index);
     setIsCarouselDialogOpen(true);
   }
-
-  const handleDeleteOptimisticUpdate = async () => {
-    queryClient.setQueryData(["generations", currentPage], (old) => {
-      if (!old) return;
-
-      const deletedItem = old.data.find(item => item.id === currentGenerationId);
-      if (deletedItem) {
-        const newData = old.data.filter(item => item.id !== deletedItem.id);
-        return { ...old, data: newData };
-      }
-
-      return old;
-    });
-
-    queryClient.invalidateQueries({ queryKey: ["generations", currentPage] });
-
-    handleClose();
-  }
-
-  
 
   return (
     <div className="relative flex flex-col h-auto basis-1/3 bg-violet-100 shadow-xl">
@@ -109,14 +84,6 @@ export default function GenerationDetails({ }) {
         )}
       </AnimatePresence>
 
-      <ConfirmDialog
-        open={isDeleteConfirmOpen}
-        setOpen={setIsDeleteConfirmOpen}
-        title="You are about to delete this generation"
-        message="This action cannot be undone"
-        confirmFn={() => deleteGeneration(currentGenerationId)}
-        optimisticUpdateFn={handleDeleteOptimisticUpdate}
-      />
       <Dialog className="p-0 m-0" open={isCarouselDialogOpen} onOpenChange={() => setIsCarouselDialogOpen()}>
         <DialogContent  className="p-0 m-0 border-none bg-transparent">
           <VisuallyHidden>

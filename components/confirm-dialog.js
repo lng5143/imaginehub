@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
-export default function ConfirmDialog({ open, setOpen, title, message, confirmFn, optimisticUpdateFn }) {
+export default function ConfirmDialog({ open, setOpen, title, message, confirmFn }) {
     const [isPending, startTransition] = useTransition();
 
     const handleConfirm = () => {
@@ -11,7 +11,6 @@ export default function ConfirmDialog({ open, setOpen, title, message, confirmFn
             const res = await confirmFn();
             if (res.success) {
                 toast.success(res.message);
-                optimisticUpdateFn();
                 setOpen(false);
             } else {
                 toast.error(res.message);
