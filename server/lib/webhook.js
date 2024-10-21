@@ -53,8 +53,6 @@ export async function handleWebhookFailure(webhookId, orderId) {
 }
 
 export async function handlePaymentSuccess(userId, orderId) {
-    console.log('handling payment success');
-
     // update order status 
     await prisma.order.update({
         where: { id: orderId },

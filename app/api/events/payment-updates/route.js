@@ -27,7 +27,6 @@ export async function GET(req) {
             let intervalId;
             let startTime = Date.now();
             const checOrderStatus = async () => {
-                console.log("polling db");
                 try {
                     const order = await prisma.order.findUnique({
                         where: {

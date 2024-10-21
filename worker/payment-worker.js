@@ -12,7 +12,6 @@ const paymentWorker = new Worker('payment-webhooks', async (job) => {
     const { webhookId, payload, eventType } = job.data;
 
     const data = JSON.parse(payload);
-    console.log('webhook data', data)
 
     const orderId = data?.meta?.custom_data?.order_id;
     const userId = data?.meta?.custom_data?.user_id;

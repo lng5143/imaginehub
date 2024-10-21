@@ -20,7 +20,6 @@ export default function KeysForm() {
 
     function onSubmit(values) {
         startTransition(async () => {
-            console.log(values);
             const stabilityApiKey = values.stability_api_key;
             const openaiApiKey = values.openai_api_key;
 

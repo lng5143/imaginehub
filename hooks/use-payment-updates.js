@@ -8,7 +8,6 @@ export const usePaymentUpdates = (orderId) => {
       const eventSource = new EventSource(`/api/events/payment-updates?orderId=${orderId}`);
   
       eventSource.onmessage = (event) => {
-        console.log(event);
         const resData = JSON.parse(event.data);
 
         if (resData?.status) {

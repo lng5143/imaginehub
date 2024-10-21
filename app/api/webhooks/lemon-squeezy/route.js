@@ -8,7 +8,6 @@ const paymentQueue = await createPaymentWebhooksQueue();
 
 export const POST = async (req) => {
     // validate signature
-    console.log("webhook", req)
     const rawBody = await new Response(req.body).text();
     const secret = process.env.LM_SIGNING_SECRET
     const hmac = crypto.createHmac('sha256', secret)
