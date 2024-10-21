@@ -9,8 +9,6 @@ export default function DetailsToolbar({ handleClose, imageUrls, genId }) {
 
   const handleDownloadImages = async () => {
     startTransition(async () => {
-        console.log(isPending);
-
         const res = await downloadImages(imageUrls, genId);
         if (!res.success) {
             toast.error(res.message);
@@ -31,8 +29,9 @@ export default function DetailsToolbar({ handleClose, imageUrls, genId }) {
             variant="outline"
             className="text-sm hover:bg-amber-500 hover:scale-105 hover:border-none transition-all duration-300"
             onClick={handleDownloadImages}
+            disabled={isPending}
         >
-            <Download disabled={isPending} className="size-4 text-black" />
+            <Download className="size-4 text-black" />
         </Button>
         <div className="flex-grow" />
         <CircleX

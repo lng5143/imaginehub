@@ -12,7 +12,6 @@ import { useCurrentPage } from "@/store/use-current-page";
 import { ImageGenerationStatus } from "@prisma/client";
 
 export default function GenerationsPanel({}) {
-  console.log("GenerationsPanel");
   const containerRef = useRef(null);
   const [currentPage, setCurrentPage] = useCurrentPage();
   const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
