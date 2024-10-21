@@ -14,8 +14,7 @@ import { Skeleton } from "../ui/skeleton";
 import Image from "next/image";
 import { useCurrentPage } from "@/store/use-current-page";
 import ConfirmDialog from "../confirm-dialog";
-import { downloadImages } from "@/lib/downloads";
-import { toast } from "sonner";
+import DetailsToolbar from "./details-toolbar";
 
 export default function GenerationDetails({ }) {
   const queryClient = useQueryClient();
@@ -25,7 +24,6 @@ export default function GenerationDetails({ }) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
   const [currentPage, _setCurrentPage] = useCurrentPage();
-  const [isPending, startTransition] = useTransition();
 
   const { data: response, isPending: isPendingDetails} = useQuery({
     queryKey: ["generation", currentGenerationId],
@@ -61,39 +59,16 @@ export default function GenerationDetails({ }) {
     handleClose();
   }
 
-  const handleDownloadImages = async () => {
-    startTransition(async () => {
-      console.log(isPending);
-      const imageUrls = response?.data?.images.map(image => image.url);
-
-      const res = await downloadImages(imageUrls, response?.data?.id);
-      if (!res.success) {
-        toast.error(res.message);
-      }
-    });
-  }
+  
 
   return (
     <div className="relative flex flex-col h-auto basis-1/3 bg-violet-100 shadow-xl">
       {!isPendingDetails && (
-        <div className="px-3 py-2 pb-0 flex items-center justify-end gap-2">
-          <Button 
-            variant="outline" 
-            className="text-sm hover:bg-amber-500 hover:scale-105 hover:border-none transition-all duration-300" 
-            onClick={() => setIsDeleteConfirmOpen(true)}
-          >
-            <Trash2 className="size-4 text-black" />
-          </Button>
-          <Button 
-            variant="outline" 
-            className="text-sm hover:bg-amber-500 hover:scale-105 hover:border-none transition-all duration-300" 
-            onClick={handleDownloadImages}
-          >
-            <Download disabled={isPending} className="size-4 text-black" />
-          </Button>
-          <div className="flex-grow" />
-          <CircleX className="size-4 text-black hover:cursor-pointer" onClick={handleClose} />
-        </div>
+        <DetailsToolbar 
+          handleClose={handleClose} 
+          imageUrls={response?.data?.images.map(image => image.url)}
+          genId={currentGenerationId}
+        />
       )}
       <div 
         className="overflow-y-auto p-3 flex flex-col gap-2 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-800" 
