@@ -148,3 +148,13 @@ model Webhook {
   status WebhookStatus @default(PENDING)
   retries Int @default(0)
 }
+
+model BlogPosts {
+  id String @id @default(cuid())
+  title String
+  slug String @unique
+  url String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isPublished Boolean @default(false)
+}
