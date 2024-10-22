@@ -68,6 +68,12 @@ async function editBlogPost(data) {
 }
 
 async function validateBlogPostData(data) {
+    const session = await auth();
+
+    if (session?.user?.tier !== "ADMIN") {
+        return { success: false, message: "You are not authorized to create or edit blog posts" };
+    }
+
     const validatedFields = CreatePostSchema.safeParse(data);
 
     if (!validatedFields.success) {
