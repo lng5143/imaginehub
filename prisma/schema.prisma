@@ -1,13 +1,125 @@
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
-}
- 
 generator client {
   provider = "prisma-client-js"
 }
- 
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id               String            @id @default(cuid())
+  name             String?
+  email            String            @unique
+  emailVerified    DateTime?
+  image            String?
+  tier             UserTier          @default(FREE)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  trialCredits     Int               @default(20)
+  accounts         Account[]
+  imageGenerations ImageGeneration[]
+  orders           Order[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model ImageGeneration {
+  id                String                @id @default(cuid())
+  userId            String
+  prompt            String
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  samples           Int
+  status            ImageGenerationStatus
+  de_quality        DallEQuality?
+  sd_negativePrompt String?
+  sd_aspectRatio    String?
+  sd_seed           BigInt?
+  sd_stylePreset    String?
+  provider          Provider
+  de_size           String?
+  model             String
+  images            Image[]
+  user              User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Image {
+  id                String          @id @default(cuid())
+  url               String
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  imageGenerationId String
+  imageGeneration   ImageGeneration @relation(fields: [imageGenerationId], references: [id], onDelete: Cascade)
+}
+
+model Email {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  userId        String
+  status        OrderStatus @default(PENDING)
+  amount        Decimal
+  paymentMethod String?
+  currency      String?
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Webhook {
+  id        String          @id @default(cuid())
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  provider  WebhookProvider
+  payload   String
+  status    WebhookStatus   @default(PENDING)
+  retries   Int             @default(0)
+  eventType String
+}
+
+model BlogPost {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  thumbnailUrl String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  isPublished  Boolean  @default(false)
+  content      String
+}
+
 enum UserTier {
   FREE
   PAID
@@ -42,121 +154,7 @@ enum WebhookProvider {
 
 enum WebhookStatus {
   PENDING
-  PROCESSING
   PROCESSED
   FAILED
-}
-
-model User {
-  id            String          @id @default(cuid())
-  name          String?
-  email         String          @unique
-  emailVerified DateTime?
-  image         String?
-  tier          UserTier        @default(FREE)
-  accounts      Account[]
-  imageGenerations ImageGeneration[]
-  orders Order[]
-  trialCredits    Int             @default(20)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
- 
-model Account {
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
- 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
- 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
-  @@id([provider, providerAccountId])
-}
- 
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
- 
-  @@id([identifier, token])
-}
-
-model ImageGeneration {
-  id                String          @id @default(cuid())
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId            String
-  model             String
-  prompt            String
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  images            Image[]   
-  samples           Int
-  status            ImageGenerationStatus
-  provider          Provider
-  de_quality        DallEQuality?
-  de_size           String?
-  sd_negativePrompt String?
-  sd_seed           BigInt?
-  sd_aspectRatio    String?
-  sd_stylePreset    String?
-}
-
-model Image {
-  id         String          @id @default(cuid())
-  url        String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  imageGeneration ImageGeneration @relation(fields: [imageGenerationId], references: [id], onDelete: Cascade)
-  imageGenerationId String
-}
-
-model Email {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Order {
-  id String @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  status OrderStatus @default(PENDING)
-  amount Decimal
-  paymentMethod String?
-  currency String?
-}
-
-model Webhook {
-  id String @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  provider WebhookProvider
-  eventType String
-  payload String
-  status WebhookStatus @default(PENDING)
-  retries Int @default(0)
-}
-
-model BlogPost {
-  id String @id @default(cuid())
-  title String
-  slug String @unique
-  thumbnailUrl String
-  content String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  isPublished Boolean @default(false)
+  PROCESSING
 }
