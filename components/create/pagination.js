@@ -9,18 +9,20 @@ export default function PaginationContainer({ currentPage, totalCount, onPageCha
     return (
         <Pagination>
             <PaginationContent>
-                <PaginationItem
-                    onClick={(e) => {
-                        e.preventDefault();
-                        if (currentPage > 1) 
-                            onPageChange(currentPage - 1)
-                    }}
-                >
-                    <PaginationPrevious 
-                        className="hover:bg-amber-500 hover:text-black cursor-pointer" 
+                {currentPage > 1 && (
+                    <PaginationItem
+                        onClick={(e) => {
+                            e.preventDefault();
+                            if (currentPage > 1) 
+                                onPageChange(currentPage - 1)
+                        }}
                         
-                    />
-                </PaginationItem>
+                        >
+                        <PaginationPrevious 
+                            className="hover:bg-amber-500 hover:text-black cursor-pointer" 
+                        />
+                    </PaginationItem>
+                )}
                 {[...Array(totalPages)].map((_, index) => {
                     const page = index + 1;
 
@@ -53,17 +55,19 @@ export default function PaginationContainer({ currentPage, totalCount, onPageCha
                         )
                     }
                 })}
-                <PaginationItem
-                    onClick={(e) => {
-                        e.preventDefault();
-                        if (currentPage < totalPages) 
-                            onPageChange(currentPage + 1)
-                    }}
-                >
-                    <PaginationNext 
-                        className="hover:bg-amber-500 hover:text-black cursor-pointer" 
-                    />
-                </PaginationItem>
+                {currentPage < totalPages && (
+                    <PaginationItem
+                        onClick={(e) => {
+                            e.preventDefault();
+                            if (currentPage < totalPages) 
+                                onPageChange(currentPage + 1)
+                        }}
+                    >
+                        <PaginationNext 
+                            className="hover:bg-amber-500 hover:text-black cursor-pointer" 
+                        />
+                    </PaginationItem>
+                )}
             </PaginationContent>
         </Pagination>
     )

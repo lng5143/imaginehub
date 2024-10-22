@@ -13,7 +13,7 @@ import { ImageGenerationStatus } from "@prisma/client";
 
 export default function GenerationsPanel({}) {
   const containerRef = useRef(null);
-  const [currentPage, setCurrentPage] = useCurrentPage();
+  const [currentPage, setCurrentPage] = useCurrentPage(1);
   const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
 
   const { data: response, isPending } = useQuery({

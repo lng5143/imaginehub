@@ -26,14 +26,14 @@ export const ModelsSettingsSchema = z.object({
 export const DE2FormSchema = z.object({
     de_size: z.enum(DE2_SIZES),
     de_quality: z.enum(DE2_QUALITIES),
-    samples: z.array(z.number().min(1).max(10)),
+    samples: z.number().min(1).max(10),
     prompt: z.string().min(1, { message: "Prompt is required" }),
 })
 
 export const DE3FormSchema = z.object({
     de_size: z.enum(DE3_SIZES),
     de_quality: z.enum(DE3_QUALITIES),
-    samples: z.array(z.number()).min(1).max(10),
+    samples: z.number().min(1).max(10),
     prompt: z.string().min(1, { message: "Prompt is required" }),
 })
 

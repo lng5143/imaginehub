@@ -1,7 +1,6 @@
-import { useAtom } from "jotai";
-import { atomWithStorage } from 'jotai/utils'
+import { useAtom, atom } from "jotai";
 
-const currentPage = atomWithStorage("ib-current-page", 1);
+const currentPage = atom(1);
 
 export const useCurrentPage = () => {
     return useAtom(currentPage);

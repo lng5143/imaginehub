@@ -41,7 +41,7 @@ export default function DallEForm() {
         defaultValues: {
             de_size: "1024x1024",
             de_quality: "standard",
-            samples: [1],
+            samples: 1,
             prompt: ""
         },
         mode: "onSubmit"
@@ -60,11 +60,10 @@ export default function DallEForm() {
         data.model = currentModel.code;
         data.provider = currentModel.provider;
         data.userId = currentUser.id;
-        data.samples = data.samples[0]
 
         try {
             setIsInitInsertInProgress(true);
-            const res = await generateImages(currentUser.id, data, queryClient, handleInitInsertComplete, handleFinalUpdateComplete);
+            const res = await generateImages(data, queryClient, handleInitInsertComplete, handleFinalUpdateComplete);
 
             if (!res.success) {
                 toast.error(res.message);
@@ -145,13 +144,6 @@ export default function DallEForm() {
                             <InputLabel label="Samples" hint={HINTS.DE_SAMPLES} />
                             <FormControl>
                                 <div className="flex items-center gap-x-4">
-                                    <Slider 
-                                        value={[field.value]} 
-                                        max={10} 
-                                        min={1} 
-                                        step={1} 
-                                        onValueChange={field.onChange}
-                                    />
                                     <Input 
                                         type="text" 
                                         value={field.value} 
@@ -164,7 +156,7 @@ export default function DallEForm() {
                                                 field.onChange(1);
                                             }
                                         }}
-                                        className="w-[40px] text-xs text-center bg-white"/>
+                                        className="w-[40px] text-xs bg-white w-full"/>
                                 </div>
                             </FormControl>
                             </FormItem>

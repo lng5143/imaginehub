@@ -72,7 +72,7 @@ export default function StabilityForm() {
 
         try {
             setIsInitInsertInProgress(true);
-            const res = await generateImages(currentUser.id, data, queryClient, handleInitInsertComplete, handleFinalUpdateComplete);
+            const res = await generateImages(data, queryClient, handleInitInsertComplete, handleFinalUpdateComplete);
 
             if (!res.success) {
                 toast.error(res.message);

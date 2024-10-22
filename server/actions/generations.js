@@ -81,13 +81,16 @@ export const getGenerations = async (page) => {
         return { success: false, message: "Unauthorized" }
 
     const totalCount = await prisma.imageGeneration.count({
-        where: { userId: session.user.id }
+        where: { userId: session.user.id, status: { not: ImageGenerationStatus.FAILED } }
     });
 
     const generations = await prisma.imageGeneration.findMany({
         skip: (page - 1) * PAGE_SIZE,
         take: PAGE_SIZE,
-        where: { userId: session.user.id },
+        where: { 
+            userId: session.user.id,
+            status: { not: ImageGenerationStatus.FAILED }
+        },
         orderBy: {
             createdAt: "desc"
         },
