@@ -1,3 +1,5 @@
+import { CONTACT_EMAIL } from "@/const/imagine-box-consts";
+
 export default function RefundPage() {
   return (
     <div className="flex flex-col gap-20 py-40 px-10 md:px-20 lg:px-60 ">
@@ -27,7 +29,7 @@ export default function RefundPage() {
         </div>
         <div className="flex flex-col gap-2">
           <h2 className="text-2xl font-bold">3. How to Request a Refund</h2>
-          <p>To request a refund, please contact us at support@imaginebox.me within 14 days of the transaction, including the following details:</p>
+          <p>To request a refund, please contact us at {CONTACT_EMAIL} within 14 days of the transaction, including the following details:</p>
           <ul className="list-disc pl-4">
             <li>Your account email.</li>
             <li>The transaction ID or receipt provided to you through email at the time of purchase.</li>

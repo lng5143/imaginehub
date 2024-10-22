@@ -17,12 +17,12 @@ const StatusContent = ({ status }) => {
       [PAYMENT_UPDATES_STATUS.failed]: {
         Icon: CircleX,
         iconClass: "w-28 h-28 text-red-500",
-        message: <>We are unable to update your account information. Please contact support at <a className="text-blue-500 hover:text-blue-600 underline" href="mailto:support@imaginebox.com">support@imaginebox.com</a></>
+        message: <>We are unable to update your account information. Please contact support at <a className="text-blue-500 hover:text-blue-600 underline" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></>
       },
       [PAYMENT_UPDATES_STATUS.timeOut]: {
         Icon: CircleX,
         iconClass: "w-28 h-28 text-red-500",
-        message: <>We are unable to update your account information. Please contact support at <a className="text-blue-500 hover:text-blue-600 underline" href="mailto:support@imaginebox.com">support@imaginebox.com</a></>
+        message: <>We are unable to update your account information. Please contact support at <a className="text-blue-500 hover:text-blue-600 underline" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></>
       },
       [PAYMENT_UPDATES_STATUS.success]: {
         Icon: CircleCheckBig,
