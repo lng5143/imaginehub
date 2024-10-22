@@ -76,10 +76,9 @@ export default function StabilityForm() {
 
             if (!res.success) {
                 toast.error(res.message);
-            }
-
-            if (res.success) {
-                handleFinalUpdateComplete();
+                if (res.data?.genId) {
+                    await markGenerationAsFailed(res.data?.genId);
+                }
             }
         } catch (error) {
             toast.error("Failed to generate images");

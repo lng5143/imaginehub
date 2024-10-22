@@ -2,7 +2,6 @@ import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { useForm } from "react-hook-form";
-import { Slider } from "../ui/slider";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { useCurrentModel } from "@/store/use-current-model";
 import { Label } from "../ui/label";
@@ -67,7 +66,9 @@ export default function DallEForm() {
 
             if (!res.success) {
                 toast.error(res.message);
-                await markGenerationAsFailed(res.data?.genId);
+                if (res.data?.genId) {
+                    await markGenerationAsFailed(res.data?.genId);
+                }
             }
         } catch (error) {
             toast.error("Failed to generate images");
@@ -156,7 +157,7 @@ export default function DallEForm() {
                                                 field.onChange(1);
                                             }
                                         }}
-                                        className="w-[40px] text-xs bg-white w-full"/>
+                                        className="text-xs bg-white w-full"/>
                                 </div>
                             </FormControl>
                             </FormItem>
