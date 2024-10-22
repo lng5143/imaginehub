@@ -149,10 +149,11 @@ model Webhook {
   retries Int @default(0)
 }
 
-model BlogPosts {
+model BlogPost {
   id String @id @default(cuid())
   title String
   slug String @unique
+  thumbnailUrl String
   url String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
