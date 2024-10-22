@@ -38,7 +38,7 @@ export default function CreatePostPage() {
         slug: "",
         thumbnailUrl: "",
         content: "",
-        isPublished: true,
+        isPublished: false,
     },
   });
 

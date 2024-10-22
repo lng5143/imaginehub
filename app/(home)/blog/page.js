@@ -10,10 +10,10 @@ export default async function BlogPage({ searchParams }) {
   const isAdmin = session?.user?.tier === "ADMIN";
   const page = parseInt(searchParams.page) || 1;
 
-  const posts = await getBlogPosts(page, isAdmin);
+  const posts = await getBlogPosts(page);
 
   return (
-    <div className="flex flex-col px-60 py-40 gap-10">
+    <div className="flex flex-col px-40 py-40 gap-10">
       {isAdmin && <Link href="/blog/create/new"><Button variant="ibDark">Create Post</Button></Link>}
       <div className="grid grid-cols-3 gap-10">
         {posts.map((post) => (

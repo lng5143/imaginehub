@@ -70,4 +70,5 @@ export const CreatePostSchema = z.object({
     slug: z.string().min(1, { message: "Slug is required" }),
     thumbnailUrl: z.string().min(1, { message: "Thumbnail is required" }),
     content: z.string().min(1, { message: "Content is required" }),
+    isPublished: z.boolean().optional(),
 })

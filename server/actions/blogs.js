@@ -7,8 +7,7 @@ import { JSDOM } from "jsdom";
 import { auth } from "@/auth";
 
 export async function getBlogPosts(page) {
-    const session = auth();
-
+    const session = await auth();
     const isAdmin = session?.user?.tier === "ADMIN";
 
     const offset = (page - 1) * BLOG_PAGE_SIZE;
@@ -75,7 +74,7 @@ async function validateBlogPostData(data) {
         return { success: false, message: validatedFields.error.message };
     }
 
-    const existingPostById = await getBlogPostById(data.id);
+    const existingPostById = data?.id ? await getBlogPostById(data.id) : null;
     const existingPostBySlug = await getBlogPostBySlug(data.slug);
 
     if (!existingPostById && existingPostBySlug) {
