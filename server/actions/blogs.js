@@ -13,3 +13,35 @@ export async function getBlogPosts(page) {
 
     return posts;
 }
+
+export async function getBlogPostBySlug(slug) {
+    const post = await prisma.blogPost.findUnique({
+        where: { slug }
+    });
+
+    return post;
+}
+
+export async function getBlogPostById(id) {
+    const post = await prisma.blogPost.findUnique({
+        where: { id }
+    });
+
+    return post;
+}
+
+export async function createOrEditBlogPost(data) {
+
+}
+
+async function createBlogPost(data) {
+
+}
+
+async function editBlogPost(data) {
+
+}
+
+function validateBlogPostData(data) {
+
+}
