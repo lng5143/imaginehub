@@ -67,3 +67,5 @@ export const HINTS = {
     SD_SEED: `A specific value that is used to guide the 'randomness' of the generation: [0 .. 4294967294]`,
     SD_NEGATIVE_PROMPT: `Description of what you don't want to generate.`,
 }
+
+export const BLOG_PAGE_SIZE = 9;
