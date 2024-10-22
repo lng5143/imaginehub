@@ -64,3 +64,10 @@ export const EmailFormSchema = z.object({
         message: 'Email is required'
     })
 })
+
+export const CreatePostSchema = z.object({
+    title: z.string().min(1, { message: "Title is required" }),
+    slug: z.string().min(1, { message: "Slug is required" }),
+    thumbnailUrl: z.string().min(1, { message: "Thumbnail is required" }),
+    content: z.string().min(1, { message: "Content is required" }),
+})
