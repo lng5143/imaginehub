@@ -16,13 +16,15 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useEffect, useTransition } from "react";
 import { toast } from "sonner";
-
+import { Checkbox } from "@/components/ui/checkbox";
+import { LoaderCircleIcon } from "lucide-react";
 export default function CreatePostPage() {
   const [isPending, startTransition] = useTransition();
   const params = useParams();
@@ -30,7 +32,14 @@ export default function CreatePostPage() {
 
   const form = useForm({
     resolver: zodResolver(CreatePostSchema),
-    defaultValues: {},
+    defaultValues: {
+        id: "",
+        title: "",
+        slug: "",
+        thumbnailUrl: "",
+        content: "",
+        isPublished: true,
+    },
   });
 
   const {
@@ -40,15 +49,8 @@ export default function CreatePostPage() {
   } = useQuery({
     queryKey: ["blogPost", slug],
     queryFn: async () => {
-      const response = await getBlogPostBySlug(slug);
-
-      if (!response) return null;
-
-      if (!response.success) {
-        toast.error(response.message);
-      }
-      return response.data;
-    },
+      return await getBlogPostBySlug(slug);
+    }
   });
 
   useEffect(() => {
@@ -57,10 +59,16 @@ export default function CreatePostPage() {
     }
   }, [blogPost, form]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return (
+    <div className="flex flex-col items-center justify-center h-screen">
+      <LoaderCircleIcon className="animate-spin" />
+    </div>
+  );
+
   if (error) return <div>Error: {error.message}</div>;
 
   const onSubmit = async (data) => {
+    data.id = blogPost?.id;
     startTransition(async () => {
       const res = await createOrEditBlogPost(data);
 
@@ -132,6 +140,26 @@ export default function CreatePostPage() {
                   />
                 </FormControl>
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="isPublished"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Publish</FormLabel>
+                  <FormDescription>
+                    Check this box to publish the post immediately. Uncheck to save as draft.
+                  </FormDescription>
+                </div>
               </FormItem>
             )}
           />

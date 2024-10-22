@@ -11,6 +11,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'ib-generated-images.s3.eu-central-1.amazonaws.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'ib-project-assets.s3.eu-central-1.amazonaws.com'
+      }
     ],
   },
 };

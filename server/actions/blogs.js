@@ -3,13 +3,20 @@
 import { CreatePostSchema } from "@/schemas";
 import { prisma } from "../lib/prisma";
 import { BLOG_PAGE_SIZE } from "@/const/imagine-box-consts";
+import { JSDOM } from "jsdom";
+import { auth } from "@/auth";
 
 export async function getBlogPosts(page) {
+    const session = auth();
+
+    const isAdmin = session?.user?.tier === "ADMIN";
+
     const offset = (page - 1) * BLOG_PAGE_SIZE;
 
     const posts = await prisma.blogPost.findMany({
         skip: offset,
         take: BLOG_PAGE_SIZE,
+        where: isAdmin ? {} : { isPublished: true }
     });
 
     return posts;
@@ -32,7 +39,7 @@ export async function getBlogPostById(id) {
 }
 
 export async function createOrEditBlogPost(data) {
-    const validateRes = validateBlogPostData(data);
+    const validateRes = await validateBlogPostData(data);
 
     if (!validateRes.success) {
         return validateRes;
@@ -68,10 +75,15 @@ async function validateBlogPostData(data) {
         return { success: false, message: validatedFields.error.message };
     }
 
-    const existingPost = await getBlogPostBySlug(data.slug);
+    const existingPostById = await getBlogPostById(data.id);
+    const existingPostBySlug = await getBlogPostBySlug(data.slug);
 
-    if (!data.id && existingPost) {
-        return { success: false, message: "Slug already exists" };
+    if (!existingPostById && existingPostBySlug) {
+        return { success: false, message: "Cannot create new post. Slug already exists" };
+    }
+
+    if (existingPostById && existingPostBySlug && (existingPostById.id !== existingPostBySlug.id)) {
+        return { success: false, message: "Cannot edit post. Slug already exists" };
     }
 
     if (!isValidHTML(data.content)) {
