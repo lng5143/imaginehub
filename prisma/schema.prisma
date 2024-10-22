@@ -158,5 +158,5 @@ model BlogPost {
   content String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  isPublished Boolean @default(true)
+  isPublished Boolean @default(false)
 }
