@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { getBlogPostBySlug } from "@/server/actions/blogs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default async function BlogPostPage({ params }) {
     const session = await auth();
@@ -12,7 +13,7 @@ export default async function BlogPostPage({ params }) {
     const blogPost = await getBlogPostBySlug(slug);
 
     return (
-    <div className="flex flex-col h-screen px-60 py-40 gap-10">
+    <div className="flex flex-col px-60 py-40 gap-10">
         {isAdmin && blogPost && (
             <div className="flex gap-10 items-center">
                 <p>Published: {blogPost.isPublished ? "Yes" : "No"}</p>
@@ -23,7 +24,7 @@ export default async function BlogPostPage({ params }) {
         {blogPost && (
             <div className="flex flex-col gap-10">
                 <h1 className="text-4xl font-bold">{blogPost.title}</h1>
-                {blogPost.content}
+                <div dangerouslySetInnerHTML={{ __html: blogPost.content }} />
             </div>)}
     </div>
   )
