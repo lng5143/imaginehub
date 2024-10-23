@@ -48,7 +48,7 @@ export const IMAGE_BUCKET_NAME = "generated-images";
 export const PAGE_SIZE = 24;
 export const IMAGINEBOX_OTP_PRICE_ID = "pri_01j9dsw6nd5wwh39bcgse1gsqt";
 export const CONTACT_EMAIL = "admin@imaginebox.me";
-export const TRIAL_IMAGE_COUNT = 20;
+export const TRIAL_IMAGE_COUNT = 10;
 export const PRIMARY_COLOR_HEX = '#1e1b4b';
 export const PAYMENT_UPDATES_STATUS = {
     loading: 'loading',
