@@ -16,12 +16,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useState } from "react";
 import { markGenerationAsFailed } from "@/server/actions/generations";
+import NoKeyDialog from "./no-key-dialog";
 
 export default function DallEForm() {
     const queryClient = useQueryClient();
     const currentUser = useCurrentUser();
     const [currentModel, _setCurrentModel] = useCurrentModel();
     const [isInitInsertInProgress, setIsInitInsertInProgress] = useState(false);
+    const [isNoKeyDialogOpen, setIsNoKeyDialogOpen] = useState(false);
 
     let resolver;
     switch(currentModel.code) {
@@ -55,6 +57,10 @@ export default function DallEForm() {
         toast.success("Image generation complete!")
     }
 
+    const handleNoKeyError = () => {
+        setIsNoKeyDialogOpen(true);
+    }
+
     const onSubmit = async (data) => {
         data.model = currentModel.code;
         data.provider = currentModel.provider;
@@ -65,9 +71,13 @@ export default function DallEForm() {
             const res = await generateImages(data, queryClient, handleInitInsertComplete, handleFinalUpdateComplete);
 
             if (!res.success) {
-                toast.error(res.message);
-                if (res.data?.genId) {
-                    await markGenerationAsFailed(res.data?.genId);
+                if (res.data?.isNoKey) {
+                    handleNoKeyError(res);
+                } else {
+                    toast.error(res.message);
+                    if (res.data?.genId) {
+                        await markGenerationAsFailed(res.data?.genId);
+                    }
                 }
             }
         } catch (error) {
@@ -78,106 +88,109 @@ export default function DallEForm() {
     }
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-10">
-                <FormField
-                    control={form.control}
-                    name="de_size"
-                    render={({ field }) => (
-                        <FormItem className="">
-                            <InputLabel label="Size" hint={HINTS.DE_SIZE} />
-                            <FormControl>
-                            <>
-                            {currentModel.code === "de-2" && (
-                                <RadioGroup defaultValue={field.value} value={field.value} onValueChange={field.onChange} required>
-                                    {DE2_SIZES.map((size, index) => (
-                                        <div key={index} className="flex items-center space-x-2">
-                                            <RadioGroupItem className="bg-white border-none" value={size} id={`de2-${index + 1}`} />
-                                            <Label className="font-normal" htmlFor={`de2-${index + 1}`}>{size.replace('x', ' x ')}</Label>
-                                        </div>
-                                    ))}
-                                </RadioGroup>
-                            )}
-                            {currentModel.code === "de-3" && (
-                                <RadioGroup defaultValue="1024x1024" value={field.value} onValueChange={field.onChange} required>
-                                    {DE3_SIZES.map((size, index) => (
-                                        <div key={index} className="flex items-center space-x-2">
-                                            <RadioGroupItem className="bg-white border-none" value={size} id={`de3-${index + 1}`} />
-                                            <Label className="font-normal" htmlFor={`de3-${index + 1}`}>{size.replace('x', ' x ')}</Label>
-                                        </div>
-                                    ))}
-                                </RadioGroup>
-                            )}
-                            </>
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
-                {currentModel.code === "de-3" && (
+        <>
+            <NoKeyDialog provider="OpenAI" open={isNoKeyDialogOpen} onOpenChange={setIsNoKeyDialogOpen} />
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-10">
                     <FormField
                         control={form.control}
-                        name="de_quality"
+                        name="de_size"
                         render={({ field }) => (
-                        <FormItem>
-                            <InputLabel label="Quality" hint={HINTS.DE_QUALITY} />
-                            <FormControl>
-                                <RadioGroup defaultValue="standard" onValueChange={field.onChange} required>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem className="bg-white border-none" value="standard" id="standard" />
-                                        <Label className="font-normal" htmlFor="standard">Standard</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem className="bg-white border-none" value="hd" id="hd" />
-                                        <Label className="font-normal" htmlFor="hd">HD</Label>
-                                    </div>
-                                </RadioGroup>
-                            </FormControl>
-                        </FormItem>
-                        )}
-                    />
-                )}
-                {currentModel.code === "de-2" && (
-                    <FormField
-                        control={form.control}
-                        name="samples"
-                        render={({ field }) => (
-                        <FormItem>
-                            <InputLabel label="Samples" hint={HINTS.DE_SAMPLES} />
-                            <FormControl>
-                                <div className="flex items-center gap-x-4">
-                                    <Input 
-                                        type="text" 
-                                        value={field.value} 
-                                        onChange={field.onChange} 
-                                        onBlur={e => {
-                                            if (e.target.value > 10) {
-                                                field.onChange(10);
-                                            }
-                                            if (e.target.value < 1) {
-                                                field.onChange(1);
-                                            }
-                                        }}
-                                        className="text-xs bg-white w-full"/>
-                                </div>
-                            </FormControl>
+                            <FormItem className="">
+                                <InputLabel label="Size" hint={HINTS.DE_SIZE} />
+                                <FormControl>
+                                <>
+                                {currentModel.code === "de-2" && (
+                                    <RadioGroup defaultValue={field.value} value={field.value} onValueChange={field.onChange} required>
+                                        {DE2_SIZES.map((size, index) => (
+                                            <div key={index} className="flex items-center space-x-2">
+                                                <RadioGroupItem className="bg-white border-none" value={size} id={`de2-${index + 1}`} />
+                                                <Label className="font-normal" htmlFor={`de2-${index + 1}`}>{size.replace('x', ' x ')}</Label>
+                                            </div>
+                                        ))}
+                                    </RadioGroup>
+                                )}
+                                {currentModel.code === "de-3" && (
+                                    <RadioGroup defaultValue="1024x1024" value={field.value} onValueChange={field.onChange} required>
+                                        {DE3_SIZES.map((size, index) => (
+                                            <div key={index} className="flex items-center space-x-2">
+                                                <RadioGroupItem className="bg-white border-none" value={size} id={`de3-${index + 1}`} />
+                                                <Label className="font-normal" htmlFor={`de3-${index + 1}`}>{size.replace('x', ' x ')}</Label>
+                                            </div>
+                                        ))}
+                                    </RadioGroup>
+                                )}
+                                </>
+                                </FormControl>
                             </FormItem>
                         )}
                     />
-                )}
-                <FormField
-                    control={form.control}
-                    name="prompt"
-                    render={({ field }) => (
-                        <FormItem>
-                            <InputLabel label="Prompt" hint={HINTS.PROMPT} />
-                            <FormControl>
-                                <Textarea required className="h-28 bg-white" {...field} />
-                            </FormControl>
-                        </FormItem>
+                    {currentModel.code === "de-3" && (
+                        <FormField
+                            control={form.control}
+                            name="de_quality"
+                            render={({ field }) => (
+                            <FormItem>
+                                <InputLabel label="Quality" hint={HINTS.DE_QUALITY} />
+                                <FormControl>
+                                    <RadioGroup defaultValue="standard" onValueChange={field.onChange} required>
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem className="bg-white border-none" value="standard" id="standard" />
+                                            <Label className="font-normal" htmlFor="standard">Standard</Label>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem className="bg-white border-none" value="hd" id="hd" />
+                                            <Label className="font-normal" htmlFor="hd">HD</Label>
+                                        </div>
+                                    </RadioGroup>
+                                </FormControl>
+                            </FormItem>
+                            )}
+                        />
                     )}
-                />
-                <Button type="submit" disabled={isInitInsertInProgress} variant="ibDark">Generate</Button>
-            </form>
-        </Form>
+                    {currentModel.code === "de-2" && (
+                        <FormField
+                            control={form.control}
+                            name="samples"
+                            render={({ field }) => (
+                            <FormItem>
+                                <InputLabel label="Samples" hint={HINTS.DE_SAMPLES} />
+                                <FormControl>
+                                    <div className="flex items-center gap-x-4">
+                                        <Input 
+                                            type="text" 
+                                            value={field.value} 
+                                            onChange={field.onChange} 
+                                            onBlur={e => {
+                                                if (e.target.value > 10) {
+                                                    field.onChange(10);
+                                                }
+                                                if (e.target.value < 1) {
+                                                    field.onChange(1);
+                                                }
+                                            }}
+                                            className="text-xs bg-white w-full"/>
+                                    </div>
+                                </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                    )}
+                    <FormField
+                        control={form.control}
+                        name="prompt"
+                        render={({ field }) => (
+                            <FormItem>
+                                <InputLabel label="Prompt" hint={HINTS.PROMPT} />
+                                <FormControl>
+                                    <Textarea required className="h-28 bg-white" {...field} />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <Button type="submit" disabled={isInitInsertInProgress} variant="ibDark">Generate</Button>
+                </form>
+            </Form>
+        </>
     );
 }

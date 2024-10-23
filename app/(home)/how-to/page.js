@@ -8,7 +8,7 @@ export default function HowToPage() {
             Welcome! ImagineBox is a simple web application that you can use to work with image generation AI models, such as DALL-E, Stable Diffusion, Stable Image, etc.
         </div>
         <div>
-            <span className="font-bold">You have {TRIAL_IMAGE_COUNT} free generations to start with!</span> No need to enter your API key or purchase access. After that you will need to enter your API key and purchase lifetime access to continue.
+            <span className="font-bold">You will need to enter your API keys to start using ImagineBox.</span> You have {TRIAL_IMAGE_COUNT} free generations to start with! After that you will need to purchase lifetime access to continue.
         </div>
         <div className="flex flex-col gap-5">
             <h2 className="text-2xl font-bold">How to get and enter API keys</h2>
