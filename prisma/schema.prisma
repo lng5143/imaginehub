@@ -17,7 +17,7 @@ model User {
   tier             UserTier          @default(FREE)
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
-  trialCredits     Int               @default(20)
+  trialCredits     Int               @default(10)
   accounts         Account[]
   imageGenerations ImageGeneration[]
   orders           Order[]
