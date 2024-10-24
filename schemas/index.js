@@ -46,7 +46,7 @@ export const SD3FormSchema = z.object({
 
 export const SICoreFormSchema = z.object({
     sd_aspectRatio: z.enum(SD_RATIOS),
-    sd_stylePreset: z.enum(SD_PRESETS).or(z.literal("")),
+    sd_stylePreset: z.enum(SD_PRESETS).optional(),
     sd_seed: z.number().int({ message: "Seed must be an integer between 0 and 4294967294" }).min(0).max(4294967294),
     sd_negativePrompt: z.string().optional(),
     prompt: z.string().min(1, { message: "Prompt is required" }),
