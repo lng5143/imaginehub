@@ -19,6 +19,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { generateImages } from "@/lib/generate";
 import { toast } from "sonner";
 import NoKeyDialog from "./no-key-dialog";
+import { markGenerationAsFailed } from "@/server/actions/generations";
 
 export default function StabilityForm() {
     const queryClient = useQueryClient();
