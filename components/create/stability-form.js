@@ -49,7 +49,7 @@ export default function StabilityForm() {
         resolver: resolver,
         defaultValues: {
             sd_aspectRatio: "1:1",
-            sd_stylePreset: "",
+            // sd_stylePreset: null,
             sd_seed: 0,
             sd_negativePrompt: "",
             prompt: ""
