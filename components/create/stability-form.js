@@ -11,7 +11,7 @@ import { Command, CommandInput, CommandList, CommandItem, CommandEmpty, CommandG
 import { Input } from "../ui/input";
 import { SD3FormSchema, SICoreFormSchema, SIUltraFormSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { HINTS, SD_PRESETS, SD_RATIOS } from "@/const/imagine-box-consts";
+import { HINTS, PROVIDERS, SD_PRESETS, SD_RATIOS } from "@/const/imagine-box-consts";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useCurrentUser from "@/hooks/use-current-user";
@@ -99,7 +99,7 @@ export default function StabilityForm() {
 
     return (
         <>
-            <NoKeyDialog provider="Stability AI" open={isNoKeyDialogOpen} onOpenChange={setIsNoKeyDialogOpen} />
+            <NoKeyDialog provider={PROVIDERS.stability} open={isNoKeyDialogOpen} onOpenChange={setIsNoKeyDialogOpen} />
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-10">
                     <FormField

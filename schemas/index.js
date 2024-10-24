@@ -72,3 +72,7 @@ export const CreatePostSchema = z.object({
     content: z.string().min(1, { message: "Content is required" }),
     isPublished: z.boolean().optional(),
 })
+
+export const KeyFormSchema = z.object({
+    key: z.string().min(1, { message: "API key is required" }),
+})

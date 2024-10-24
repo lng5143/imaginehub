@@ -9,7 +9,7 @@ import InputLabel from "./input-label";
 import { Input } from "../ui/input";
 import { DE2FormSchema, DE3FormSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DE2_SIZES, DE3_SIZES, HINTS } from "@/const/imagine-box-consts";
+import { DE2_SIZES, DE3_SIZES, HINTS, PROVIDERS } from "@/const/imagine-box-consts";
 import useCurrentUser from "@/hooks/use-current-user";
 import { generateImages } from "@/lib/generate";
 import { useQueryClient } from "@tanstack/react-query";
@@ -89,7 +89,7 @@ export default function DallEForm() {
 
     return (
         <>
-            <NoKeyDialog provider="OpenAI" open={isNoKeyDialogOpen} onOpenChange={setIsNoKeyDialogOpen} />
+            <NoKeyDialog provider={PROVIDERS.openai} open={isNoKeyDialogOpen} onOpenChange={setIsNoKeyDialogOpen} />
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-10">
                     <FormField

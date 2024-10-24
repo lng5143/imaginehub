@@ -43,6 +43,17 @@ export const MODELS = [
     }
 ]
 
+export const PROVIDERS = {
+    openai: {
+        code: "openai",
+        name: "OpenAI",
+    },
+    stability: {
+        code: "stability",
+        name: "Stability AI",
+    }
+}
+
 export const IMAGE_BUCKET_NAME = "generated-images";
 
 export const PAGE_SIZE = 24;
