@@ -43,8 +43,10 @@ const insertImages = async (genId, provider, data) => {
             const buffer = await response.arrayBuffer();
 
             const urlRes = await uploadFileToS3AndGetUrl(process.env.AWS_S3_BUCKET, genId, buffer);
-            if (!urlRes.success)
+            if (!urlRes.success) {
+                console.log("error uploading image", urlRes);
                 continue;
+            }
 
             imageUrls = [...imageUrls, urlRes.data];
         }
@@ -57,8 +59,10 @@ const insertImages = async (genId, provider, data) => {
             const buffer = await item.arrayBuffer();
 
             const urlRes = await uploadFileToS3AndGetUrl(process.env.AWS_S3_BUCKET, genId, buffer);
-            if (!urlRes.success)
+            if (!urlRes.success) {
+                console.log("error uploading image", urlRes);
                 continue;
+            }
 
             imageUrls = [...imageUrls, urlRes.data];
         }
