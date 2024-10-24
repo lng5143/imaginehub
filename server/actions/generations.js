@@ -68,6 +68,9 @@ const insertImages = async (genId, provider, data) => {
         }
     }
 
+    if (imageUrls.length === 0)
+        return { success: false, message: "Failed to save images." }
+
     const res = await prisma.image.createMany({
         data: imageUrls.map(url => ({
             url: url,
