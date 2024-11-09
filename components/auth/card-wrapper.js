@@ -1,6 +1,4 @@
-import { Car } from "lucide-react";
 import { Card, CardHeader, CardContent, CardFooter } from "../ui/card";
-import SocialLogin from "./social-login";
 
 export default function CardWrapper({ children, headerLabel }) {
     return (
