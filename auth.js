@@ -1,9 +1,9 @@
 import NextAuth from "next-auth";
 import Resend from "next-auth/providers/resend";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import authConfig from "./auth.config";
 import { prisma } from "./server/lib/prisma";
 import { getUserByEmail } from "./server/lib/user";
+import Google from "next-auth/providers/google";
 
 export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
     theme: {brandColor: '#1e1b4b'},
@@ -15,7 +15,11 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
     secret: process.env.AUTH_SECRET,
     session: { strategy: "jwt" },
     providers: [
-        ...authConfig.providers,
+        Google({
+            clientId: process.env.AUTH_GOOGLE_ID,
+            clientSecret: process.env.AUTH_GOOGLE_SECRET,
+            allowDangerousEmailAccountLinking: true,
+        }),
         Resend({
             from: "admin@imaginebox.me",
             secret: process.env.AUTH_RESEND_KEY,

@@ -1,10 +1,10 @@
-import { JetBrains_Mono } from "next/font/google";
+import { DM_Sans, JetBrains_Mono, Josefin_Sans, Lato, Nunito, Plus_Jakarta_Sans, Poppins, Raleway } from "next/font/google";
 import "./globals.css";
 import { auth } from "@/auth";
 import { Toaster } from "sonner";
 import Providers from "@/components/providers";
 
-const jetbrainsMono = JetBrains_Mono({
+const dmSans = DM_Sans({
   subsets: ["latin"]
 });
 
@@ -19,7 +19,7 @@ export default async function RootLayout({ children }) {
   return (
     <Providers session={session}>
       <html lang="en">
-        <body className={`${jetbrainsMono.className} h-screen flex flex-col`}>
+        <body className={`${dmSans.className} h-screen flex flex-col`}>
           {children}
           <Toaster richColors />
         </body>
