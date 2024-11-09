@@ -6,6 +6,64 @@ import { PAGE_SIZE } from "@/const/imagine-box-consts";
 import { updateUserCredits } from "./users";
 import { uploadFileToS3AndGetUrl } from "../lib/aws";
 import { ImageGenerationStatus } from "@prisma/client";
+import { getCurrentUserId } from "../lib/user";
+import { ResponseFactory } from "@/types/response";
+
+export const createOrEditImageGeneration = async (data) => {
+    let existingGen;
+    if (data.id)
+        existingGen = await getImageGenerationById(data.id);
+
+    const validationRes = await validateImageGenerationData(data, existingGen);
+
+    if (!validationRes.success)
+        return validationRes;
+
+    const validatedData = validationRes.data;
+
+    if (existingGen)
+        return await editImageGeneration(validatedData, existingGen);
+
+    return await createImageGeneration(validatedData);
+}
+
+const validateImageGenerationData = async (data, existingGen) => {
+    const userId = await getCurrentUserId();
+
+    if (!userId)
+        return ResponseFactory.fail({ message: "Unauthorized" });
+
+    data.userId = userId;
+
+    return ResponseFactory.success({ data: data });
+}
+
+const createImageGeneration = async (data) => {
+    const generation = await prisma.imageGeneration.create({
+        data: data
+    })
+
+    return ResponseFactory.success({ data: generation });
+}
+
+const editImageGeneration = async (data, existingGen) => {
+    // TODO: Implement
+}
+
+const getImageGenerationById = async (genId) => {
+    return await prisma.imageGeneration.findUnique({
+        where: { id: genId }
+    })
+}
+
+const updateImageGenerationStatus = async (genId, status) => {
+    const res = await prisma.imageGeneration.update({
+        where: { id: genId },
+        data: { status }
+    })
+
+    return ResponseFactory.success({ data: res });
+}
 
 export const insertInitialGeneration = async (data) => {
     const response = await prisma.imageGeneration.create({
