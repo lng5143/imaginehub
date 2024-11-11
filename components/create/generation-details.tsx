@@ -13,6 +13,7 @@ import { getGenerationDetails } from "@/server/actions/generations";
 import { Skeleton } from "../ui/skeleton";
 import Image from "next/image";
 import DetailsToolbar from "./details-toolbar";
+import { Image } from "@prisma/client";
 
 export default function GenerationDetails({ }) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -31,7 +32,7 @@ export default function GenerationDetails({ }) {
     setCurrentGenerationId(null);
   };
 
-  const handleCarouselDialogOpen = (index) => {
+  const handleCarouselDialogOpen = (index: number) => {
     setSelectedImageIndex(index);
     setIsCarouselDialogOpen(true);
   }

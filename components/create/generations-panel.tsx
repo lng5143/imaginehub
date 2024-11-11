@@ -6,14 +6,14 @@ import { useQuery } from "@tanstack/react-query";
 import { getGenerations } from "@/server/actions/generations";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PAGE_SIZE } from "@/const/imagine-box-consts";
+import { PAGE_SIZE } from "@/const/consts";
 import { cn } from "@/lib/utils";
 import { useCurrentPage } from "@/store/use-current-page";
 import { ImageGenerationStatus } from "@prisma/client";
 
 export default function GenerationsPanel({}) {
   const containerRef = useRef(null);
-  const [currentPage, setCurrentPage] = useCurrentPage(1);
+  const [currentPage, setCurrentPage] = useCurrentPage();
   const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
 
   const { data: response, isPending } = useQuery({
@@ -21,10 +21,9 @@ export default function GenerationsPanel({}) {
     queryFn: async () => {
       return await getGenerations(currentPage);
     },
-    keepPreviousData: true
   })
 
-  const handlePageChange = (page) => {
+  const handlePageChange = (page: number) => {
     setCurrentPage(page);
   }
 

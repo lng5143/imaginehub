@@ -1,7 +1,13 @@
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
-import { PAGE_SIZE } from "@/const/imagine-box-consts";
+import { PAGE_SIZE } from "@/const/consts";
 
-export default function PaginationContainer({ currentPage, totalCount, onPageChange}) {
+interface PaginationContainerProps {
+    currentPage: number,
+    totalCount: number,
+    onPageChange: (page: number) => void
+}
+
+export default function PaginationContainer({ currentPage, totalCount, onPageChange}: PaginationContainerProps) {
     const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
     if (!totalCount || totalCount <= 0 ||totalPages <= 1) return null;

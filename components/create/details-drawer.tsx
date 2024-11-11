@@ -1,9 +1,14 @@
-import { MODELS } from "@/const/imagine-box-consts"
+import { MODELS } from "@/const/consts"
 import { motion } from "framer-motion"
 import { Textarea } from "../ui/textarea"
 import { LoaderCircleIcon } from "lucide-react"
 
-export default function DetailsDrawer({ data, isLoading }) {
+interface DetailsDrawerProps {
+  data: any,
+  isLoading: boolean
+}
+
+export default function DetailsDrawer({ data, isLoading }: DetailsDrawerProps) {
     return (
         <motion.div
           initial={{ y: "50%" }}

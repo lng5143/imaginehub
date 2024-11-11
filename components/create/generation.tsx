@@ -1,8 +1,13 @@
-import { ImageGenerationStatus } from "@prisma/client";
-import { CircleX, ImageIcon, LoaderCircle, XIcon } from "lucide-react";
+import { Image, ImageGeneration, ImageGenerationStatus } from "@prisma/client";
+import { CircleX, ImageIcon, LoaderCircle } from "lucide-react";
 import Image from "next/image";
 
-export default function Generation({ data, onClick }) {
+interface GenerationProps {
+    data: ImageGeneration & { images: Image[]},
+    onClick: () => void;
+}
+
+export default function Generation({ data, onClick }: GenerationProps) {
     const thumbnail = data.images?.[0]?.url;
 
     return (

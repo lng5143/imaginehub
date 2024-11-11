@@ -1,6 +1,15 @@
+import React from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 
-export default function Hint({ children, text, side, sideOffset, align }) {
+interface HintProps {
+    children: React.ReactNode
+    text: string, 
+    side: "top" | "right" | "bottom" | "left"
+    sideOffset: number,
+    align: "center" | "end" | "start"
+}
+
+export default function Hint({ children, text, side, sideOffset, align }: HintProps) {
     return (
         <TooltipProvider delayDuration={100}>
             <Tooltip>

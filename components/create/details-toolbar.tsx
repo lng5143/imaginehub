@@ -11,7 +11,13 @@ import { useCurrentPage } from "@/store/use-current-page";
 import { useCurrentGenerationId } from "@/store/use-current-generation-id";
 import { deleteGeneration } from "@/server/actions/generations";
 
-export default function DetailsToolbar({ handleClose, imageUrls, genId }) {
+interface DetailsToolbarProps {
+    handleClose: () => void,
+    imageUrls: string[],
+    genId: string
+}
+
+export default function DetailsToolbar({ handleClose, imageUrls, genId }: DetailsToolbarProps) {
     const queryClient = useQueryClient();
     const [isPending, startTransition] = useTransition();
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
@@ -28,12 +34,12 @@ export default function DetailsToolbar({ handleClose, imageUrls, genId }) {
     };
 
     const handleDeleteOptimisticUpdate = async () => {
-        queryClient.setQueryData(["generations", currentPage], (old) => {
+        queryClient.setQueryData(["generations", currentPage], (old: any) => {
             if (!old) return;
 
-            const deletedItem = old.data.find(item => item.id === currentGenerationId);
+            const deletedItem = old.data.find((item: any) => item.id === currentGenerationId);
             if (deletedItem) {
-                const newData = old.data.filter(item => item.id !== deletedItem.id);
+                const newData = old.data.filter((item: any) => item.id !== deletedItem.id);
                 return { ...old, data: newData };
             }
 

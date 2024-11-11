@@ -6,9 +6,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription } from "../ui/form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { PROVIDERS } from "@/const/imagine-box-consts";
+import { PROVIDERS } from "@/const/consts";
 import { toast } from "sonner";
-export default function NoKeyDialog({ provider, open, onOpenChange })  {
+import { z } from "zod";
+
+interface NoKeyDialogProps {
+    provider: any,
+    open: boolean,
+    onOpenChange: (open: boolean) => void
+}
+
+
+export default function NoKeyDialog({ provider, open, onOpenChange } : NoKeyDialogProps)  {
     const form = useForm({
         resolver: zodResolver(KeyFormSchema),
         defaultValues: {
@@ -22,7 +31,7 @@ export default function NoKeyDialog({ provider, open, onOpenChange })  {
         onOpenChange(false);
     }
 
-    const onSubmit = (data) => {
+    const onSubmit = (data: z.infer<typeof KeyFormSchema>) => {
         switch (provider.code) {
             case PROVIDERS.stability.code:
                 localStorage.setItem("ib_stability_api_key", data.key);

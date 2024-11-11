@@ -3,8 +3,9 @@
 import { signIn } from "@/auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { LoginSchema } from "@/schemas/index"
+import { z } from "zod";
 
-export async function login(values) {
+export async function login(values: z.infer<typeof LoginSchema>) {
     const validatedFields = LoginSchema.safeParse(values)
 
     if (!validatedFields.success) {
