@@ -8,13 +8,9 @@ const queryClient = new QueryClient();
 
 export default function CreateLayout({ children }) {
   return (
-    <QueryClientProvider client={queryClient}>
       <div className="flex flex-col h-screen">
         <NavigationBar />
-        <JotaiProvider>
           {children}
-        </JotaiProvider>
       </div>
-    </QueryClientProvider>
   );
 }

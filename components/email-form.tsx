@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useTransition } from "react";
 import { Button } from "./ui/button";
+import { z } from "zod";
 
 export default function EmailForm() {
     const [isPending, startTransition] = useTransition();
@@ -18,10 +19,9 @@ export default function EmailForm() {
         }
     })
 
-    const handleSubmitEmail = async () => {
+    const handleSubmitEmail = async (data: z.infer<typeof EmailFormSchema>) => {
         startTransition(async () => {
-            const { email } = form.getValues();
-            const { error, success } = await saveEmail(email);
+            const { error, success } = await saveEmail(data);
 
             if (error) {
                 toast.error(error);

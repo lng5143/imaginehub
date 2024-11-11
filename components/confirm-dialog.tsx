@@ -2,8 +2,17 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
 import { toast } from "sonner";
+import { ApiResponse } from "@/types/response";
 
-export default function ConfirmDialog({ open, setOpen, title, message, confirmFn }) {
+interface ConfirmDialogProps {
+    open: boolean, 
+    setOpen: (open: boolean) => void,
+    title: string,
+    message: string, 
+    confirmFn: () => ApiResponse
+}
+
+export default function ConfirmDialog({ open, setOpen, title, message, confirmFn } : ConfirmDialogProps) {
     const [isPending, startTransition] = useTransition();
 
     const handleConfirm = () => {
