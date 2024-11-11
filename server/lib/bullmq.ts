@@ -13,14 +13,13 @@ export async function createPaymentWebhooksQueue() {
             },
             removeOnComplete: true,
             removeOnFail: false,
-            timeout: 10000
         }
     });
 
     return paymentQueue;
 }
 
-export async function addPaymentWebhookToQueue(paymentQueue, webhook) {
+export async function addPaymentWebhookToQueue(paymentQueue: Queue, webhook: any) {
     await paymentQueue.add('process-payment-webhook', {
         webhookId: webhook.id,
         payload: webhook.payload,

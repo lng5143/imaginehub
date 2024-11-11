@@ -179,7 +179,7 @@ export const getGenerations = async (page: number): Promise<ApiResponse<PagedDat
 }
 
 export const getGenerationDetails = async (generationId: string): Promise<ApiResponse<ImageGeneration & { images: Image[] } >> => {
-    const userId = await getUserById();
+    const userId = await getCurrentUserId();
     
     if (!userId)
         return ResponseFactory.fail({ message: "User not found" })

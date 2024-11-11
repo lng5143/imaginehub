@@ -1,7 +1,7 @@
 import { prisma } from "./prisma.js";
 import { WebhookStatus, OrderStatus, UserTier } from "@prisma/client";
 
-export async function isWebhookProcessed(webhookId) {
+export async function isWebhookProcessed(webhookId: string) {
     const webhook = await prisma.webhook.findUnique({
         where: {
             id: webhookId
@@ -11,21 +11,21 @@ export async function isWebhookProcessed(webhookId) {
     return webhook?.status === WebhookStatus.PROCESSED;
 }
 
-export async function markWebhookAsProcessed(webhookId) {
+export async function markWebhookAsProcessed(webhookId: string) {
     await prisma.webhook.update({
         where: { id: webhookId },
         data: { status: WebhookStatus.PROCESSED }
     })
 }
 
-export async function markWebhookAsProcessing(webhookId) {
+export async function markWebhookAsProcessing(webhookId: string) {
     await prisma.webhook.update({
         where: { id: webhookId },
         data: { status: WebhookStatus.PROCESSING }
     })
 }
 
-export async function handleWebhookFailure(webhookId, orderId) {
+export async function handleWebhookFailure(webhookId: string, orderId: string) {
     const webhook = await prisma.webhook.findUnique({
         where: { id: webhookId }
     })
@@ -52,7 +52,7 @@ export async function handleWebhookFailure(webhookId, orderId) {
     }
 }
 
-export async function handlePaymentSuccess(userId, orderId) {
+export async function handlePaymentSuccess(userId: string, orderId: string) {
     // update order status 
     await prisma.order.update({
         where: { id: orderId },
@@ -66,7 +66,7 @@ export async function handlePaymentSuccess(userId, orderId) {
     })
 }
 
-export async function getWebhookById(webhookId) {
+export async function getWebhookById(webhookId: string) {
     return await prisma.webhook.findUnique({
         where: { id: webhookId }
     })

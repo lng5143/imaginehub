@@ -1,6 +1,7 @@
+import { RedisConnection } from 'bullmq';
 import { Redis } from 'ioredis';
 
-let connection;
+let connection : Redis;
 
 if (process.env.REDIS_URL) {
     connection = new Redis(process.env.REDIS_URL, { maxRetriesPerRequest: null });
