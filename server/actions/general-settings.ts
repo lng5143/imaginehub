@@ -1,15 +1,15 @@
 'use server'
 
-import useCurrentUser from "@/hooks/use-current-user";
 import { prisma } from "@/server/lib/prisma";
 import { GeneralSettingsSchema } from "@/schemas";
-import { auth } from "@/auth"
+import z from 'zod'
+import { getCurrentUserId } from "../lib/user";
+import { ResponseFactory } from "@/types/response";
 
-export async function updateGeneralSettings(values) {
-    const session = await auth();
-
-    if (!session.user) {
-        return { error: "Unauthorized" }
+export async function updateGeneralSettings(values: z.infer<typeof GeneralSettingsSchema>) {
+    const userId = await getCurrentUserId();
+    if (!userId) {
+        return ResponseFactory.fail({ message: "User not found" })
     }
 
     const validatedValues = GeneralSettingsSchema.safeParse(values);
@@ -21,7 +21,7 @@ export async function updateGeneralSettings(values) {
     const { name } = validatedValues.data;
 
     await prisma.user.update({
-        where: { id: session.user.id },
+        where: { id: userId },
         data: { name}
     })
 

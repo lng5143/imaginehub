@@ -2,30 +2,29 @@
 
 import { createOrder } from "../lib/order";
 import { createCheckout } from "../lib/lemon-squeezy";
-import { PRIMARY_COLOR_HEX } from "@/const/imagine-box-consts";
+import { PRIMARY_COLOR_HEX } from "@/const/consts";
 import { prisma } from "../lib/prisma";
 import { UserTier } from "@prisma/client";
+import { LemonCheckoutInput } from "@/types/lemon-squeezy-input";
+import { ApiResponse, ResponseFactory } from "@/types/response";
+import { getCurrentUserInfo } from "./users";
 
 const price = 19.97;
 
-export const createLicenseCheckout = async (userId) => {
-    const user = await prisma.user.findUnique({
-        where: {
-            id: userId
-        }
-    });
+export const createLicenseCheckout = async (userId: string) : Promise<ApiResponse<{url: string}>> => {
+    const user = await getCurrentUserInfo();
 
     if (!user) {
-        return { success: false, error: 'User not found' };
+        return ResponseFactory.fail({ message: 'User not found' })
     }
 
     if (user.tier === UserTier.PAID) {
-        return { success: false, error: 'User already has a license' };
+        return ResponseFactory.fail({ message: 'User already has a license' })
     }
 
     const orderRes = await createOrder(userId, price);
 
-    const checkoutPayload = {
+    const checkoutPayload: LemonCheckoutInput = {
         data: {
             type: 'checkouts',
             attributes: {
@@ -52,7 +51,7 @@ export const createLicenseCheckout = async (userId) => {
                 variant: {
                     data: {
                         type: 'variants',
-                        id: process.env.LM_LICENSE_VARIANT_ID
+                        id: process.env.LM_LICENSE_VARIANT_ID,
                     }
                 }
             }
@@ -63,5 +62,8 @@ export const createLicenseCheckout = async (userId) => {
     if (!checkoutRes.success)
         return checkoutRes;
 
-    return { success: true, data: { url: checkoutRes?.data?.url }}
+    if (!checkoutRes?.data?.url)
+        return ResponseFactory.fail({})
+
+    return ResponseFactory.success({ data: { url: checkoutRes?.data?.url }})
 }

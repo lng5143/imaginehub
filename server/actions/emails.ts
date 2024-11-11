@@ -2,17 +2,12 @@
 
 import { EmailFormSchema } from "@/schemas"
 import { prisma } from "../lib/prisma"
+import { z } from "zod";
 
-export const saveEmail = async (email) => {
-    const validatedFields = EmailFormSchema.safeParse({ email });
-
-    if (!validatedFields.success) {
-        return { error: validatedFields.error.errors[0].message }
-    }
-
+export const saveEmail = async (data: z.infer<typeof EmailFormSchema>) => {
     const emailExists = await prisma.email.findUnique({
         where: {
-            email: email
+            email: data.email
         }
     })
 
@@ -22,7 +17,7 @@ export const saveEmail = async (email) => {
 
     await prisma.email.create({
         data: {
-            email: email
+            email: data.email
         }
     })
 

@@ -1,6 +1,9 @@
+import { LemonCheckoutInput } from '@/types/lemon-squeezy-input';
+import { ApiResponse, ResponseFactory } from '@/types/response'
+
 const lmCheckoutUrl = 'https://api.lemonsqueezy.com/v1/checkouts';
 
-export const createCheckout = async (payload) => {
+export const createCheckout = async (payload: LemonCheckoutInput) : Promise<ApiResponse<{url: string}>> => {
     const response = await fetch(lmCheckoutUrl, {
         body: JSON.stringify(payload),
         method: 'POST',
@@ -14,7 +17,7 @@ export const createCheckout = async (payload) => {
     const resData = await response.json();
 
     if (resData.errors)
-        return { success: false, errors: resData.errors }
+        return ResponseFactory.fail({ message: "Creating checkout failed", data: resData.errors})
 
     const url = resData?.data?.attributes?.url;
     return { success: true, data: { url } }
