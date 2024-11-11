@@ -1,6 +1,8 @@
+import { CreateOrEditImageGenerationDTO } from "@/types/image-generation";
+
 const STABILITY_ENDPOINT = "https://api.stability.ai/v2beta/stable-image/generate/";
 
-export const generateStabilityImages = async (data, apiKey) => {
+export const generateStabilityImages = async (data: CreateOrEditImageGenerationDTO, apiKey: string) => {
     let modelEndpoint;
     switch(data?.model) {
         case "sd3-medium":
@@ -23,13 +25,12 @@ export const generateStabilityImages = async (data, apiKey) => {
         },
         body: (() => {
             const formData = new FormData();
-            formData.append("prompt", data?.prompt);
-            formData.append("model", data?.model);
-            formData.append("seed", data?.sd_seed);
-            formData.append("aspect_ratio", data?.sd_aspectRatio);
-            formData.append("negative_prompt", data?.sd_negativePrompt);
-            if (data?.sd_stylePreset)
-                formData.append("style_preset", data?.sd_stylePreset);
+            formData.append("prompt", data.prompt);
+            formData.append("model", data.model);
+            formData.append("seed", data?.sd_seed?.toString()!);
+            if (data?.sd_aspectRatio) formData.append("aspect_ratio", data?.sd_aspectRatio);
+            if (data?.sd_negativePrompt) formData.append("negative_prompt", data?.sd_negativePrompt);
+            if (data?.sd_stylePreset) formData.append("style_preset", data?.sd_stylePreset);
             return formData;
         })(),
     })

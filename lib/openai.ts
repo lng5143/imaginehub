@@ -1,6 +1,8 @@
+import { CreateOrEditImageGenerationDTO } from "@/types/image-generation";
+
 const DALLE_ENDPOINT = "https://api.openai.com/v1/images/generations";
 
-export const generateDalleImages = async (data, apiKey) => {
+export const generateDalleImages = async (data: CreateOrEditImageGenerationDTO, apiKey: string) => {
     let modelName;
     switch(data.model) {
         case "de-2":

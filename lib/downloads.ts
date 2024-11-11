@@ -1,14 +1,6 @@
 import JSZip from "jszip"
 
-export const downloadImages = async (imageUrls, genId) => {
-
-    // Simulate processing time
-    const simulateProcessing = async () => {
-        const processingTime = Math.random() * 2000 + 1000; // Random time between 1-3 seconds
-        await new Promise(resolve => setTimeout(resolve, processingTime));
-    };
-
-    await simulateProcessing();
+export const downloadImages = async (imageUrls: string[], genId: string) => {
     const zip = new JSZip();
 
     try {

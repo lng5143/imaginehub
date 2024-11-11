@@ -92,6 +92,11 @@ export const updateImageGeneration = async (genId: string, provider: string, dat
     return { success: true }
 }
 
+export const uploadImageAndUpdateGeneration = async () : Promise<ApiResponse> => {
+
+    return ResponseFactory.success({});
+}
+
 const insertImages = async (genId: string, provider: string, data: any) => {
     let imageUrls: string[] = [];
 
