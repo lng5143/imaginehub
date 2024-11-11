@@ -7,28 +7,33 @@ import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { updateGeneralSettings } from "@/server/actions/general-settings";
-import { UserTier } from "@prisma/client";
+import { User, UserTier } from "@prisma/client";
 import UpgradeButton from "./upgrade-button";
-import { TRIAL_IMAGE_COUNT } from "@/const/imagine-box-consts";
+import { TRIAL_IMAGE_COUNT } from "@/const/consts";
+import z from 'zod';
 
-export default function GeneralForm({ user }) {
+interface GeneralFormProps {
+    user: User
+}
+
+export default function GeneralForm({ user } : GeneralFormProps) {
     const [isPending, startTransition] = useTransition();
 
     const form = useForm({
         resolver: zodResolver(GeneralSettingsSchema),
         defaultValues: {
-            name: user?.name,
+            name: user?.name ?? '',
         }
     })
 
-    function onSubmit(values) {
+    function onSubmit(data: z.infer<typeof GeneralSettingsSchema>) {
         startTransition(async () => {
-            const res = await updateGeneralSettings(values);
+            const res = await updateGeneralSettings(data);
 
-            if (res?.error) {
-                toast.error(res?.error);
+            if (!res.success) {
+                toast.error(res?.message);
             } else {
-                toast.success(res?.success);
+                toast.success(res?.message);
             }
         })
     }
@@ -58,7 +63,7 @@ export default function GeneralForm({ user }) {
     )
 }
 
-function UpgradeSection({user}) {
+function UpgradeSection({ user } : { user: User }) {
     return (
         <div className="flex flex-col gap-2">
                 <p className="text-sm">Trials: {user?.trialCredits}/{TRIAL_IMAGE_COUNT}</p>

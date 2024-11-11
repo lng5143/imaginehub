@@ -4,9 +4,9 @@ import { prisma } from "@/server/lib/prisma";
 import { GeneralSettingsSchema } from "@/schemas";
 import z from 'zod'
 import { getCurrentUserId } from "../lib/user";
-import { ResponseFactory } from "@/types/response";
+import { ApiResponse, ResponseFactory } from "@/types/response";
 
-export async function updateGeneralSettings(values: z.infer<typeof GeneralSettingsSchema>) {
+export async function updateGeneralSettings(values: z.infer<typeof GeneralSettingsSchema>) : Promise<ApiResponse> {
     const userId = await getCurrentUserId();
     if (!userId) {
         return ResponseFactory.fail({ message: "User not found" })
@@ -15,7 +15,7 @@ export async function updateGeneralSettings(values: z.infer<typeof GeneralSettin
     const validatedValues = GeneralSettingsSchema.safeParse(values);
     
     if (!validatedValues.success) {
-        return { error: "Invalid values"}
+        return ResponseFactory.fail({ message: validatedValues.error.errors[0].message })
     }
 
     const { name } = validatedValues.data;
@@ -25,5 +25,5 @@ export async function updateGeneralSettings(values: z.infer<typeof GeneralSettin
         data: { name}
     })
 
-    return { success: "Settings updated successfully" }
+    return ResponseFactory.success({ message: "Settings updated successfully" })
 }
