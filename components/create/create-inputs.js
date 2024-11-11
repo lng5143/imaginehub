@@ -1,4 +1,4 @@
-import ModelSelector from "./model-selector";
+import ModelSelector from "./model-selector.js";
 import { useCurrentModel } from "@/store/use-current-model";
 import DallEForm from "./dall-e-form";
 import StabilityForm from "./stability-form";
