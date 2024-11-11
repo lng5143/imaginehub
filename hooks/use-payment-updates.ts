@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { PAYMENT_UPDATES_STATUS } from "@/const/imagine-box-consts";
+import { PAYMENT_UPDATES_STATUS } from "@/const/consts";
 
-export const usePaymentUpdates = (orderId) => {
+export const usePaymentUpdates = (orderId: string) => {
     const [status, setStatus] = useState(PAYMENT_UPDATES_STATUS.loading);
   
     useEffect(() => {

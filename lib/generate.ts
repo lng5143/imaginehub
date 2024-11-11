@@ -25,10 +25,10 @@ export const generateImages = async (
         let genRes;
         switch (inputData.provider) {
             case "openai":
-                genRes = await generateDalleImages(inputData, apiKeyRes.data);
+                genRes = await generateDalleImages(inputData, apiKeyRes.data?.key!);
                 break;
             case "stability":
-                genRes = await generateStabilityImages(inputData, apiKeyRes.data);
+                genRes = await generateStabilityImages(inputData, apiKeyRes.data?.key!);
                 break;
             default:
                 return { success: false, message: "Invalid provider!", data: { genId: initialGen?.data?.id } }
@@ -54,7 +54,7 @@ export const generateImages = async (
     }
 }
 
-const validateAPIKey = (provider: string) : ApiResponse<{ isNoKey: boolean }> => {
+const validateAPIKey = (provider: string) : ApiResponse<{ key: string }> => {
     let apiKey;
     switch (provider) {
         case "openai":
@@ -66,11 +66,11 @@ const validateAPIKey = (provider: string) : ApiResponse<{ isNoKey: boolean }> =>
     }
 
     if (!apiKey && provider === "openai") {
-        return ResponseFactory.fail({ message: "No OpenAI API key found. Please enter your API key in settings.", data: { isNoKey: true } });
+        return ResponseFactory.fail({ message: "No OpenAI API key found. Please enter your API key in settings." });
     }
     if (!apiKey && provider === "stability") {
-        return ResponseFactory.fail({ message: "No Stability AI API key found. Please enter your API key in settings.", data: { isNoKey: true } })
+        return ResponseFactory.fail({ message: "No Stability AI API key found. Please enter your API key in settings." })
     }
 
-    return { success: true, data: apiKey }
+    return { success: true, data: { key: apiKey! } }
 }
