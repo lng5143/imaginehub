@@ -23,41 +23,7 @@ export const ModelsSettingsSchema = z.object({
     stability_api_key: z.string().optional(),
 })
 
-export const DE2FormSchema = z.object({
-    de_size: z.enum(DE2_SIZES),
-    de_quality: z.enum(DE2_QUALITIES),
-    samples: z.number().min(1).max(10),
-    prompt: z.string().min(1, { message: "Prompt is required" }),
-})
 
-export const DE3FormSchema = z.object({
-    de_size: z.enum(DE3_SIZES),
-    de_quality: z.enum(DE3_QUALITIES),
-    samples: z.number().min(1).max(10),
-    prompt: z.string().min(1, { message: "Prompt is required" }),
-})
-
-export const SD3FormSchema = z.object({
-    sd_aspectRatio: z.enum(SD_RATIOS),
-    sd_seed: z.number().int({ message: "Seed must be an integer between 0 and 4294967294" }).min(0).max(4294967294),
-    sd_negativePrompt: z.string().optional(),
-    prompt: z.string().min(1, { message: "Prompt is required" }),
-})
-
-export const SICoreFormSchema = z.object({
-    sd_aspectRatio: z.enum(SD_RATIOS),
-    sd_stylePreset: z.enum(SD_PRESETS).optional(),
-    sd_seed: z.number().int({ message: "Seed must be an integer between 0 and 4294967294" }).min(0).max(4294967294),
-    sd_negativePrompt: z.string().optional(),
-    prompt: z.string().min(1, { message: "Prompt is required" }),
-})
-
-export const SIUltraFormSchema = z.object({
-    sd_aspectRatio: z.enum(SD_RATIOS),
-    sd_seed: z.number().int({ message: "Seed must be an integer between 0 and 4294967294" }).min(0).max(4294967294),
-    sd_negativePrompt: z.string().optional(),
-    prompt: z.string().min(1, { message: "Prompt is required" }),
-})
 
 export const EmailFormSchema = z.object({
     email: z.string().email({

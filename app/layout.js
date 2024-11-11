@@ -1,6 +1,6 @@
 import { DM_Sans, JetBrains_Mono, Josefin_Sans, Lato, Nunito, Plus_Jakarta_Sans, Poppins, Raleway } from "next/font/google";
 import "./globals.css";
-import { auth } from "@/auth";
+import { auth } from "../auth";
 import { Toaster } from "sonner";
 import Providers from "@/components/providers";
 

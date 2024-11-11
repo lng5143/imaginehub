@@ -1,4 +1,5 @@
 import { prisma } from "@/server/lib/prisma";
+import { auth } from "@/auth";
 
 export async function getUserById(id) {
     return await prisma.user.findUnique({
@@ -14,4 +15,9 @@ export async function getUserByEmail(email) {
             email
         }
     })
+}
+
+export async function getCurrentUserId() {
+    const session = await auth();
+    return session?.user?.id;
 }
