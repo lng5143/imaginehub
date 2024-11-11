@@ -80,3 +80,7 @@ export const HINTS = {
 }
 
 export const BLOG_PAGE_SIZE = 9;
+
+export const WEBHOOK_EVENT_TYPE = {
+    ORDER_CREATED: 'order_created'
+}

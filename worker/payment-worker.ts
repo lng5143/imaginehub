@@ -7,6 +7,7 @@ import {
     markWebhookAsProcessing, 
     handleWebhookFailure 
 } from '../server/lib/webhook.js';
+import { WEBHOOK_EVENT_TYPE } from '@/const/consts.js';
 
 const paymentWorker = new Worker('payment-webhooks', async (job) => {
     const { webhookId, payload, eventType } = job.data;
@@ -25,7 +26,7 @@ const paymentWorker = new Worker('payment-webhooks', async (job) => {
         await markWebhookAsProcessing(webhookId);
 
         // handle the webhook 
-        if (eventType === 'order_created') {
+        if (eventType === WEBHOOK_EVENT_TYPE.ORDER_CREATED) {
             await handlePaymentSuccess(userId, orderId);
         }
 
