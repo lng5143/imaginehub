@@ -3,14 +3,19 @@ import { Button } from "../ui/button"
 import useCurrentUserId from "@/hooks/use-current-user-id"
 import { useTransition } from "react"
 import { cn } from "@/lib/utils"
+import { toast } from "sonner"
 
-export default function UpgradeButton({className}) {
+interface UpgradeButtonProps {
+    className?: string;
+}
+
+export default function UpgradeButton({ className } : UpgradeButtonProps) {
     const [isPending, startTransition] = useTransition();
     const userId = useCurrentUserId();
 
     const handleUpgrade = async () => {
         startTransition(async () => {
-            const checkoutResponse = await createLicenseCheckout(userId);
+            const checkoutResponse = await createLicenseCheckout(userId!);
 
             if (!checkoutResponse.success) {
                 toast.error("Upgrading failed! Please try again later.")

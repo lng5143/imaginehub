@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { ModelsSettingsSchema } from "@/schemas/index";
 import { toast } from "sonner";
+import { z } from "zod";
 
 export default function KeysForm() {
     const [isPending, startTransition] = useTransition();
@@ -18,13 +19,13 @@ export default function KeysForm() {
         }
     })
 
-    function onSubmit(values) {
+    function onSubmit(data: z.infer<typeof ModelsSettingsSchema>) {
         startTransition(async () => {
-            const stabilityApiKey = values.stability_api_key;
-            const openaiApiKey = values.openai_api_key;
+            const stabilityApiKey = data.stability_api_key;
+            const openaiApiKey = data.openai_api_key;
 
-            localStorage.setItem("ib_stability_api_key", stabilityApiKey);
-            localStorage.setItem("ib_openai_api_key", openaiApiKey);
+            if (stabilityApiKey) localStorage.setItem("ib_stability_api_key", stabilityApiKey);
+            if (openaiApiKey) localStorage.setItem("ib_openai_api_key", openaiApiKey);
         })
 
         toast.success("API keys saved");

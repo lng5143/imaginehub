@@ -1,10 +1,17 @@
+import { User } from "@prisma/client";
 import { Dialog, DialogTitle, DialogDescription, DialogContent, DialogHeader, DialogFooter } from "../ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../ui/tabs";
 import GeneralForm from "./general-form";
 import KeysForm from "./models-form";
 import { useState } from "react";
 
-export default function SettingsDialog({ isOpen, setIsOpen, user }) {
+interface SettingsDialogProps {
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
+    user: User;
+}
+
+export default function SettingsDialog({ isOpen, setIsOpen, user } : SettingsDialogProps) {
     const [activeTab, setActiveTab] = useState("general");
 
     return (
