@@ -8,55 +8,6 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-enum USER_TIER {
-  FREE
-  PAID
-  ADMIN
-}
-
-enum IMAGE_GENERATION_STATUS {
-  PROCESSING
-  COMPLETED
-  FAILED
-}
-
-enum DALL_E_QUALITY {
-  standard
-  hd
-}
-
-enum ORDER_STATUS {
-  PENDING
-  COMPLETED
-  FAILED
-}
-
-enum WEBHOOK_PROVIDER {
-  LEMON_SQUEEZY
-}
-
-enum WEBHOOK_STATUS {
-  PENDING
-  PROCESSED
-  FAILED
-  PROCESSING
-}
-
-enum PROVIDER {
-  OPENAI
-  STABILITY
-}
-
-enum MODEL {
-  DE2
-  DE3
-  SD3_MEDIUM
-  SD3_LARGE
-  SD3_LARGE_TURBO
-  SI_CORE
-  SI_ULTRA
-}
-
 model User {
   id               String            @id @default(cuid())
   name             String?
@@ -105,8 +56,8 @@ model ImageGeneration {
   prompt            String
   createdAt         DateTime              @default(now())
   updatedAt         DateTime              @updatedAt
-  samples           Int                   @default(1)
-  status            ImageGenerationStatus @default(PROCESSING)
+  samples           Int
+  status            ImageGenerationStatus
   de_quality        DallEQuality?
   sd_negativePrompt String?
   sd_aspectRatio    String?
@@ -167,4 +118,43 @@ model BlogPost {
   updatedAt    DateTime @updatedAt
   isPublished  Boolean  @default(false)
   content      String
+}
+
+enum DallEQuality {
+  standard
+  hd
+}
+
+enum ImageGenerationStatus {
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum Provider {
+  stability
+  openai
+}
+
+enum UserTier {
+  FREE
+  PAID
+  ADMIN
+}
+
+enum WebhookProvider {
+  LEMON_SQUEEZY
+}
+
+enum WebhookStatus {
+  PENDING
+  PROCESSED
+  FAILED
+  PROCESSING
 }
