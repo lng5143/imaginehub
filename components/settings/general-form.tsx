@@ -13,7 +13,7 @@ import { TRIAL_IMAGE_COUNT } from "@/const/consts";
 import z from 'zod';
 
 interface GeneralFormProps {
-    user: User
+    user: User;
 }
 
 export default function GeneralForm({ user } : GeneralFormProps) {
