@@ -32,6 +32,7 @@ export const EmailFormSchema = z.object({
 })
 
 export const CreatePostSchema = z.object({
+    id: z.string().optional(),
     title: z.string().min(1, { message: "Title is required" }),
     slug: z.string().min(1, { message: "Slug is required" }),
     thumbnailUrl: z.string().min(1, { message: "Thumbnail is required" }),

@@ -13,7 +13,11 @@ export const metadata = {
   description: "Simple tool to use your favorite image generation model",
 };
 
-export default async function RootLayout({ children }) {
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
+
+export default async function RootLayout({ children } : RootLayoutProps) {
   const session = await auth();
 
   return (

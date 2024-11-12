@@ -25,10 +25,12 @@ import { useEffect, useTransition } from "react";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
 import { LoaderCircleIcon } from "lucide-react";
+import { z } from "zod";
+
 export default function CreatePostPage() {
   const [isPending, startTransition] = useTransition();
   const params = useParams();
-  const slug = params.slug;
+  const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
 
   const form = useForm({
     resolver: zodResolver(CreatePostSchema),
@@ -67,7 +69,7 @@ export default function CreatePostPage() {
 
   if (error) return <div>Error: {error.message}</div>;
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data : z.infer<typeof CreatePostSchema>) => {
     data.id = blogPost?.id;
     startTransition(async () => {
       const res = await createOrEditBlogPost(data);

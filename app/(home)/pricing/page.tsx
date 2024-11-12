@@ -3,6 +3,7 @@ import { PRICING_PLANS } from "@/static-data/pricing"
 import { Button } from "@/components/ui/button"
 import FAQSection from "@/components/landing-page/faq"
 import Link from "next/link"
+
 export default function PricingPage() {
   return (
     <div>

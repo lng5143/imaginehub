@@ -5,8 +5,8 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-export default function HeroNavBar() {
 
+export default function HeroNavBar() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {

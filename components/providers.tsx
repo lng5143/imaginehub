@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 interface ProvidersProps {
     children: React.ReactNode,
-    session: Session
+    session: Session | null
 }
 
 const queryClient = new QueryClient();

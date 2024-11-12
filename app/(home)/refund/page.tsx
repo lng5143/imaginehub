@@ -1,4 +1,4 @@
-import { CONTACT_EMAIL } from "@/const/imagine-box-consts";
+import { CONTACT_EMAIL } from "@/const/consts";
 
 export default function RefundPage() {
   return (

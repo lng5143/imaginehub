@@ -1,11 +1,11 @@
 import { prisma } from "@/server/lib/prisma";
 import { OrderStatus, UserTier } from "@prisma/client";
-import { PAYMENT_UPDATES_STATUS } from "@/const/imagine-box-consts";
+import { PAYMENT_UPDATES_STATUS } from "@/const/consts";
 
 const MAX_DURATION = 2 * 60 * 1000;
 const INTERVAL = 2000;
 
-export async function GET(req) {
+export async function GET(req : Request) {
     const headers = new Headers({
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
@@ -23,8 +23,8 @@ export async function GET(req) {
         async start(controller) {
             controller.enqueue(encodeText('connected\n\n'));
 
-            let lastStatus = null;
-            let intervalId;
+            let lastStatus : OrderStatus;
+            let interval : NodeJS.Timeout;
             let startTime = Date.now();
             const checOrderStatus = async () => {
                 try {
@@ -46,7 +46,7 @@ export async function GET(req) {
 
                         if (order.status === OrderStatus.COMPLETED && order.user.tier === UserTier.PAID) {
                             controller.enqueue(encodeText(`data: {"status": "${PAYMENT_UPDATES_STATUS.success}", "orderId": "${order?.id}"}\n\n`));
-                            clearInterval(intervalId);
+                            clearInterval(interval);
                             controller.close();
                             return;
                         }
@@ -54,7 +54,7 @@ export async function GET(req) {
 
                     if (Date.now() - startTime > MAX_DURATION) {
                         controller.enqueue(encodeText(`data: {"status": "${PAYMENT_UPDATES_STATUS.timeOut}", "orderId": "${order?.id}"}\n\n`));
-                        clearInterval(intervalId);
+                        clearInterval(interval);
                         controller.close();
                         return;
                     }
@@ -62,15 +62,15 @@ export async function GET(req) {
                 } catch (error) {
                     console.error(error);
                     controller.enqueue(encodeText(`data: {"status": "${PAYMENT_UPDATES_STATUS.failed}"}\n\n`));
-                    clearInterval(intervalId);
+                    clearInterval(interval);
                     controller.close();
                 }
             }
 
-            intervalId = setInterval(checOrderStatus, INTERVAL);
+            interval = setInterval(checOrderStatus, INTERVAL);
 
             req.signal.addEventListener('abort', () => {
-                clearInterval(intervalId);
+                clearInterval(interval);
                 controller.close();
             })
         }
@@ -79,6 +79,6 @@ export async function GET(req) {
     return new Response(stream, { headers });
 }
 
-function encodeText(text) {
+function encodeText(text : string) {
     return new TextEncoder().encode(text);
 }

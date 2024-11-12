@@ -1,8 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { CircleCheck } from "lucide-react";
-export default function PricingCard({ variant, title, price, features, cta, ...props}) {
 
+interface PricingCardProps {
+    variant: "light" | "dark";
+    title: string;
+    price: string | null;
+    features: string[];
+    cta?: React.ReactNode;
+    className?: string;
+}
+
+export default function PricingCard({ variant, title, price, features, cta, ...props} : PricingCardProps) {
     return (
         <Card className={cn("flex flex-col w-full",variant === "light" ? "bg-indigo-200 text-slate-950" : "bg-indigo-950 text-white", props.className)}>
             <CardHeader>

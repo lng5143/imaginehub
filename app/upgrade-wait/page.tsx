@@ -3,11 +3,16 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CircleCheckBig, CircleX, Loader } from "lucide-react";
 import { useEffect } from "react";
-import { PAYMENT_UPDATES_STATUS } from "@/const/imagine-box-consts";
+import { PAYMENT_UPDATES_STATUS } from "@/const/consts";
 import { useRouter, useSearchParams } from "next/navigation";
 import { usePaymentUpdates } from "@/hooks/use-payment-updates";
+import { CONTACT_EMAIL } from "@/const/consts";
 
-const StatusContent = ({ status }) => {
+interface StatusContentProps {
+    status: string;
+}
+
+const StatusContent = ({ status } : StatusContentProps) => {
     const statusConfig = {
       [PAYMENT_UPDATES_STATUS.loading]: {
         Icon: Loader,

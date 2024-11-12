@@ -2,17 +2,19 @@
 
 import { prisma } from "@/server/lib/prisma";
 import { auth } from "@/auth";
-import { UserTier } from "@prisma/client";
+import { User, UserTier } from "@prisma/client";
+import { ApiResponse } from "@/types/response";
+import { getCurrentUserId, getUserById } from "../lib/user";
 
-export const getCurrentUserInfo = async () => {
-    const session = await auth();
+export const getCurrentUserInfo = async () : Promise<User | null> => {
+    const userId = await getCurrentUserId();
 
-    if (!session?.user) {
+    if (!userId) {
         return null;
     }
 
     const user = await prisma.user.findUnique({
-        where: { id: session.user.id }
+        where: { id: userId }
     })
 
     return user;

@@ -1,4 +1,4 @@
-import { TRIAL_IMAGE_COUNT } from "@/const/imagine-box-consts";
+import { TRIAL_IMAGE_COUNT } from "@/const/consts";
 
 export default function HowToPage() {
     return <div className="flex flex-col gap-20 py-40 px-10 md:px-20 lg:px-60 ">

@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import { PAYMENT_UPDATES_STATUS } from "@/const/consts";
 
-export const usePaymentUpdates = (orderId: string) => {
+export const usePaymentUpdates = (orderId: string | null) => {
     const [status, setStatus] = useState(PAYMENT_UPDATES_STATUS.loading);
   
     useEffect(() => {
+      if (!orderId) {
+        setStatus(PAYMENT_UPDATES_STATUS.failed);
+        return;
+      }
+
       const eventSource = new EventSource(`/api/events/payment-updates?orderId=${orderId}`);
   
       eventSource.onmessage = (event) => {

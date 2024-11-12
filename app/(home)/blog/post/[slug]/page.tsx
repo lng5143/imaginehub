@@ -4,7 +4,13 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
-export default async function BlogPostPage({ params }) {
+interface BlogPostPageProps {
+    params: {
+        slug: string;
+    }
+}
+
+export default async function BlogPostPage({ params } : BlogPostPageProps) {
     const session = await auth();
     const isAdmin = session?.user?.tier === "ADMIN";
 

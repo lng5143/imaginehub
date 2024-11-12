@@ -2,13 +2,22 @@
 
 import { CreatePostSchema } from "@/schemas";
 import { prisma } from "../lib/prisma";
-import { BLOG_PAGE_SIZE } from "@/const/imagine-box-consts";
-import { JSDOM } from "jsdom";
-import { auth } from "@/auth";
+import { BLOG_PAGE_SIZE } from "@/const/consts";
+import { JSDOM } from 'jsdom';
+import { getCurrentUserInfo } from "./users";
+import { ApiResponse, ResponseFactory } from "@/types/response";
+import { PagedData } from "@/types/paged-data";
+import { BlogPost } from "@prisma/client";
+import z from 'zod';
 
-export async function getBlogPosts(page) {
-    const session = await auth();
-    const isAdmin = session?.user?.tier === "ADMIN";
+export async function getBlogPosts(page : number) : Promise<ApiResponse<PagedData<BlogPost>>> {
+    // const session = await auth();
+    const user = await getCurrentUserInfo();
+    if (!user || !user.tier) {
+        return ResponseFactory.fail({ message: "User not found" });
+    }
+
+    const isAdmin = user.tier === "ADMIN";
 
     const offset = (page - 1) * BLOG_PAGE_SIZE;
 
@@ -21,7 +30,7 @@ export async function getBlogPosts(page) {
     return posts;
 }
 
-export async function getBlogPostBySlug(slug) {
+export async function getBlogPostBySlug(slug : string) {
     const post = await prisma.blogPost.findUnique({
         where: { slug }
     });
@@ -29,7 +38,7 @@ export async function getBlogPostBySlug(slug) {
     return post;
 }
 
-export async function getBlogPostById(id) {
+export async function getBlogPostById(id : string) {
     const post = await prisma.blogPost.findUnique({
         where: { id }
     });
@@ -37,7 +46,7 @@ export async function getBlogPostById(id) {
     return post;
 }
 
-export async function createOrEditBlogPost(data) {
+export async function createOrEditBlogPost(data : z.infer<typeof CreatePostSchema>) {
     const validateRes = await validateBlogPostData(data);
 
     if (!validateRes.success) {
@@ -50,7 +59,7 @@ export async function createOrEditBlogPost(data) {
         return await editBlogPost(data);
 }
 
-async function createBlogPost(data) {
+async function createBlogPost(data : z.infer<typeof CreatePostSchema>) {
     const post = await prisma.blogPost.create({
         data
     });
@@ -58,7 +67,7 @@ async function createBlogPost(data) {
     return { success: true, message: "Post created successfully" };
 }
 
-async function editBlogPost(data) {
+async function editBlogPost(data : z.infer<typeof CreatePostSchema>) {
     const post = await prisma.blogPost.update({
         where: { id: data.id },
         data
@@ -67,10 +76,13 @@ async function editBlogPost(data) {
     return { success: true, message: "Post updated successfully" };
 }
 
-async function validateBlogPostData(data) {
-    const session = await auth();
+async function validateBlogPostData(data : z.infer<typeof CreatePostSchema>) : Promise<ApiResponse> {
+    const user = await getCurrentUserInfo();
+    if (!user || !user.tier) {
+        return ResponseFactory.fail({ message: "User not found" });
+    }
 
-    if (session?.user?.tier !== "ADMIN") {
+    if (user.tier !== "ADMIN") {
         return { success: false, message: "You are not authorized to create or edit blog posts" };
     }
 
@@ -98,7 +110,7 @@ async function validateBlogPostData(data) {
     return { success: true };
 }
 
-function isValidHTML(htmlString) {
+function isValidHTML(htmlString : string) {
     try {
       const dom = new JSDOM(htmlString);
       return !!dom.window.document.body; 

@@ -4,10 +4,10 @@ import { PAGE_SIZE } from "@/const/consts";
 interface PaginationContainerProps {
     currentPage: number,
     totalCount: number,
-    onPageChange: (page: number) => void
+    // onPageChange: (page: number) => void
 }
 
-export default function PaginationContainer({ currentPage, totalCount, onPageChange}: PaginationContainerProps) {
+export default function PaginationContainer({ currentPage, totalCount}: PaginationContainerProps) {
     const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
     if (!totalCount || totalCount <= 0 ||totalPages <= 1) return null;
@@ -19,8 +19,7 @@ export default function PaginationContainer({ currentPage, totalCount, onPageCha
                     <PaginationItem
                         onClick={(e) => {
                             e.preventDefault();
-                            if (currentPage > 1) 
-                                onPageChange(currentPage - 1)
+                            // TODO: navigate using Link component
                         }}
                         
                         >
@@ -45,7 +44,7 @@ export default function PaginationContainer({ currentPage, totalCount, onPageCha
                                         : "hover:bg-amber-500 hover:text-black cursor-pointer"}
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        onPageChange(page)
+                                        // TODO: navigate using Link component
                                     }}
                                 >
                                     {page}
@@ -65,9 +64,9 @@ export default function PaginationContainer({ currentPage, totalCount, onPageCha
                     <PaginationItem
                         onClick={(e) => {
                             e.preventDefault();
-                            if (currentPage < totalPages) 
-                                onPageChange(currentPage + 1)
-                        }}
+                                // TODO: navigate using Link component    
+                        } 
+                    }                 
                     >
                         <PaginationNext 
                             className="hover:bg-amber-500 hover:text-black cursor-pointer" 

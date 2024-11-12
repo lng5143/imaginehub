@@ -4,9 +4,9 @@ import { WebhookProvider, WebhookStatus } from '@prisma/client'
 
 const crypto = require('crypto')
 
-const paymentQueue = await createPaymentWebhooksQueue();
+const paymentQueue = createPaymentWebhooksQueue();
 
-export const POST = async (req) => {
+export const POST = async (req : Request) => {
     // validate signature
     const rawBody = await new Response(req.body).text();
     const secret = process.env.LM_SIGNING_SECRET
