@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
 
-export default function CTAButton({variant = "ibDark"}) {
+interface CTAButtonProps {
+    variant?: "ibDark" | "ibLight"
+}
+
+export default function CTAButton({ variant } : CTAButtonProps) {
     return (
         <Button variant={variant} className="w-60 text-lg font-semibold">
             <Link href="/create">

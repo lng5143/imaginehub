@@ -1,6 +1,11 @@
 import { cn } from "@/lib/utils"
 
-export default function StepNumber({ variant, number }) {
+interface StepNumberProps {
+    variant: "left" | "right" | "middle";
+    number: string;
+}
+
+export default function StepNumber({ variant, number } : StepNumberProps) {
     return (
         <div className="relative w-full">
             <div className="flex w-full h-1.5">

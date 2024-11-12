@@ -17,23 +17,20 @@ export default function HowItWorksSection() {
                     {<HowItem 
                         title={HOW_IT_WORKS[0].title} 
                         description={HOW_IT_WORKS[0].description} 
-                        icon={<KeyRound className="w-20 h-20" />} 
-                        alt={HOW_IT_WORKS[0].title} 
-                        className="w-60 h-60"
+                        iconComp={<KeyRound className="w-20 h-20" />} 
+                        // className="w-60 h-60"
                     />}
                     {<HowItem 
                         title={HOW_IT_WORKS[1].title} 
                         description={HOW_IT_WORKS[1].description} 
-                        icon={<FolderKey className="w-20 h-20" />} 
-                        alt={HOW_IT_WORKS[1].title} 
-                        className="w-60 h-60"
+                        iconComp={<FolderKey className="w-20 h-20" />} 
+                        // className="w-60 h-60"
                     />}
                     {<HowItem 
                         title={HOW_IT_WORKS[2].title} 
                         description={HOW_IT_WORKS[2].description} 
-                        icon={<PackagePlus className="w-20 h-20" />} 
-                        alt={HOW_IT_WORKS[2].title} 
-                        className="w-60 h-60"
+                        iconComp={<PackagePlus className="w-20 h-20" />} 
+                        // className="w-60 h-60"
                     />}
                 </div>
             </div>

@@ -5,8 +5,13 @@ import LogoutButton from "../auth/logout-button";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import SettingsDialog from "../settings/settings-dialog";
+import { User } from "@prisma/client";
 
-export default function UserButton({ user }) {
+interface UserButtonProps {
+    user: User;
+}
+
+export default function UserButton({ user } : UserButtonProps) {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [isUserButtonOpen, setIsUserButtonOpen] = useState(false);
 
@@ -21,7 +26,7 @@ export default function UserButton({ user }) {
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-sm">
                         <Avatar className="w-10 h-10 rounded-sm">
-                            <AvatarImage src={user.image} alt="User Avatar" />
+                            <AvatarImage src={user.image ?? ""} alt="User Avatar" />
                             <AvatarFallback className="w-10 h-10 rounded-sm">
                                 <FaUser />
                             </AvatarFallback>

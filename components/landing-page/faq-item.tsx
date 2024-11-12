@@ -3,7 +3,13 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-export default function FaqItem({ question, answer }) {
+
+interface FaqItemProps {
+  question: string;
+  answer: string;
+}
+
+export default function FaqItem({ question, answer } : FaqItemProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleAnswer = () => {
