@@ -7,7 +7,7 @@ import { Button } from "../ui/button";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 export default function SocialLogin() {
-    function onClick(provider) {
+    function onClick(provider : string) {
         signIn(provider, { callbackUrl: DEFAULT_LOGIN_REDIRECT});
     }
 

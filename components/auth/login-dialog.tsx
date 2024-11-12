@@ -3,7 +3,12 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Button } from "../ui/button";
 
-export default function Login({open, setOpen}) {
+interface LoginProps {
+    open: boolean;
+    setOpen: (open: boolean) => void;
+}
+
+export default function Login({ open, setOpen } : LoginProps) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>

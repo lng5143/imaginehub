@@ -10,8 +10,13 @@ import { useTransition } from "react";
 import { login } from "@/server/actions/login";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
+import { z } from "zod";
 
-export default function AuthForm({ urlError }) {
+interface AuthFormProps {
+    urlError?: string | undefined;
+}
+
+export default function AuthForm({ urlError } : AuthFormProps) {
     const [isPending, startTransition] = useTransition();
 
     const form = useForm({
@@ -21,9 +26,9 @@ export default function AuthForm({ urlError }) {
         }
     })
 
-    function onSubmit(values) {
+    function onSubmit(data: z.infer<typeof LoginSchema>) {
         startTransition(async () => {
-            await login(values)
+            await login(data)
             .then(data => {
                 form.reset();
 
