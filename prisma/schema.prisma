@@ -3,9 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  // directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -51,40 +50,40 @@ model VerificationToken {
 }
 
 model ImageGeneration {
-  id                String                @id @default(cuid())
-  userId            String
-  prompt            String
-  createdAt         DateTime              @default(now())
-  updatedAt         DateTime              @updatedAt
-  samples           Int
-  status            ImageGenerationStatus
-  provider          Provider
-  model             Model
-  images            Image[]
+  id                         String                      @id @default(cuid())
+  userId                     String
+  prompt                     String
+  createdAt                  DateTime                    @default(now())
+  updatedAt                  DateTime                    @updatedAt
+  samples                    Int
+  status                     ImageGenerationStatus
+  provider                   Provider
+  model                      Model
+  images                     Image[]
+  user                       User                        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  openAIGenerationConfigs    OpenAIGenerationConfigs?
   stabilityGenerationConfigs StabilityGenerationConfigs?
-  openAIGenerationConfigs   OpenAIGenerationConfigs?
-  user              User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model OpenAIGenerationConfigs {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  quality   String 
-  size      String
-  imageGenerationId String @unique
+  id                String          @id @default(cuid())
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  quality           String
+  size              String
+  imageGenerationId String          @unique
   imageGeneration   ImageGeneration @relation(fields: [imageGenerationId], references: [id], onDelete: Cascade)
 }
 
 model StabilityGenerationConfigs {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  negativePrompt String
-  aspectRatio    String
-  seed           BigInt
-  stylePreset    String
-  imageGenerationId String @unique
+  id                String          @id @default(cuid())
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  negativePrompt    String?
+  aspectRatio       String
+  seed              BigInt
+  stylePreset       String?
+  imageGenerationId String          @unique
   imageGeneration   ImageGeneration @relation(fields: [imageGenerationId], references: [id], onDelete: Cascade)
 }
 
