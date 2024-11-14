@@ -5,7 +5,7 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  // directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -67,7 +67,31 @@ model ImageGeneration {
   de_size           String?
   model             String
   images            Image[]
+  stabilityGenerationConfigs StabilityGenerationConfigs?
+  openAIGenerationConfigs   OpenAIGenerationConfigs?
   user              User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model OpenAIGenerationConfigs {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  quality   String 
+  size      String
+  imageGenerationId String @unique
+  imageGeneration   ImageGeneration @relation(fields: [imageGenerationId], references: [id], onDelete: Cascade)
+}
+
+model StabilityGenerationConfigs {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  negativePrompt String
+  aspectRatio    String
+  seed           BigInt
+  stylePreset    String
+  imageGenerationId String @unique
+  imageGeneration   ImageGeneration @relation(fields: [imageGenerationId], references: [id], onDelete: Cascade)
 }
 
 model Image {
