@@ -1,17 +1,14 @@
 import { CreateOrEditImageGenerationDTO } from "@/types/image-generation";
+import { ApiResponse, ResponseFactory } from "@/types/response";
+import { toFormData } from "./images";
+import { Model } from "@prisma/client";
 
 const DALLE_ENDPOINT = "https://api.openai.com/v1/images/generations";
 
-export const generateDalleImages = async (data: CreateOrEditImageGenerationDTO, apiKey: string) => {
-    let modelName;
-    switch(data.model) {
-        case "de-2":
-            modelName = "dall-e-2";
-            break;
-        case "de-3":
-            modelName = "dall-e-3";
-            break;
-    }
+export const generateDalleImages = async (data: CreateOrEditImageGenerationDTO, apiKey: string) : Promise<ApiResponse<FormData>> => {
+    const modelName = getOpenAIModelName(data.model);
+    if (!modelName) return ResponseFactory.fail({ message: "Invalid model" });
+    
 
     const response = await fetch(DALLE_ENDPOINT, {
         method: "POST",
@@ -23,8 +20,8 @@ export const generateDalleImages = async (data: CreateOrEditImageGenerationDTO, 
             model: modelName,
             prompt: data?.prompt,
             n: data?.samples,
-            size: data?.de_size,
-            quality: data?.de_quality
+            size: data?.openAIGenerationConfigs?.size,
+            quality: data?.openAIGenerationConfigs?.quality,
         })
     })
 
@@ -34,5 +31,24 @@ export const generateDalleImages = async (data: CreateOrEditImageGenerationDTO, 
         return { success: false, message: resData?.error?.message }
     }
 
-    return { success: true, data: resData?.data }
+    const urls = resData?.data.map((d: any) => d?.url);
+    const imageBlobs : Blob[] = await Promise.all(urls.map(async (url: string) => {
+        const imageRes = await fetch(url);
+        return imageRes.blob();
+    }));
+
+    const formData = toFormData(imageBlobs);
+    
+    return ResponseFactory.success({ data: formData });
+}
+
+const getOpenAIModelName = (model: Model) : string | undefined => {
+    switch(model) {
+        case Model.DALL_E_2:
+            return "dall-e-2";
+        case Model.DALL_E_3:
+            return "dall-e-3";
+        default: 
+            return undefined;
+    }
 }

@@ -1,22 +1,14 @@
 import { CreateOrEditImageGenerationDTO } from "@/types/image-generation";
+import { toFormData } from "./images";
+import { ApiResponse, ResponseFactory } from "@/types/response";
+import { Model, Provider } from "@prisma/client";
 
 const STABILITY_ENDPOINT = "https://api.stability.ai/v2beta/stable-image/generate/";
 
-export const generateStabilityImages = async (data: CreateOrEditImageGenerationDTO, apiKey: string) => {
-    let modelEndpoint;
-    switch(data?.model) {
-        case "sd3-medium":
-        case "sd3-large":
-        case "sd3-large-turbo":
-            modelEndpoint = "sd3";
-            break;
-        case "si-ultra":
-            modelEndpoint = "ultra";
-            break;
-        case "si-core":
-            modelEndpoint = "core";
-    }
-
+export const generateStabilityImages = async (data: CreateOrEditImageGenerationDTO, apiKey: string) : Promise<ApiResponse<FormData>> => {
+    const modelEndpoint = getStabilityModelEndpoint(data.model);
+    if (!modelEndpoint) return ResponseFactory.fail({ message: "Invalid model" });
+    
     const response = await fetch(`${STABILITY_ENDPOINT}${modelEndpoint}`, {
         method: "POST",
         headers: {
@@ -27,10 +19,14 @@ export const generateStabilityImages = async (data: CreateOrEditImageGenerationD
             const formData = new FormData();
             formData.append("prompt", data.prompt);
             formData.append("model", data.model);
-            formData.append("seed", data?.sd_seed?.toString()!);
-            if (data?.sd_aspectRatio) formData.append("aspect_ratio", data?.sd_aspectRatio);
-            if (data?.sd_negativePrompt) formData.append("negative_prompt", data?.sd_negativePrompt);
-            if (data?.sd_stylePreset) formData.append("style_preset", data?.sd_stylePreset);
+            formData.append("seed", data?.stabilityGenerationConfigs?.seed.toString()!);
+            formData.append("aspect_ratio", data?.stabilityGenerationConfigs?.aspectRatio.toString()!);
+
+            const negativePrompt = data?.stabilityGenerationConfigs?.negativePrompt;
+            if (negativePrompt && negativePrompt.trim().length > 0) formData.append("negative_prompt", negativePrompt);
+            
+            const stylePreset = data?.stabilityGenerationConfigs?.stylePreset;
+            if (stylePreset) formData.append("style_preset", stylePreset);
             return formData;
         })(),
     })
@@ -38,17 +34,29 @@ export const generateStabilityImages = async (data: CreateOrEditImageGenerationD
     if (!response.ok) {
         const resData = await response.json();
         if (resData?.errors?.length > 0)
-            return { success: false, message: resData?.errors[0] }
+            return ResponseFactory.fail({ message: resData?.errors[0] });
         else
-            return { success: false, message: "Failed to generate images" }
+            return ResponseFactory.fail({ message: "Failed to generate image" });
     }
 
     const imageBlob = await response.blob();
     const images = [imageBlob];
-    const formData = new FormData();
-    images.forEach((blob, index) => {
-        formData.append(`file${index}`, blob);
-    })
+    const formData = toFormData(images);
 
-    return { success: true, data: formData }
+    return ResponseFactory.success({ data: formData });
+}
+
+const getStabilityModelEndpoint =(model: Model) : string | undefined => {
+    switch(model) {
+        case Model.STABLE_DIFFUSION_3_LARGE:
+        case Model.STABLE_DIFFUSION_3_LARGE_TURBO:
+        case Model.STABLE_DIFFUSION_3_MEDIUM:
+            return "sd3";
+        case Model.STABLE_IMAGE_ULTRA:
+            return  "ultra";
+        case Model.STABLE_IMAGE_CORE:
+            return "core";
+        default:
+            return undefined;
+    }
 }

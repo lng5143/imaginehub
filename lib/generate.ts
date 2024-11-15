@@ -1,9 +1,10 @@
-import { insertInitialGeneration, updateImageGeneration, uploadImageAndUpdateGeneration } from "@/server/actions/generations";
+import { createOrEditImageGeneration, uploadImageAndUpdateGeneration } from "@/server/actions/generations";
 import { generateDalleImages } from "./openai";
 import { generateStabilityImages } from "./stability";
 import { CreateOrEditImageGenerationDTO } from "@/types/image-generation";
 import { ApiResponse, ResponseFactory } from "@/types/response";
 import { QueryClient } from "@tanstack/react-query";
+import { Provider } from "@prisma/client";
 
 export const generateImages = async (
     inputData: CreateOrEditImageGenerationDTO, 
@@ -16,31 +17,30 @@ export const generateImages = async (
         return apiKeyRes;
     }
 
-    const initialGen = await insertInitialGeneration(inputData);
-
+    const initialGen = await createOrEditImageGeneration(inputData);
     await queryClient.refetchQueries({ queryKey: ["generations", 1] })
     handleInitInsertComplete();
 
     try {
-        let genRes;
+        let genRes : ApiResponse<FormData>;
         switch (inputData.provider) {
-            case "openai":
+            case Provider.OPENAI:
                 genRes = await generateDalleImages(inputData, apiKeyRes.data?.key!);
                 break;
-            case "stability":
+            case Provider.STABILITY:
                 genRes = await generateStabilityImages(inputData, apiKeyRes.data?.key!);
                 break;
             default:
-                return { success: false, message: "Invalid provider!", data: { genId: initialGen?.data?.id } }
+                return ResponseFactory.fail({ message: "Invalid provider!", data: { genId: initialGen?.data?.id } });
         }
 
-        if (!genRes.success) {
-            return { success: false, message: genRes.message, data: { genId: initialGen?.data?.id } };
+        if (!genRes || !genRes.success || !genRes.data) {
+            return ResponseFactory.fail({ message: genRes?.message, data: { genId: initialGen?.data?.id } });
         }
 
-        const res = await uploadImageAndUpdateGeneration();
+        const res = await uploadImageAndUpdateGeneration(initialGen?.data?.id!, genRes.data!);
         if (!res.success) {
-            return { success: false, message: res.message, data: { genId: initialGen?.data?.id } };
+            return ResponseFactory.fail({ message: res.message, data: { genId: initialGen?.data?.id } });
         }
 
         queryClient.refetchQueries({ queryKey: ["generations", 1] })
@@ -48,9 +48,9 @@ export const generateImages = async (
             handleFinalUpdateComplete();
         })
 
-        return { success: true, data: res.data }
+        return ResponseFactory.success({ data: res.data });
     } catch (error) {
-        return { success: false, message: "Failed to generate images!", data: { genId: initialGen?.data?.id } }
+        return ResponseFactory.fail({ message: "Failed to generate images!", data: { genId: initialGen?.data?.id } });
     }
 }
 
