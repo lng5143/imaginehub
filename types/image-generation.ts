@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { DE2_SIZES, DE2_QUALITIES, DE3_SIZES, DE3_QUALITIES, SD_RATIOS, SD_PRESETS } from "@/const/consts";
-import { DallEQuality, ImageGenerationStatus, Provider } from "@prisma/client";
+import { ImageGenerationStatus, Model, Provider } from "@prisma/client";
 
 export type CreateOrEditImageGenerationDTO = {
     id: string | undefined;
@@ -9,19 +9,31 @@ export type CreateOrEditImageGenerationDTO = {
     samples: number;
     status: ImageGenerationStatus | undefined;
     provider: Provider;
-    model: string;
-    de_quality: DallEQuality | undefined;
-    de_size: string | undefined;
-    sd_negativePrompt: string | undefined;
-    sd_aspectRatio: string | undefined;
-    sd_seed: number | undefined;
-    sd_stylePreset: string | undefined;
+    model: Model;
+    openAIGenerationConfigs?: OpenAIGenerationConfigsDTO;
+    stabilityGenerationConfigs?: StabilityGenerationConfigsDTO; 
+}
+
+export type OpenAIGenerationConfigsDTO = {
+    id: string | undefined;
+    quality: string;
+    size: string;
+    imageGenerationId: string | undefined;
+}
+
+export type StabilityGenerationConfigsDTO = {
+    id: string | undefined;
+    aspectRatio: string;
+    seed: number;
+    negativePrompt: string | undefined;
+    stylePreset: string | undefined;
+    imageGenerationId: string | undefined;
 }
 
 export const DE2FormSchema = z.object({
     id: z.string().optional(),
-    de_size: z.enum(DE2_SIZES as [string, ...string[]]),
-    de_quality: z.enum(DallEQuality),
+    size: z.enum(DE2_SIZES as [string, ...string[]]),
+    quality: z.enum(DE2_QUALITIES as [string, ...string[]]),
     samples: z.number().min(1).max(10),
     prompt: z.string().min(1, { message: "Prompt is required" }),
 })
@@ -31,20 +43,20 @@ export const DE2FormSchema = z.object({
     prompt: data.prompt,
     samples: data.samples,
     status: ImageGenerationStatus.PROCESSING,
-    provider: Provider.openai,
-    model: "de-2",
-    de_quality: data.de_quality,
-    de_size: data.de_size,
-    sd_negativePrompt: undefined,
-    sd_aspectRatio: undefined,
-    sd_seed: undefined,
-    sd_stylePreset: undefined,
+    provider: Provider.OPENAI,
+    model: Model.DALL_E_2,
+    openAIGenerationConfigs: {
+        id: undefined,
+        quality: data.quality,
+        size: data.size,
+        imageGenerationId: undefined,
+    }
 }))
 
 export const DE3FormSchema = z.object({
     id: z.string().optional(),
-    de_size: z.enum(DE3_SIZES as [string, ...string[]]),
-    de_quality: z.enum(DallEQuality),
+    size: z.enum(DE3_SIZES as [string, ...string[]]),
+    quality: z.enum(DE3_QUALITIES as [string, ...string[]]),
     samples: z.number().min(1).max(10),
     prompt: z.string().min(1, { message: "Prompt is required" }),
 })
@@ -54,21 +66,21 @@ export const DE3FormSchema = z.object({
     prompt: data.prompt,
     samples: data.samples,
     status: ImageGenerationStatus.PROCESSING,
-    provider: Provider.openai,
-    model: "de-3",
-    de_quality: data.de_quality,
-    de_size: data.de_size,
-    sd_negativePrompt: undefined,
-    sd_aspectRatio: undefined,
-    sd_seed: undefined,
-    sd_stylePreset: undefined,
+    provider: Provider.OPENAI,
+    model: Model.DALL_E_3,
+    openAIGenerationConfigs: {
+        id: undefined,
+        quality: data.quality,
+        size: data.size,
+        imageGenerationId: undefined,
+    }
 }))
 
-export const SD3FormSchema = z.object({
+export const SD3MediumFormSchema = z.object({
     id: z.string().optional(),
-    sd_aspectRatio: z.enum(SD_RATIOS as [string, ...string[]]),
-    sd_seed: z.number().int({ message: "Seed must be an integer between 0 and 4294967294" }).min(0).max(4294967294),
-    sd_negativePrompt: z.string().optional(),
+    aspectRatio: z.enum(SD_RATIOS as [string, ...string[]]),
+    seed: z.number().int({ message: "Seed must be an integer between 0 and 4294967294" }).min(0).max(4294967294),
+    negativePrompt: z.string().optional(),
     prompt: z.string().min(1, { message: "Prompt is required" }),
 })
 .transform((data) : CreateOrEditImageGenerationDTO => ({
@@ -77,22 +89,74 @@ export const SD3FormSchema = z.object({
     prompt: data.prompt,
     samples: 1,
     status: ImageGenerationStatus.PROCESSING,
-    provider: Provider.stability,
-    model: "sd3",
-    de_quality: undefined,
-    de_size: undefined,
-    sd_negativePrompt: data.sd_negativePrompt,
-    sd_aspectRatio: data.sd_aspectRatio,
-    sd_seed: data.sd_seed,
-    sd_stylePreset: undefined,
+    provider: Provider.STABILITY,
+    model: Model.STABLE_DIFFUSION_3_MEDIUM,
+    stabilityGenerationConfigs: {
+        id: undefined,
+        aspectRatio: data.aspectRatio,
+        seed: data.seed,
+        negativePrompt: data.negativePrompt,
+        stylePreset: undefined,
+        imageGenerationId: undefined,
+    }
+}))
+
+export const SD3LargeFormSchema = z.object({
+    id: z.string().optional(),
+    aspectRatio: z.enum(SD_RATIOS as [string, ...string[]]),
+    seed: z.number().int({ message: "Seed must be an integer between 0 and 4294967294" }).min(0).max(4294967294),
+    negativePrompt: z.string().optional(),
+    prompt: z.string().min(1, { message: "Prompt is required" }),
+})
+.transform((data) : CreateOrEditImageGenerationDTO => ({
+    id: data.id,
+    userId: undefined,
+    prompt: data.prompt,
+    samples: 1,
+    status: ImageGenerationStatus.PROCESSING,
+    provider: Provider.STABILITY,
+    model: Model.STABLE_DIFFUSION_3_LARGE,
+    stabilityGenerationConfigs: {
+        id: undefined,
+        aspectRatio: data.aspectRatio,
+        seed: data.seed,
+        negativePrompt: data.negativePrompt,
+        stylePreset: undefined,
+        imageGenerationId: undefined,
+    }
+}))
+
+export const SD3LargeTurboFormSchema = z.object({
+    id: z.string().optional(),
+    aspectRatio: z.enum(SD_RATIOS as [string, ...string[]]),
+    seed: z.number().int({ message: "Seed must be an integer between 0 and 4294967294" }).min(0).max(4294967294),
+    negativePrompt: z.string().optional(),
+    prompt: z.string().min(1, { message: "Prompt is required" }),
+})
+.transform((data) : CreateOrEditImageGenerationDTO => ({
+    id: data.id,
+    userId: undefined,
+    prompt: data.prompt,
+    samples: 1,
+    status: ImageGenerationStatus.PROCESSING,
+    provider: Provider.STABILITY,
+    model: Model.STABLE_DIFFUSION_3_LARGE_TURBO,
+    stabilityGenerationConfigs: {
+        id: undefined,
+        aspectRatio: data.aspectRatio,
+        seed: data.seed,
+        negativePrompt: data.negativePrompt,
+        stylePreset: undefined,
+        imageGenerationId: undefined,
+    }
 }))
 
 export const SICoreFormSchema = z.object({
     id: z.string().optional(),
-    sd_aspectRatio: z.enum(SD_RATIOS as [string, ...string[]]),
-    sd_stylePreset: z.enum(SD_PRESETS as [string, ...string[]]).optional(),
-    sd_seed: z.number().int({ message: "Seed must be an integer between 0 and 4294967294" }).min(0).max(4294967294),
-    sd_negativePrompt: z.string().optional(),
+    aspectRatio: z.enum(SD_RATIOS as [string, ...string[]]),
+    stylePreset: z.enum(SD_PRESETS as [string, ...string[]]).optional(),
+    seed: z.number().int({ message: "Seed must be an integer between 0 and 4294967294" }).min(0).max(4294967294),
+    negativePrompt: z.string().optional(),
     prompt: z.string().min(1, { message: "Prompt is required" }),
 })
 .transform((data) : CreateOrEditImageGenerationDTO => ({
@@ -101,21 +165,23 @@ export const SICoreFormSchema = z.object({
     prompt: data.prompt,
     samples: 1,
     status: ImageGenerationStatus.PROCESSING,
-    provider: Provider.stability,
-    model: "si-core",
-    de_quality: undefined,
-    de_size: undefined,
-    sd_negativePrompt: data.sd_negativePrompt,
-    sd_aspectRatio: data.sd_aspectRatio,
-    sd_seed: data.sd_seed,
-    sd_stylePreset: data.sd_stylePreset,
+    provider: Provider.STABILITY,
+    model: Model.STABLE_IMAGE_CORE,
+    stabilityGenerationConfigs: {
+        id: undefined,
+        aspectRatio: data.aspectRatio,
+        seed: data.seed,
+        negativePrompt: data.negativePrompt,
+        stylePreset: data.stylePreset,
+        imageGenerationId: undefined,
+    }
 }))
 
 export const SIUltraFormSchema = z.object({
     id: z.string().optional(),
-    sd_aspectRatio: z.enum(SD_RATIOS as [string, ...string[]]),
-    sd_seed: z.number().int({ message: "Seed must be an integer between 0 and 4294967294" }).min(0).max(4294967294),
-    sd_negativePrompt: z.string().optional(),
+    aspectRatio: z.enum(SD_RATIOS as [string, ...string[]]),
+    seed: z.number().int({ message: "Seed must be an integer between 0 and 4294967294" }).min(0).max(4294967294),
+    negativePrompt: z.string().optional(),
     prompt: z.string().min(1, { message: "Prompt is required" }),
 })
 .transform((data) : CreateOrEditImageGenerationDTO => ({
@@ -124,12 +190,14 @@ export const SIUltraFormSchema = z.object({
     prompt: data.prompt,
     samples: 1,
     status: ImageGenerationStatus.PROCESSING,
-    provider: Provider.stability,
-    model: "si-ultra",
-    de_quality: undefined,
-    de_size: undefined,
-    sd_negativePrompt: data.sd_negativePrompt,
-    sd_aspectRatio: data.sd_aspectRatio,
-    sd_seed: data.sd_seed,
-    sd_stylePreset: undefined,
+    provider: Provider.STABILITY,
+    model: Model.STABLE_IMAGE_ULTRA,
+    stabilityGenerationConfigs: {
+        id: undefined,
+        aspectRatio: data.aspectRatio,
+        seed: data.seed,
+        negativePrompt: data.negativePrompt,
+        stylePreset: undefined,
+        imageGenerationId: undefined,
+    }
 }))
