@@ -11,6 +11,9 @@ import { ApiResponse } from "@/types/response";
 import { PagedData } from "@/types/paged-data";
 import { CreateOrEditImageGenerationDTO } from "@/types/image-generation";
 
+const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/jpg", "image/webp"];
+const MAX_IMAGE_COUNT = 10;
+
 export const getGenerations = async (page: number): Promise<ApiResponse<PagedData<ImageGeneration>>> => {
     const userId = await getCurrentUserId();
     
@@ -142,8 +145,11 @@ const updateImageGenerationStatus = async (genId: string, status: ImageGeneratio
     return ResponseFactory.success({ data: res });
 }
 
-export const uploadImageAndUpdateGeneration = async (genId: string, provider: Provider, data: any) : Promise<ApiResponse> => {
-    const uploadRes = await uploadImages(genId, provider, data);
+export const uploadImageAndUpdateGeneration = async (genId: string, data: FormData ) : Promise<ApiResponse> => {
+    const validateRes = await validateUploadImages(data);
+    if (!validateRes.success || !validateRes.data) return validateRes;
+
+    const uploadRes = await uploadImages(genId, data);
     if (!uploadRes.success) {
         await updateImageGenerationStatus(genId, ImageGenerationStatus.FAILED);
         return uploadRes;
@@ -155,46 +161,20 @@ export const uploadImageAndUpdateGeneration = async (genId: string, provider: Pr
     return ResponseFactory.success({ message: "Image generation completed!" });
 }
 
-const uploadImages = async (genId: string, provider: string, data: any) : Promise<ApiResponse> => {
-    let imageUrls: string[] = [];
-
-    if (provider === "openai") {
-        for (const item of data) {
-            const response = await fetch(item.url);
-            if (!response.ok) 
-                continue;
-
-            const buffer = await response.arrayBuffer();
-
-            const urlRes = await uploadFileToS3AndGetUrl(process.env.AWS_S3_BUCKET, genId, buffer);
-            if (!urlRes.success || !urlRes.data) {
-                console.log("error uploading image", urlRes);
-                continue;
-            }
-
-            imageUrls = [...imageUrls, urlRes.data];
-        }
+const uploadImages = async (genId: string, data: FormData) : Promise<ApiResponse> => {
+    const uploadPromises = [];
+    
+    const items = Array.from(data.values());
+    for (const item of items) {
+        const file = item as File;
+        const buffer = await file.arrayBuffer() as Buffer;
+        uploadPromises.push(
+            uploadFileToS3AndGetUrl(process.env.AWS_S3_BUCKET, genId, buffer)
+        )
     }
 
-    if (provider === "stability") {
-        const imageBlobs = data.values();
-
-        for (const item of imageBlobs) {
-            const buffer = await item.arrayBuffer();
-
-            const urlRes = await uploadFileToS3AndGetUrl(process.env.AWS_S3_BUCKET, genId, buffer);
-            if (!urlRes.success || !urlRes.data) {
-                console.log("error uploading image", urlRes);
-                continue;
-            }
-
-            imageUrls = [...imageUrls, urlRes.data];
-        }
-    }
-
-    if (imageUrls.length === 0)
-        return ResponseFactory.fail({ message: "Failed to upload images." });
-
+    const imageUrls = await Promise.all(uploadPromises);
+    
     const res = await prisma.image.createMany({
         data: imageUrls.map(url => ({
             url: url,
@@ -203,6 +183,48 @@ const uploadImages = async (genId: string, provider: string, data: any) : Promis
     })
 
     return ResponseFactory.success({ });
+}
+
+const validateUploadImages = async (data: FormData) : Promise<ApiResponse<ArrayBuffer[]>> => {
+    try {
+        let imageCount = 0;
+        const validationPromises: ApiResponse[] = [];
+
+        // Count total images
+        const items = Array.from(data.values());
+        for (const item of items) {
+            imageCount++;
+            if (imageCount > MAX_IMAGE_COUNT) 
+                return ResponseFactory.fail({ message: `Too many images. Maximum allowed: ${MAX_IMAGE_COUNT}` });
+
+            const file = item as File;
+            validationPromises.push(validateSingleImage(file));
+        }
+
+        if (imageCount === 0) 
+            return ResponseFactory.fail({ message: "No images found" });
+
+        // Validate all images
+        const results = await Promise.all(validationPromises);
+        const invalidResult = results.find(r => !r.success);
+        if (invalidResult) {
+            return invalidResult;
+        }
+
+        return ResponseFactory.success({});
+
+    } catch (error) {
+        console.error('Image validation error:', error);
+        return ResponseFactory.fail({ message: "Failed to validate images" });
+    }
+}
+
+const validateSingleImage = (file: File) : ApiResponse => {
+    if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+        return ResponseFactory.fail({ message: "Invalid file type" });
+    }
+
+    return ResponseFactory.success({});
 }
 
 export const deleteGeneration = async (generationId: string): Promise<ApiResponse> => {

@@ -8,15 +8,13 @@ const s3Client = new S3Client({
     credentials: fromEnv()
 });
 
-export const uploadFileToS3AndGetUrl = async (bucketName: string | undefined, genId: string, file: ArrayBuffer) : Promise<ApiResponse<string>> => {
-    
+export const uploadFileToS3AndGetUrl = async (bucketName: string | undefined, genId: string, buffer: Buffer) : Promise<ApiResponse<string>> => {
     try {
         const fileName = `${genId}/${uuidv4()}`;
         const command = new PutObjectCommand({
             Bucket: bucketName,
             Key: fileName,
-            Body: Buffer.from(file)
-            // ContentType: file.type,
+            Body: buffer
         });
 
         const res = await s3Client.send(command);
