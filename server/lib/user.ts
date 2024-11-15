@@ -17,7 +17,7 @@ export async function getUserByEmail(email: string) {
     })
 }
 
-export async function getCurrentUserId() {
+export async function getCurrentUserId() : Promise<string | undefined> {
     const session = await auth();
     return session?.user?.id;
 }

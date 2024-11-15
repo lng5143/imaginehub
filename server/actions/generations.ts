@@ -5,7 +5,7 @@ import { auth } from "@/auth";
 import { PAGE_SIZE } from "@/const/consts";
 import { updateUserCredits } from "./users";
 import { uploadFileToS3AndGetUrl } from "../lib/aws";
-import { Image, ImageGeneration, ImageGenerationStatus } from "@prisma/client";
+import { Image, ImageGeneration, ImageGenerationStatus, Provider } from "@prisma/client";
 import { getCurrentUserId, getUserById } from "../lib/user";
 import { ResponseFactory } from "@/types/response";
 import { ApiResponse } from "@/types/response";
@@ -18,13 +18,12 @@ export const createOrEditImageGeneration = async (data: CreateOrEditImageGenerat
         existingGen = await getImageGenerationById(data.id);
 
     const validationRes = await validateImageGenerationData(data, existingGen);
-
-    if (!validationRes.success)
+    if (!validationRes.success || !validationRes.data)
         return validationRes;
 
     const validatedData = validationRes.data;
 
-    if (existingGen)
+    if (validatedData.id)
         return await editImageGeneration(validatedData!, existingGen);
 
     return await createImageGeneration(validatedData!);
@@ -43,11 +42,31 @@ const validateImageGenerationData = async (data: CreateOrEditImageGenerationDTO,
 }
 
 const createImageGeneration = async (data: CreateOrEditImageGenerationDTO): Promise<ApiResponse<ImageGeneration>> => {
-    const generation = await prisma.imageGeneration.create({
-        data: data
-    })
+    const { id, openAIGenerationConfigs, stabilityGenerationConfigs, ...genData} = data;
 
-    return ResponseFactory.success({ data: generation });
+    if (data.provider === Provider.OPENAI) {
+        const generation = await prisma.imageGeneration.create({
+            data: {
+                openAIGenerationConfigs : openAIGenerationConfigs,
+                ...genData
+            }
+        })
+
+        return ResponseFactory.success({ data: generation });
+    }
+
+    if (data.provider === Provider.STABILITY) {
+        const generation = await prisma.imageGeneration.create({
+            data: {
+                stabilityGenerationConfigs : stabilityGenerationConfigs,
+                ...genData
+            }
+        })
+
+        return ResponseFactory.success({ data: generation });
+    }
+
+    return ResponseFactory.fail({ message: "Invalid provider" });
 }
 
 const editImageGeneration = async (data: CreateOrEditImageGenerationDTO, existingGen: ImageGeneration) => {
@@ -79,25 +98,20 @@ export const insertInitialGeneration = async (data: CreateOrEditImageGenerationD
     return { success: true, data: response }
 }
 
-export const updateImageGeneration = async (genId: string, provider: string, data: any, userId: string) => {
-    await insertImages(genId, provider, data);
+export const uploadImageAndUpdateGeneration = async (genId: string, provider: Provider, data: any) : Promise<ApiResponse> => {
+    const uploadRes = await uploadImages(genId, provider, data);
+    if (!uploadRes.success) {
+        await updateImageGenerationStatus(genId, ImageGenerationStatus.FAILED);
+        return uploadRes;
+    }
 
-    await prisma.imageGeneration.update({
-        where: { id: genId },
-        data: { status: ImageGenerationStatus.COMPLETED}
-    })
+    await updateImageGenerationStatus(genId, ImageGenerationStatus.COMPLETED);
+    await updateUserCredits();
 
-    await updateUserCredits(userId);
-
-    return { success: true }
+    return ResponseFactory.success({ message: "Image generation completed!" });
 }
 
-export const uploadImageAndUpdateGeneration = async () : Promise<ApiResponse> => {
-
-    return ResponseFactory.success({});
-}
-
-const insertImages = async (genId: string, provider: string, data: any) => {
+const uploadImages = async (genId: string, provider: string, data: any) => {
     let imageUrls: string[] = [];
 
     if (provider === "openai") {

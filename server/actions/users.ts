@@ -5,10 +5,10 @@ import { auth } from "@/auth";
 import { User, UserTier } from "@prisma/client";
 import { ApiResponse } from "@/types/response";
 import { getCurrentUserId, getUserById } from "../lib/user";
+import { ResponseFactory } from "@/types/response";
 
-export const getCurrentUserInfo = async () : Promise<User | null> => {
+export const getCurrentUser = async () : Promise<User | null> => {
     const userId = await getCurrentUserId();
-
     if (!userId) {
         return null;
     }
@@ -20,25 +20,21 @@ export const getCurrentUserInfo = async () : Promise<User | null> => {
     return user;
 }
 
-export const updateUserCredits = async (userId: string) => {
-    const user = await prisma.user.findUnique({
-        where: { id: userId }
-    })
+export const updateUserCredits = async () : Promise<ApiResponse<User>> => {
+    const user = await getCurrentUser();
+    if (!user) return ResponseFactory.fail({ message: "User not found" });
 
-    if (!user) {
-        return { error: "User not found" }
-    }
 
     if (user.tier === UserTier.PAID) {
-        return { success: true }
+        return ResponseFactory.success({});
     }
 
     await prisma.user.update({
-        where: { id: userId },
+        where: { id: user.id },
         data: {
             trialCredits: user.trialCredits - 1
         }
     })
     
-    return { success: true }
+    return ResponseFactory.success({});
 }
