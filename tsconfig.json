@@ -23,7 +23,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "target": "ES2015"
   },
   "include": [
     "next-env.d.ts",
@@ -35,5 +36,5 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
 }
