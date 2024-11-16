@@ -3,12 +3,23 @@ const ALGORITHM = 'AES-GCM';
 const KEY_LENGTH = 256;
 
 const getEncryptionKey = async (): Promise<CryptoKey> => {
+    // Check if sessionStorage is available
+    if (typeof sessionStorage === 'undefined') {
+        throw new Error('Session storage is not available in this environment');
+    }
+
+    // Retrieve session ID with error handling
+    const sessionId = sessionStorage.getItem('session_id');
+    if (!sessionId) {
+        throw new Error('No session ID found in storage');
+    }
+
     const keyMaterial = await crypto.subtle.importKey(
         'raw',
-        new TextEncoder().encode(sessionStorage.getItem('session_id')!),
+        new TextEncoder().encode(sessionId),
         'PBKDF2',
         false,
-        ['encrypt', 'decrypt']
+        ['deriveBits', 'deriveKey']
     )
 
     return crypto.subtle.deriveKey(
