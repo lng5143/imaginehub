@@ -6,16 +6,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription } from "../ui/form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { PROVIDERS } from "@/const/consts";
 import { toast } from "sonner";
 import { z } from "zod";
+import { Provider } from "@prisma/client";
+import { LSConsts } from "@/const/consts";
+import { getProviderName } from "@/lib/models";
 
 interface NoKeyDialogProps {
-    provider: any,
+    provider: Provider,
     open: boolean,
     onOpenChange: (open: boolean) => void
 }
-
 
 export default function NoKeyDialog({ provider, open, onOpenChange } : NoKeyDialogProps)  {
     const form = useForm({
@@ -26,19 +27,21 @@ export default function NoKeyDialog({ provider, open, onOpenChange } : NoKeyDial
         mode: "onSubmit"
     });
 
+    const providerName = getProviderName(provider);
+
     const handleSuccess = () => {
         toast.success("API key saved!");
         onOpenChange(false);
     }
 
     const onSubmit = (data: z.infer<typeof KeyFormSchema>) => {
-        switch (provider.code) {
-            case PROVIDERS.stability.code:
-                localStorage.setItem("ib_stability_api_key", data.key);
+        switch (provider) {
+            case Provider.STABILITY:
+                localStorage.setItem(LSConsts.STABILITY_API_KEY, data.key);
                 handleSuccess();
                 break;
-            case PROVIDERS.openai.code:
-                localStorage.setItem("ib_openai_api_key", data.key);
+            case Provider.OPENAI:
+                localStorage.setItem(LSConsts.OPEN_AI_API_KEY, data.key);
                 handleSuccess();
                 break;
             default:
@@ -50,7 +53,7 @@ export default function NoKeyDialog({ provider, open, onOpenChange } : NoKeyDial
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="flex flex-col gap-8">
                 <DialogHeader>
-                    <DialogTitle className="text-xl font-semibold">No {provider.name} API key found</DialogTitle>
+                    <DialogTitle className="text-xl font-semibold">No {providerName} API key found</DialogTitle>
                     <DialogDescription>
                         Please enter your API key to continue.
                     </DialogDescription>
@@ -62,7 +65,7 @@ export default function NoKeyDialog({ provider, open, onOpenChange } : NoKeyDial
                                 name="key"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>{provider.name} API Key</FormLabel>
+                                        <FormLabel>{providerName} API Key</FormLabel>
                                         <FormControl>
                                             <div className="flex items-center gap-2">
                                                 <Input placeholder="sk-..." {...field} />

@@ -1,7 +1,7 @@
 import ModelSelector from "./model-selector.jsx";
 import { useCurrentModel } from "@/store/use-current-model";
-import DallEForm from "./dall-e-form.js";
-import StabilityForm from "./stability-form.js";
+import DallEForm from "./forms/dall-e-form.jsx";
+import StabilityForm from "./forms/stability-form.js";
 
 export default function CreateInputs() {
   const [currentModel] = useCurrentModel();
