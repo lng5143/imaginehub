@@ -155,6 +155,7 @@ export const uploadImageAndUpdateGeneration = async (genId: string, data: FormDa
         return uploadRes;
     }
 
+    // TODO: use transaction to create Image records, update generation and update usercredits
     await updateImageGenerationStatus(genId, ImageGenerationStatus.COMPLETED);
     await updateUserCredits();
 

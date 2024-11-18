@@ -6,12 +6,17 @@ import { ApiResponse, ResponseFactory } from "@/types/response";
 import { QueryClient } from "@tanstack/react-query";
 import { Provider } from "@prisma/client";
 
+interface GenerationCallbacks {
+    onInitComplete: () => void;
+    onGenerateComplete?: () => void;
+    onFinalUpdateComplete: () => void;
+}
+
 export const generateImages = async (
     inputData: CreateOrEditImageGenerationDTO, 
     queryClient: QueryClient, 
-    handleInitInsertComplete: () => void, 
-    handleFinalUpdateComplete: () => void)
-    : Promise<ApiResponse> => {
+    callbacks: GenerationCallbacks
+    ) : Promise<ApiResponse> => {
     const apiKeyRes = validateAPIKey(inputData.provider);
     if (!apiKeyRes.success) {
         return apiKeyRes;
@@ -19,7 +24,7 @@ export const generateImages = async (
 
     const initialGen = await createOrEditImageGeneration(inputData);
     await queryClient.refetchQueries({ queryKey: ["generations", 1] })
-    handleInitInsertComplete();
+    callbacks.onInitComplete();
 
     try {
         let genRes : ApiResponse<FormData>;
@@ -45,7 +50,7 @@ export const generateImages = async (
 
         queryClient.refetchQueries({ queryKey: ["generations", 1] })
         .then(() => {
-            handleFinalUpdateComplete();
+            callbacks.onFinalUpdateComplete();
         })
 
         return ResponseFactory.success({ data: res.data });
