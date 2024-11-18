@@ -1,4 +1,3 @@
-import useCurrentUser from "@/hooks/use-current-user";
 import { useQueryClient } from "@tanstack/react-query";
 import { Model } from "@prisma/client";
 import { useState } from "react";
@@ -8,10 +7,10 @@ import DallEForm from "./forms/dall-e-form";
 import StabilityForm from "./forms/stability-form";
 import NoKeyDialog from "./no-key-dialog";
 import { getProviderFromModel } from "@/lib/models";
+import { generateImages } from "@/lib/generate";
 
 export default function CreateFormWrapper() {
     const queryClient = useQueryClient();
-    const currentUser = useCurrentUser();
     const [currentModel, _setCurrentModel] = useState<Model | undefined>(undefined);
     const [isNoKeyDialogOpen, setIsNoKeyDialogOpen] = useState(false);
 
@@ -33,9 +32,14 @@ export default function CreateFormWrapper() {
     const handleSubmit = async (data: CreateOrEditImageGenerationDTO) => {
         console.log(data);
 
+        const registration = await navigator.serviceWorker.ready;
+
         try {
             setIsInitInsertInProgress(true);
-            const res = await generateImages(data, queryClient, handleInitInsertComplete, handleFinalUpdateComplete);
+            const res = await generateImages(data, queryClient, {
+                onInitComplete: handleInitComplete,
+                onFinalUpdateComplete: handleFinalUpdateComplete,
+            })
 
             if (!res.success) {
                 if (res.data?.isNoKey) {

@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useCurrentModel } from "@/store/use-current-model";
 import InputLabel from "../input-label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { Command, CommandInput, CommandList, CommandItem, CommandEmpty, CommandGroup } from "../../ui/command";
 import { Input } from "../../ui/input";
@@ -21,7 +20,6 @@ import { Badge } from "@/components/ui/badge";
 
 export default function StabilityForm({ onSubmit, isSubmitting } : CreateFormProps) {
     const [currentModel] = useCurrentModel();
-    const [openStylePresets, setOpenStylePresets] = useState(false);
 
     let resolver;
     switch(currentModel) {

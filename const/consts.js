@@ -39,5 +39,6 @@ export const WEBHOOK_EVENT_TYPE = {
 
 export const LSConsts = {
     OPEN_AI_API_KEY: 'ib_openai_api_key',
-    STABILITY_API_KEY: 'ib_stability_api_key'
+    STABILITY_API_KEY: 'ib_stability_api_key',
+    PENDING_GENERATIONS: 'ib-pending-generations'
 }
