@@ -12,7 +12,7 @@ import { getProviderFromModel } from "@/lib/models";
 export default function CreateFormWrapper() {
     const queryClient = useQueryClient();
     const currentUser = useCurrentUser();
-    const [currentModel, _setCurrentModel] = useState<Model | null>(null);
+    const [currentModel, _setCurrentModel] = useState<Model | undefined>(undefined);
     const [isNoKeyDialogOpen, setIsNoKeyDialogOpen] = useState(false);
 
     const provider = getProviderFromModel(currentModel);

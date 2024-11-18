@@ -12,10 +12,11 @@ export const getProviderFromModel = (model: Model | undefined) : Provider | unde
         case Model.STABLE_IMAGE_ULTRA:
             return Provider.STABILITY
         default:
-    }       return undefined;
+           return undefined;
+    }
 }
 
-export const getProviderName = (provider: Provider | null) : string | undefined => {
+export const getProviderName = (provider: Provider | undefined) : string | undefined => {
     switch (provider) {
         case Provider.OPENAI:
             return "OpenAI"
