@@ -1,8 +1,8 @@
+import { Model } from "@prisma/client";
 import { useAtom } from "jotai";
 import { atomWithStorage } from 'jotai/utils'
-import { MODELS } from "@/const/imagine-box-consts";
 
-const currentModel = atomWithStorage("ib-current-model", MODELS[0]);
+const currentModel = atomWithStorage<Model>("ib-current-model", Model.STABLE_DIFFUSION_3_LARGE);
 
 export const useCurrentModel = () => {
     return useAtom(currentModel);
