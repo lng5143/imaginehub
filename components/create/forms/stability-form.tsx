@@ -16,6 +16,7 @@ import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Model } from "@prisma/client";
 import { SD3LargeFormSchema, SD3LargeTurboFormSchema, SD3MediumFormSchema, SICoreFormSchema, SIUltraFormSchema } from "@/types/image-generation";
+import { CreateFormProps } from "@/types/create-form";
 
 export default function StabilityForm({ onSubmit, isSubmitting } : CreateFormProps) {
     const [currentModel] = useCurrentModel();

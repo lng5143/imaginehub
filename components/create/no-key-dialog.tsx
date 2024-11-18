@@ -13,7 +13,7 @@ import { LSConsts } from "@/const/consts";
 import { getProviderName } from "@/lib/models";
 
 interface NoKeyDialogProps {
-    provider: Provider,
+    provider: Provider | undefined,
     open: boolean,
     onOpenChange: (open: boolean) => void
 }

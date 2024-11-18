@@ -1,6 +1,6 @@
 import { Model, Provider } from "@prisma/client"
 
-export const getProviderFromModel = (model: Model) : Provider | undefined => {
+export const getProviderFromModel = (model: Model | undefined) : Provider | undefined => {
     switch (model) {
         case Model.DALL_E_2:
         case Model.DALL_E_3:
@@ -15,7 +15,7 @@ export const getProviderFromModel = (model: Model) : Provider | undefined => {
     }       return undefined;
 }
 
-export const getProviderName = (provider: Provider) : string | undefined => {
+export const getProviderName = (provider: Provider | null) : string | undefined => {
     switch (provider) {
         case Provider.OPENAI:
             return "OpenAI"

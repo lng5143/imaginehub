@@ -10,6 +10,7 @@ import { Model } from "@prisma/client";
 import { DE2FormSchema, DE3FormSchema } from "@/types/image-generation";
 import { HINTS } from "@/const/consts";
 import CreateBaseForm from "./create-base-form";
+import { CreateFormProps } from "@/types/create-form";
 
 export default function DallEForm({ onSubmit, isSubmitting } : CreateFormProps) {
     const [currentModel] = useCurrentModel();
