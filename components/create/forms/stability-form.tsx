@@ -1,14 +1,14 @@
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
+import { Textarea } from "../../ui/textarea";
+import { Button } from "../../ui/button";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../../ui/form";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useCurrentModel } from "@/store/use-current-model";
-import InputLabel from "./input-label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Command, CommandInput, CommandList, CommandItem, CommandEmpty, CommandGroup } from "../ui/command";
-import { Input } from "../ui/input";
+import InputLabel from "../input-label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+import { Command, CommandInput, CommandList, CommandItem, CommandEmpty, CommandGroup } from "../../ui/command";
+import { Input } from "../../ui/input";
 import { SD3FormSchema, SICoreFormSchema, SIUltraFormSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HINTS, PROVIDERS, SD_PRESETS, SD_RATIOS } from "@/const/imagine-box-consts";
@@ -18,7 +18,7 @@ import useCurrentUser from "@/hooks/use-current-user";
 import { useQueryClient } from "@tanstack/react-query";
 import { generateImages } from "@/lib/generate";
 import { toast } from "sonner";
-import NoKeyDialog from "./no-key-dialog";
+import NoKeyDialog from "../no-key-dialog";
 import { markGenerationAsFailed } from "@/server/actions/generations";
 
 export default function StabilityForm() {

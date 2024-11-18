@@ -1,44 +1,23 @@
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
-import { Form, FormControl, FormField, FormItem } from "../ui/form";
+import { Textarea } from "../../ui/textarea";
+import { Form, FormControl, FormField, FormItem } from "../../ui/form";
 import { useForm } from "react-hook-form";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
 import { useCurrentModel } from "@/store/use-current-model";
-import { Label } from "../ui/label";
-import InputLabel from "./input-label";
-import { Input } from "../ui/input";
-import { DE2FormSchema, DE3FormSchema } from "@/schemas";
+import { Label } from "../../ui/label";
+import InputLabel from "../input-label";
+import { Input } from "../../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DE2_SIZES, DE3_SIZES, HINTS, PROVIDERS } from "@/const/imagine-box-consts";
-import useCurrentUser from "@/hooks/use-current-user";
-import { generateImages } from "@/lib/generate";
-import { useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { useState } from "react";
-import { markGenerationAsFailed } from "@/server/actions/generations";
-import NoKeyDialog from "./no-key-dialog";
+import CreateFormSubmitButton from "../create-form-submit-button";
+import { Model } from "@prisma/client";
+import { DE2FormSchema, DE3FormSchema } from "@/types/image-generation";
+import { HINTS } from "@/const/consts";
 
-export default function DallEForm() {
-    const queryClient = useQueryClient();
-    const currentUser = useCurrentUser();
-    const [currentModel, _setCurrentModel] = useCurrentModel();
-    const [isInitInsertInProgress, setIsInitInsertInProgress] = useState(false);
-    const [isNoKeyDialogOpen, setIsNoKeyDialogOpen] = useState(false);
-
-    let resolver;
-    switch(currentModel.code) {
-        case "de-2":
-            resolver = zodResolver(DE2FormSchema);
-            break;
-        case "de-3":
-            resolver = zodResolver(DE3FormSchema);
-            break;
-        default:
-            resolver = zodResolver(DE3FormSchema);
-    }
+export default function DallEForm({ onSubmit, isSubmitting } : CreateFormProps) {
+    const [currentModel] = useCurrentModel();
+    const isDallE2 = currentModel === Model.DALL_E_2;
 
     const form = useForm({
-        resolver: resolver,
+        resolver: isDallE2 ? zodResolver(DE2FormSchema) : zodResolver(DE3FormSchema),
         defaultValues: {
             de_size: "1024x1024",
             de_quality: "standard",
@@ -48,48 +27,8 @@ export default function DallEForm() {
         mode: "onSubmit"
     });
 
-    const handleInitInsertComplete = () => {
-        setIsInitInsertInProgress(false);
-        toast.info("Image generation started, please wait...")
-    }
-
-    const handleFinalUpdateComplete = () => {
-        toast.success("Image generation complete!")
-    }
-
-    const handleNoKeyError = () => {
-        setIsNoKeyDialogOpen(true);
-    }
-
-    const onSubmit = async (data) => {
-        data.model = currentModel.code;
-        data.provider = currentModel.provider;
-        data.userId = currentUser.id;
-
-        try {
-            setIsInitInsertInProgress(true);
-            const res = await generateImages(data, queryClient, handleInitInsertComplete, handleFinalUpdateComplete);
-
-            if (!res.success) {
-                if (res.data?.isNoKey) {
-                    handleNoKeyError(res);
-                } else {
-                    toast.error(res.message);
-                    if (res.data?.genId) {
-                        await markGenerationAsFailed(res.data?.genId);
-                    }
-                }
-            }
-        } catch (error) {
-            toast.error("Failed to generate images");
-        } finally {
-            setIsInitInsertInProgress(false);
-        }
-    }
-
     return (
         <>
-            <NoKeyDialog provider={PROVIDERS.openai} open={isNoKeyDialogOpen} onOpenChange={setIsNoKeyDialogOpen} />
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-10">
                     <FormField
@@ -125,7 +64,7 @@ export default function DallEForm() {
                             </FormItem>
                         )}
                     />
-                    {currentModel.code === "de-3" && (
+                    {currentModel === Model.DALL_E_3 && (
                         <FormField
                             control={form.control}
                             name="de_quality"
@@ -148,7 +87,7 @@ export default function DallEForm() {
                             )}
                         />
                     )}
-                    {currentModel.code === "de-2" && (
+                    {currentModel === Model.DALL_E_2 && (
                         <FormField
                             control={form.control}
                             name="samples"
@@ -188,7 +127,7 @@ export default function DallEForm() {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" disabled={isInitInsertInProgress} variant="ibDark">Generate</Button>
+                    <CreateFormSubmitButton isSubmitting={isSubmitting} />
                 </form>
             </Form>
         </>
