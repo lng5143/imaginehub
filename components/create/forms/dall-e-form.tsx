@@ -1,16 +1,16 @@
 import { FormControl, FormField, FormItem } from "../../ui/form";
 import { useForm } from "react-hook-form";
-import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
 import { useCurrentModel } from "@/store/use-current-model";
-import { Label } from "../../ui/label";
 import InputLabel from "../input-label";
 import { Input } from "../../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Model } from "@prisma/client";
 import { DE2FormSchema, DE3FormSchema } from "@/types/image-generation";
-import { HINTS } from "@/const/consts";
+import { DE2_SIZES, DE3_QUALITIES, DE3_SIZES, HINTS } from "@/const/consts";
 import CreateBaseForm from "./create-base-form";
 import { CreateFormProps } from "@/types/create-form";
+import { Badge } from "@/components/ui/badge";
+import { Minus, Plus } from "lucide-react";
 
 export default function DallEForm({ onSubmit, isSubmitting } : CreateFormProps) {
     const [currentModel] = useCurrentModel();
@@ -19,8 +19,8 @@ export default function DallEForm({ onSubmit, isSubmitting } : CreateFormProps) 
     const form = useForm({
         resolver: isDallE2 ? zodResolver(DE2FormSchema) : zodResolver(DE3FormSchema),
         defaultValues: {
-            de_size: "1024x1024",
-            de_quality: "standard",
+            size: "1024x1024",
+            quality: "standard",
             samples: 1,
             prompt: ""
         },
@@ -29,115 +29,111 @@ export default function DallEForm({ onSubmit, isSubmitting } : CreateFormProps) 
 
     return (
         <CreateBaseForm onSubmit={onSubmit} isSubmitting={isSubmitting} form={form}>
+            <FormField
+                control={form.control}
+                name="size"
+                render={({ field }) => (
+                    <SizeSelector field={field} model={currentModel} />
+                )}
+            />
+
+            {/* DALL-E 3 Quality Selector */}
+            {currentModel === Model.DALL_E_3 && (
                 <FormField
                     control={form.control}
-                    name="de_size"
+                    name="quality"
                     render={({ field }) => (
-                        <FormItem className="">
-                            <InputLabel label="Size" hint={HINTS.DE_SIZE} />
-                            <FormControl>
-                            <>
-                            {currentModel.code === "de-2" && (
-                                <RadioGroup defaultValue={field.value} value={field.value} onValueChange={field.onChange} required>
-                                    {DE2_SIZES.map((size, index) => (
-                                        <div key={index} className="flex items-center space-x-2">
-                                            <RadioGroupItem className="bg-white border-none" value={size} id={`de2-${index + 1}`} />
-                                            <Label className="font-normal" htmlFor={`de2-${index + 1}`}>{size.replace('x', ' x ')}</Label>
-                                        </div>
-                                    ))}
-                                </RadioGroup>
-                            )}
-                            {currentModel.code === "de-3" && (
-                                <RadioGroup defaultValue="1024x1024" value={field.value} onValueChange={field.onChange} required>
-                                    {DE3_SIZES.map((size, index) => (
-                                        <div key={index} className="flex items-center space-x-2">
-                                            <RadioGroupItem className="bg-white border-none" value={size} id={`de3-${index + 1}`} />
-                                            <Label className="font-normal" htmlFor={`de3-${index + 1}`}>{size.replace('x', ' x ')}</Label>
-                                        </div>
-                                    ))}
-                                </RadioGroup>
-                            )}
-                            </>
-                            </FormControl>
-                        </FormItem>
+                        <DE3QualitySelector field={field} />
                     )}
                 />
-                {currentModel === Model.DALL_E_3 && (
-                    <FormField
-                        control={form.control}
-                        name="de_quality"
-                        render={({ field }) => (
-                        <FormItem>
-                            <InputLabel label="Quality" hint={HINTS.DE_QUALITY} />
-                            <FormControl>
-                                <RadioGroup defaultValue="standard" onValueChange={field.onChange} required>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem className="bg-white border-none" value="standard" id="standard" />
-                                        <Label className="font-normal" htmlFor="standard">Standard</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem className="bg-white border-none" value="hd" id="hd" />
-                                        <Label className="font-normal" htmlFor="hd">HD</Label>
-                                    </div>
-                                </RadioGroup>
-                            </FormControl>
-                        </FormItem>
-                        )}
-                    />
-                )}
-                {currentModel === Model.DALL_E_2 && (
-                    <FormField
-                        control={form.control}
-                        name="samples"
-                        render={({ field }) => (
-                        <FormItem>
-                            <InputLabel label="Samples" hint={HINTS.DE_SAMPLES} />
-                            <FormControl>
-                                <div className="flex items-center gap-x-4">
-                                    <Input 
-                                        type="text" 
-                                        value={field.value} 
-                                        onChange={field.onChange} 
-                                        onBlur={e => {
-                                            if (e.target.value > 10) {
-                                                field.onChange(10);
-                                            }
-                                            if (e.target.value < 1) {
-                                                field.onChange(1);
-                                            }
-                                        }}
-                                        className="text-xs bg-white w-full"/>
-                                </div>
-                            </FormControl>
-                            </FormItem>
-                        )}
-                    />
-                )}
+            )}
+
+            {/* DALL-E 2 Samples Selector */}
+            {currentModel === Model.DALL_E_2 && (
+                <FormField
+                    control={form.control}
+                    name="samples"
+                    render={({ field }) => (
+                        <DE2SamplesSelector field={field} />
+                    )}
+                />
+            )}
         </CreateBaseForm>
     );
 }
 
-const SizeOption = ({ size }: { size: string }) => (
-    <div className="flex items-center space-x-2">
-        <RadioGroupItem value={size} id={size} />
-        <Label htmlFor={size}>{size.replace('x', ' x ')}</Label>
-    </div>
-);
+const SizeSelector = ({ field, model }: { field: any, model: Model }) => {
+    const sizeOptions = model === Model.DALL_E_2 ? DE2_SIZES : DE3_SIZES;
 
-const QualitySelector = ({ field }: { field: any }) => (
+    return (
+        <FormItem>
+            <InputLabel label="Size" hint={HINTS.DE_SIZE} />
+            <FormControl>
+            {sizeOptions.map((size, index) => (
+                <Badge
+                    key={index}
+                    // className="flex items-center justify-center"
+                    variant={field.value === size ? "ibLightChosen" : "outline"}
+                    onClick={() => field.onChange(size)}
+                >
+                    {size}
+                </Badge>
+            ))}
+            </FormControl>
+        </FormItem>
+    )
+}
+
+const DE3QualitySelector = ({ field }: { field: any }) => (
     <FormItem>
         <InputLabel label="Quality" hint={HINTS.DE_QUALITY} />
-        <FormControl>
-            <RadioGroup value={field.value} onValueChange={field.onChange}>
-                <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="standard" id="standard" />
-                    <Label htmlFor="standard">Standard</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="hd" id="hd" />
-                    <Label htmlFor="hd">HD</Label>
-                </div>
-            </RadioGroup>
+        <FormControl className="flex flex-wrap gap-2">
+            {DE3_QUALITIES.map((quality, index) => (
+                <Badge
+                    key={index}
+                    // className="flex items-center justify-center"
+                    variant={field.value === quality ? "ibLightChosen" : "outline"}
+                    onClick={() => field.onChange(quality)}
+                >
+                    {quality}
+                </Badge>
+            ))}
         </FormControl>
     </FormItem>
-);
+)
+
+const DE2SamplesSelector = ({ field }: { field: any }) => (
+    <FormItem>
+        <InputLabel label="Samples" hint={HINTS.DE_SAMPLES} />
+        <FormControl>
+            <div className="flex items-center">
+                <Input
+                    type="number"
+                    min={1}
+                    max={10}
+                    value={field.value}
+                    onChange={(e) => {
+                        const value = parseInt(e.target.value);
+                        if (!isNaN(value)) {
+                            field.onChange(Math.min(Math.max(value, 1), 10));
+                        }
+                    }}
+                />
+                <Plus 
+                    className="w-6 h-6 ml-2 cursor-pointer"
+                    onClick={() => {
+                        const newValue = Math.min((field.value || 1) + 1, 10);
+                        field.onChange(newValue);
+                    }}
+                />
+                <Minus 
+                    className="w-6 h-6 ml-2 cursor-pointer"
+                    onClick={() => {
+                        const newValue = Math.max((field.value || 1) - 1, 1);
+                        field.onChange(newValue);
+                    }}
+                />
+            </div>
+        </FormControl>
+    </FormItem>
+)
