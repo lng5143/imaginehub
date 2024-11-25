@@ -17,6 +17,7 @@ import { Model } from "@prisma/client";
 import { SD3LargeFormSchema, SD3LargeTurboFormSchema, SD3MediumFormSchema, SICoreFormSchema, SIUltraFormSchema } from "@/types/image-generation";
 import { CreateFormProps } from "@/types/create-form";
 import { Badge } from "@/components/ui/badge";
+import AdvancedFormFields from "./advanced-form-fields";
 
 export default function StabilityForm({ onSubmit, isSubmitting } : CreateFormProps) {
     const [currentModel] = useCurrentModel();
@@ -67,32 +68,34 @@ export default function StabilityForm({ onSubmit, isSubmitting } : CreateFormPro
                 )}
             />
 
-            {/* Stable Image Core style preset */}
-            {currentModel === Model.STABLE_IMAGE_CORE && (
+            <AdvancedFormFields>
+                {/* Stable Image Core style preset */}
+                {currentModel === Model.STABLE_IMAGE_CORE && (
+                    <FormField
+                        control={form.control}
+                        name="sd_stylePreset"
+                        render={({ field }) => (
+                            <SICOREPresetSelector field={field} />
+                        )}
+                    />
+                )}
+
                 <FormField
                     control={form.control}
-                    name="sd_stylePreset"
+                    name="sd_seed"
                     render={({ field }) => (
-                        <SICOREPresetSelector field={field} />
+                        <SeedInput field={field} />
                     )}
                 />
-            )}
 
-            <FormField
-                control={form.control}
-                name="sd_seed"
-                render={({ field }) => (
-                    <SeedInput field={field} />
-                )}
-            />
-
-            <FormField
-                control={form.control}
-                name="negative_prompt"
-                render={({ field }) => (
-                    <NegativePromptInput field={field} />
-                )}
-            />
+                <FormField
+                    control={form.control}
+                    name="negative_prompt"
+                    render={({ field }) => (
+                        <NegativePromptInput field={field} />
+                    )}
+                />
+            </AdvancedFormFields>
         </CreateBaseForm>
     );
 }

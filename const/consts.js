@@ -29,6 +29,15 @@ export const HINTS = {
     SD_RATIOS: `Aspect ratio of the image to generate.`,
     SD_SEED: `A specific value that is used to guide the 'randomness' of the generation: [0 .. 4294967294]`,
     SD_NEGATIVE_PROMPT: `Description of what you don't want to generate.`,
+    FL_WIDTH: ``,
+    FL_HEIGHT: ``,
+    FL_SEED: ``,
+    FL_UPSAMPLING: ``,
+    FL_SAFETY: ``,
+    FL_STEPS: ``,
+    FL_GUIDANCE: ``,
+    FL_INTERVAL: ``,
+    FL_RAW: ``
 }
 
 export const BLOG_PAGE_SIZE = 9;

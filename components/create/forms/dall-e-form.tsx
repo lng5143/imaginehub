@@ -11,6 +11,8 @@ import CreateBaseForm from "./create-base-form";
 import { CreateFormProps } from "@/types/create-form";
 import { Badge } from "@/components/ui/badge";
 import { Minus, Plus } from "lucide-react";
+import SliderSelector from "./slider-selector";
+import AdvancedFormFields from "./advanced-form-fields";
 
 export default function DallEForm({ onSubmit, isSubmitting } : CreateFormProps) {
     const [currentModel] = useCurrentModel();
@@ -37,27 +39,29 @@ export default function DallEForm({ onSubmit, isSubmitting } : CreateFormProps) 
                 )}
             />
 
-            {/* DALL-E 3 Quality Selector */}
-            {currentModel === Model.DALL_E_3 && (
-                <FormField
-                    control={form.control}
-                    name="quality"
-                    render={({ field }) => (
-                        <DE3QualitySelector field={field} />
-                    )}
-                />
-            )}
+            <AdvancedFormFields>
+                {/* DALL-E 3 Quality Selector */}
+                {currentModel === Model.DALL_E_3 && (
+                    <FormField
+                        control={form.control}
+                        name="quality"
+                        render={({ field }) => (
+                            <DE3QualitySelector field={field} />
+                        )}
+                    />
+                )}
 
-            {/* DALL-E 2 Samples Selector */}
-            {currentModel === Model.DALL_E_2 && (
-                <FormField
-                    control={form.control}
-                    name="samples"
-                    render={({ field }) => (
-                        <DE2SamplesSelector field={field} />
-                    )}
-                />
-            )}
+                {/* DALL-E 2 Samples Selector */}
+                {currentModel === Model.DALL_E_2 && (
+                    <FormField
+                        control={form.control}
+                        name="samples"
+                        render={({ field }) => (
+                            <DE2SamplesSelector field={field} />
+                        )}
+                    />
+                )}
+            </AdvancedFormFields>
         </CreateBaseForm>
     );
 }
@@ -106,34 +110,13 @@ const DE2SamplesSelector = ({ field }: { field: any }) => (
     <FormItem>
         <InputLabel label="Samples" hint={HINTS.DE_SAMPLES} />
         <FormControl>
-            <div className="flex items-center">
-                <Input
-                    type="number"
-                    min={1}
-                    max={10}
-                    value={field.value}
-                    onChange={(e) => {
-                        const value = parseInt(e.target.value);
-                        if (!isNaN(value)) {
-                            field.onChange(Math.min(Math.max(value, 1), 10));
-                        }
-                    }}
-                />
-                <Plus 
-                    className="w-6 h-6 ml-2 cursor-pointer"
-                    onClick={() => {
-                        const newValue = Math.min((field.value || 1) + 1, 10);
-                        field.onChange(newValue);
-                    }}
-                />
-                <Minus 
-                    className="w-6 h-6 ml-2 cursor-pointer"
-                    onClick={() => {
-                        const newValue = Math.max((field.value || 1) - 1, 1);
-                        field.onChange(newValue);
-                    }}
-                />
-            </div>
+            <SliderSelector 
+                field={field}
+                defaultValue={[1]}
+                min={1}
+                max={10}
+                step={1}
+            />
         </FormControl>
     </FormItem>
 )
