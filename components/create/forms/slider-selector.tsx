@@ -10,7 +10,7 @@ interface SliderSelectorProps {
 
 export default function SliderSelector({ field, min, max, step } : SliderSelectorProps) {
     return (
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-3 text-sm">
             <Slider 
                 value={[field.value]}
                 min={min}
@@ -29,7 +29,7 @@ export default function SliderSelector({ field, min, max, step } : SliderSelecto
                     const roundedValue = Math.round(value / step) * step;
                     field.onChange(Math.min(Math.max(roundedValue, min), max));
                 }}
-                className="w-[60px] bg-white"
+                className="w-[80px] bg-white text-xs truncate"
             />
         </div>
     )
