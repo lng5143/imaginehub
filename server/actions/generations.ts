@@ -10,6 +10,7 @@ import { ResponseFactory } from "@/types/response";
 import { ApiResponse } from "@/types/response";
 import { PagedData } from "@/types/paged-data";
 import { CreateOrEditImageGenerationDTO } from "@/types/image-generation";
+import { OpenAIGenerationConfigs, StabilityGenerationConfigs } from "@prisma/client";
 
 const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/jpg", "image/webp"];
 const MAX_IMAGE_COUNT = 10;
@@ -50,7 +51,13 @@ export const getGenerations = async (page: number): Promise<ApiResponse<PagedDat
     return ResponseFactory.success({ data: { totalCount: totalCount, data: generations }})
 }
 
-const getImageGenerationById = async (genId: string, includeImages: boolean = false) : Promise<ApiResponse<ImageGeneration>> => {
+export const getImageGenerationById = async (genId: string, includeImages: boolean = false) 
+    : Promise<ApiResponse<ImageGeneration & { 
+        images: Image[], 
+        openAIGenerationConfigs: OpenAIGenerationConfigs | null, 
+        stabilityGenerationConfigs: StabilityGenerationConfigs | null,
+        fluxGenerationConfigs: any
+      }>> => {
     const userId = await getCurrentUserId();
     
     if (!userId)
@@ -62,6 +69,9 @@ const getImageGenerationById = async (genId: string, includeImages: boolean = fa
             images: includeImages
         }
     })
+
+    if (!generation || !generation.images || generation.images.lenght === 0)
+        return ResponseFactory.fail({ message: "Image generation not found" });
 
     return ResponseFactory.success({ data: generation })
 

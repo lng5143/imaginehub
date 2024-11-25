@@ -9,7 +9,7 @@ interface ConfirmDialogProps {
     setOpen: (open: boolean) => void,
     title: string,
     message: string, 
-    confirmFn: () => ApiResponse
+    confirmFn: () => Promise<ApiResponse>
 }
 
 export default function ConfirmDialog({ open, setOpen, title, message, confirmFn } : ConfirmDialogProps) {

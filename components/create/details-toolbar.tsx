@@ -10,6 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useCurrentPage } from "@/store/use-current-page";
 import { useCurrentGenerationId } from "@/store/use-current-generation-id";
 import { deleteGeneration } from "@/server/actions/generations";
+import { ApiResponse } from "@/types/response";
 
 interface DetailsToolbarProps {
     handleClose: () => void,
@@ -51,11 +52,13 @@ export default function DetailsToolbar({ handleClose, imageUrls, genId }: Detail
         handleClose();
     }
 
-    const handleDelete = async () => {
-        const res = await deleteGeneration(currentGenerationId);
+    const handleDelete = async () : Promise<ApiResponse> => {
+        const res = await deleteGeneration(currentGenerationId!);
         if (res.success) {
             handleDeleteOptimisticUpdate();
         }
+
+        return res;
     }
 
     return (
@@ -65,7 +68,7 @@ export default function DetailsToolbar({ handleClose, imageUrls, genId }: Detail
                 setOpen={setIsDeleteConfirmOpen}
                 title="You are about to delete this generation"
                 message="This action cannot be undone"
-                confirmFn={handleDelete}
+                confirmFn={() => handleDelete()}
             />
             <div className="px-3 py-2 pb-0 flex items-center justify-end gap-2">
                 <Button

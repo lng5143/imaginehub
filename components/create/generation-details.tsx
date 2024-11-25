@@ -9,11 +9,11 @@ import useEmblaCarousel from "embla-carousel-react";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useQuery } from "@tanstack/react-query";
-import { getGenerationDetails } from "@/server/actions/generations";
+import { getImageGenerationById } from "@/server/actions/generations";
 import { Skeleton } from "../ui/skeleton";
 import Image from "next/image";
 import DetailsToolbar from "./details-toolbar";
-import { Image } from "@prisma/client";
+import { Image as PrismaImage } from "@prisma/client";
 
 export default function GenerationDetails({ }) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -21,15 +21,17 @@ export default function GenerationDetails({ }) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
 
+  if (!currentGenerationId) return null;
+
   const { data: response, isPending: isPendingDetails} = useQuery({
     queryKey: ["generation", currentGenerationId],
-    queryFn: () => getGenerationDetails(currentGenerationId)
+    queryFn: () => getImageGenerationById(currentGenerationId, true),
   })
 
   const containerRef = useRef(null);
 
   const handleClose = () => {
-    setCurrentGenerationId(null);
+    setCurrentGenerationId(undefined);
   };
 
   const handleCarouselDialogOpen = (index: number) => {
@@ -37,12 +39,14 @@ export default function GenerationDetails({ }) {
     setIsCarouselDialogOpen(true);
   }
 
+  if (!isPendingDetails && !response?.success) return null;
+
   return (
     <div className="relative flex flex-col h-auto basis-1/3 bg-violet-100 shadow-xl">
       {!isPendingDetails && (
         <DetailsToolbar 
           handleClose={handleClose} 
-          imageUrls={response?.data?.images.map(image => image.url)}
+          imageUrls={response?.data?.images.map(image => image.url)!}
           genId={currentGenerationId}
         />
       )}
@@ -54,7 +58,7 @@ export default function GenerationDetails({ }) {
           <Image 
             key={index} 
             src={image.url} 
-            alt={response?.data?.prompt} 
+            alt={response?.data?.prompt || ""} 
             onClick={() => handleCarouselDialogOpen(index)}
             className="img-details rounded-md hover:cursor-pointer hover:scale-[1.02] transition-all duration-300 w-full shadow-md"
             width={1000}
@@ -80,12 +84,12 @@ export default function GenerationDetails({ }) {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             />
-              <DetailsDrawer data={response?.data} isLoading={isPendingDetails} />
+              <DetailsDrawer data={response?.data!} isLoading={isPendingDetails} />
           </>
         )}
       </AnimatePresence>
 
-      <Dialog className="p-0 m-0" open={isCarouselDialogOpen} onOpenChange={() => setIsCarouselDialogOpen()}>
+      <Dialog open={isCarouselDialogOpen} onOpenChange={setIsCarouselDialogOpen}>
         <DialogContent  className="p-0 m-0 border-none bg-transparent">
           <VisuallyHidden>
             <DialogHeader>
@@ -93,7 +97,7 @@ export default function GenerationDetails({ }) {
             </DialogHeader>
           </VisuallyHidden>
           <div className="">
-            <CarouselWrapper selectedIndex={selectedImageIndex} images={response?.data?.images} />
+            <CarouselWrapper selectedIndex={selectedImageIndex} images={response?.data?.images!} />
           </div>
         </DialogContent>
       </Dialog>
@@ -101,7 +105,12 @@ export default function GenerationDetails({ }) {
   );
 }
 
-function CarouselWrapper({ selectedIndex, images }) {
+interface CarouselWrapperProps {
+  selectedIndex: number;
+  images: PrismaImage[]; 
+}
+
+function CarouselWrapper({ selectedIndex, images } : CarouselWrapperProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel();
   const [currentIndex, setCurrentIndex] = useState(selectedIndex);
 
