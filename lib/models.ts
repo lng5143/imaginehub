@@ -15,6 +15,10 @@ export const getProviderFromModel = (model: Model | undefined) : Provider | unde
         case Model.STABLE_IMAGE_CORE:
         case Model.STABLE_IMAGE_ULTRA:
             return Provider.STABILITY
+        case Model.FLUX_1_1_PRO:
+        case Model.FLUX_1_PRO:
+        case Model.FLUX_1_1_PRO_ULTRA:
+            return Provider.REPLICATE
         default:
            return undefined;
     }
@@ -26,6 +30,8 @@ export const getProviderName = (provider: Provider | undefined) : string | undef
             return "OpenAI"
         case Provider.STABILITY: 
             return "Stability AI"
+        case Provider.REPLICATE:
+            return "Replicate"
         default:
             return undefined;
 
