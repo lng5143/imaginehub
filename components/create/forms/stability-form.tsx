@@ -33,6 +33,7 @@ export default function StabilityForm({ onSubmit, isSubmitting } : CreateFormPro
             onSubmit={onSubmit}
             isSubmitting={isSubmitting}
         >
+            <>
             {/* Common field */}
             <FormField
                 control={form.control}
@@ -43,6 +44,7 @@ export default function StabilityForm({ onSubmit, isSubmitting } : CreateFormPro
             />
 
             <AdvancedFormFields>
+                <>
                 {/* Stable Image Core style preset */}
                 {currentModel === Model.STABLE_IMAGE_CORE && (
                     <FormField
@@ -69,7 +71,9 @@ export default function StabilityForm({ onSubmit, isSubmitting } : CreateFormPro
                         <NegativePromptInput field={field} />
                     )}
                 />
+                </>
             </AdvancedFormFields>
+            </>
         </CreateBaseForm>
     );
 }
@@ -78,6 +82,7 @@ const RatioSelector = ({ field }: { field: any }) => (
     <FormItem>
         <InputLabel label="Aspect Ratio" hint={HINTS.SD_RATIOS} />
         <FormControl>
+            <div>
             {SD_RATIOS.map((item, index) => (
                 <Badge
                     key={index}
@@ -87,6 +92,7 @@ const RatioSelector = ({ field }: { field: any }) => (
                     {item}
                 </Badge>
             ))}
+            </div>
         </FormControl>
     </FormItem>
 )
@@ -140,6 +146,7 @@ const SICOREPresetSelector = ({ field }: { field: any }) => {
                             <CommandList>
                                 <CommandEmpty>No preset found.</CommandEmpty>
                                 <CommandGroup>
+                                    <div>
                                     {SD_PRESETS.map((preset) => (
                                         <CommandItem 
                                             className="flex items-center"
@@ -159,6 +166,7 @@ const SICOREPresetSelector = ({ field }: { field: any }) => {
                                             />
                                         </CommandItem>
                                     ))}
+                                    </div>
                                 </CommandGroup>
                             </CommandList>
                         </Command>

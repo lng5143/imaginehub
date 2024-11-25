@@ -24,24 +24,26 @@ export default function ModelSelector() {
         setCurrentModel(model);
         setOpen(false);
     }
-    
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>Select Model</Button>
+                <Button>{currentModel ? getModelName(currentModel) : "Select Model"}</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="w-10/12 lg:w-8/12 max-w-full">
                 <DialogHeader>
                     <DialogTitle>
-                        Select Model
+                        Select A Model
                     </DialogTitle>
                     <VisuallyHidden><DialogDescription></DialogDescription></VisuallyHidden>
                 </DialogHeader>
-                <div className="p-2 grid grid-cols-3">
+                <div className="p-2 grid grid-cols-3 gap-4">
                     {models.map((model) => (
                         <div 
                             key={model} 
-                            className={cn("flex items-center justify-center", model === currentModel ? "border border-blue-500" : "")}
+                            className={cn(
+                                "flex items-center justify-center text-center text-sm p-2 h-[80px] border-2 rounded-md cursor-pointer", 
+                                model === currentModel ? "border-2 border-blue-500" : "")}
                             onClick={() => handleSelectModel(model)}
                         >
                             {getModelName(model)}

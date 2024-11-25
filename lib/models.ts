@@ -48,6 +48,12 @@ export const getModelName = (model: Model) : string | undefined => {
             return "Stable Image Core";
         case Model.STABLE_IMAGE_ULTRA:
             return "Stable Image Ultra";
+        case Model.FLUX_1_1_PRO:
+            return "FLUX 1.1 [pro]"
+        case Model.FLUX_1_PRO:
+            return "FLUX.1 [pro]"
+        case Model.FLUX_1_1_PRO_ULTRA:
+            return "FLUX 1.1 [pro] Ultra"
         default:
             return undefined;
     }

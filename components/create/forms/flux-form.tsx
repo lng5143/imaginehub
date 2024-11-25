@@ -24,6 +24,7 @@ export default function FLUXForm({ onSubmit, isSubmitting } : CreateFormProps) {
     return (
         <CreateBaseForm onSubmit={onSubmit} isSubmitting={isSubmitting} form={form}>
             {/* Size selectors */}
+            <>
             <FormField
                 control={form.control}
                 name="width"
@@ -41,7 +42,7 @@ export default function FLUXForm({ onSubmit, isSubmitting } : CreateFormProps) {
 
             {/* Advanced Inputs */}
             <AdvancedFormFields>
-
+                <>
                 <FormField
                     control={form.control}
                     name="seed"
@@ -105,8 +106,9 @@ export default function FLUXForm({ onSubmit, isSubmitting } : CreateFormProps) {
                         )}
                     />
                 )}
-
+            </>
             </AdvancedFormFields>
+            </>
         </CreateBaseForm>
     );
 }

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import UpgradeButton from "../settings/upgrade-button";
 import { UserTier } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import { getCurrentUserInfo } from "@/server/actions/users";
+import { getCurrentUser } from "@/server/actions/users";
 
 export default function NavigationBar() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -16,7 +16,7 @@ export default function NavigationBar() {
   const { data: user, isLoading } = useQuery({
     queryKey: ["currentUser"],
     queryFn: async () => {
-      return await getCurrentUserInfo();
+      return await getCurrentUser();
     },
   });
 

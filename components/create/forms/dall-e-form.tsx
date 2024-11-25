@@ -22,6 +22,7 @@ export default function DallEForm({ onSubmit, isSubmitting } : CreateFormProps) 
 
     return (
         <CreateBaseForm onSubmit={onSubmit} isSubmitting={isSubmitting} form={form}>
+            <>
             <FormField
                 control={form.control}
                 name="size"
@@ -32,6 +33,7 @@ export default function DallEForm({ onSubmit, isSubmitting } : CreateFormProps) 
 
             <AdvancedFormFields>
                 {/* DALL-E 3 Quality Selector */}
+                <>
                 {currentModel === Model.DALL_E_3 && (
                     <FormField
                         control={form.control}
@@ -52,7 +54,9 @@ export default function DallEForm({ onSubmit, isSubmitting } : CreateFormProps) 
                         )}
                     />
                 )}
+                </>
             </AdvancedFormFields>
+            </>
         </CreateBaseForm>
     );
 }
@@ -64,16 +68,18 @@ const SizeSelector = ({ field, model }: { field: any, model: Model }) => {
         <FormItem>
             <InputLabel label="Size" hint={HINTS.DE_SIZE} />
             <FormControl>
-            {sizeOptions.map((size, index) => (
-                <Badge
-                    key={index}
-                    // className="flex items-center justify-center"
-                    variant={field.value === size ? "ibLightChosen" : "outline"}
-                    onClick={() => field.onChange(size)}
-                >
-                    {size}
-                </Badge>
-            ))}
+                <div>
+                    {sizeOptions.map((size, index) => (
+                        <Badge
+                            key={index}
+                            // className="flex items-center justify-center"
+                            variant={field.value === size ? "ibLightChosen" : "outline"}
+                            onClick={() => field.onChange(size)}
+                        >
+                            {size}
+                        </Badge>
+                    ))}
+                </div>
             </FormControl>
         </FormItem>
     )
@@ -83,16 +89,18 @@ const DE3QualitySelector = ({ field }: { field: any }) => (
     <FormItem>
         <InputLabel label="Quality" hint={HINTS.DE_QUALITY} />
         <FormControl className="flex flex-wrap gap-2">
-            {DE3_QUALITIES.map((quality, index) => (
-                <Badge
-                    key={index}
-                    // className="flex items-center justify-center"
-                    variant={field.value === quality ? "ibLightChosen" : "outline"}
-                    onClick={() => field.onChange(quality)}
-                >
-                    {quality}
-                </Badge>
-            ))}
+            <div>
+                {DE3_QUALITIES.map((quality, index) => (
+                    <Badge
+                        key={index}
+                        // className="flex items-center justify-center"
+                        variant={field.value === quality ? "ibLightChosen" : "outline"}
+                        onClick={() => field.onChange(quality)}
+                    >
+                        {quality}
+                    </Badge>
+                ))}
+            </div>
         </FormControl>
     </FormItem>
 )

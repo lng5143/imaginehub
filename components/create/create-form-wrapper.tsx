@@ -11,10 +11,11 @@ import { generateImages } from "@/lib/generate";
 import { ERROR_TYPES } from "@/const/consts";
 import { updateImageGenerationStatus } from "@/server/actions/generations";
 import FLUXForm from "./forms/flux-form";
+import { useCurrentModel } from "@/store/use-current-model";
 
 export default function CreateFormWrapper() {
     const queryClient = useQueryClient();
-    const [currentModel, _setCurrentModel] = useState<Model | undefined>(undefined);
+    const [currentModel] = useCurrentModel();
     const [isNoKeyDialogOpen, setIsNoKeyDialogOpen] = useState(false);
     const [isInitInsertInProgress, setIsInitInsertInProgress] = useState(false);
 
@@ -74,6 +75,8 @@ export default function CreateFormWrapper() {
             case Model.FLUX_1_PRO:
             case Model.FLUX_1_1_PRO_ULTRA:
                 return <FLUXForm onSubmit={handleSubmit} isSubmitting={isInitInsertInProgress} />
+            default: 
+                return null;
             }
         }
 
