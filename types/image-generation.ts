@@ -230,7 +230,7 @@ export const FLUX_1_1_ProFormSchema = z.object({
     prompt: data.prompt,
     samples: 1,
     status: ImageGenerationStatus.PROCESSING,
-    provider: Provider.BFL,
+    provider: Provider.REPLICATE,
     model: Model.FLUX_1_1_PRO,
     fluxGenerationConfigs: {
         id: undefined,
@@ -265,7 +265,7 @@ export const FLUX_1_ProFormSchema = z.object({
     prompt: data.prompt,
     samples: 1,
     status: ImageGenerationStatus.PROCESSING,
-    provider: Provider.BFL,
+    provider: Provider.REPLICATE,
     model: Model.FLUX_1_PRO,
     fluxGenerationConfigs: {
         id: undefined,
@@ -297,7 +297,7 @@ export const FLUX_1_1_Pro_UltraFormSchema = z.object({
     prompt: data.prompt,
     samples: 1,
     status: ImageGenerationStatus.PROCESSING,
-    provider: Provider.BFL,
+    provider: Provider.REPLICATE,
     model: Model.FLUX_1_1_PRO_ULTRA,
     fluxGenerationConfigs: {
         id: undefined,
