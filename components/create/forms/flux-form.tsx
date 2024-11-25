@@ -154,6 +154,7 @@ const SeedSelector = ({ field }: { field: any }) => (
                     const value = e.target.value ? parseInt(e.target.value) : undefined;
                     field.onChange(value);
                 }}
+                className="bg-white"
             />
         </FormControl>
     </FormItem>

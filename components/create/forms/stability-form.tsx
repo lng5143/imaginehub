@@ -17,6 +17,7 @@ import { CreateFormProps } from "@/types/create-form";
 import { Badge } from "@/components/ui/badge";
 import AdvancedFormFields from "./advanced-form-fields";
 import { getDefaultValues, getResolver } from "@/lib/models";
+import SliderSelector from "./slider-selector";
 
 export default function StabilityForm({ onSubmit, isSubmitting } : CreateFormProps) {
     const [currentModel] = useCurrentModel();
@@ -110,17 +111,12 @@ const SeedInput = ({ field }: { field: any }) => (
     <FormItem>
         <InputLabel label="Seed" hint={HINTS.SD_SEED} />
         <FormControl>
-            <Input
-                type="number"
+            <SliderSelector
+                field={field}
+                defaultValue={0}
                 min={0}
                 max={4294967294}
-                value={field.value}
-                onChange={(e) => {
-                    const value = e.target.value === '' ? 0 : parseInt(e.target.value);
-                    if (!isNaN(value)) {
-                        field.onChange(Math.min(Math.max(value, 0), 4294967294));
-                    }
-                }}
+                step={1}
             />
         </FormControl>
         <FormMessage />

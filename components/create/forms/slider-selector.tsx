@@ -20,14 +20,17 @@ export default function SliderSelector({ field, defaultValue, min, max, step } :
                 onValueChange={(value) => {
                     field.onChange(value[0]);
                 }}
+                className="flex-grow"
             />
             <Input
                 value={field.value}
+                onChange={(e) => {field.onChange(e.target.value)}}
                 onBlur={(e) => {
                     const value = e.target.value ? parseFloat(e.target.value) : defaultValue;
                     const roundedValue = Math.round(value / step) * step;
                     field.onChange(Math.min(Math.max(roundedValue, min), max));
                 }}
+                className="w-[60px] bg-white"
             />
         </div>
     )
