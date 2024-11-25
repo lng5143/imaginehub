@@ -152,6 +152,7 @@ enum OrderStatus {
 enum Provider {
   STABILITY
   OPENAI
+  BFL
 }
 
 enum UserTier {
@@ -179,4 +180,8 @@ enum Model {
   STABLE_DIFFUSION_3_LARGE_TURBO
   STABLE_IMAGE_CORE
   STABLE_IMAGE_ULTRA
+  FLUX_1_PRO
+  FLUX_1_1_PRO
+  FLUX_1_DEV
+  FLUX_1_1_PRO_ULTRA
 }
