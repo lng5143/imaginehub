@@ -103,7 +103,7 @@ const DE2SamplesSelector = ({ field }: { field: any }) => (
         <FormControl>
             <SliderSelector 
                 field={field}
-                defaultValue={[1]}
+                defaultValue={1}
                 min={1}
                 max={10}
                 step={1}

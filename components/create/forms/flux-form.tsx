@@ -117,7 +117,7 @@ const WidthSelector = ({ field }: { field: any }) => (
         <FormControl>
             <SliderSelector
                 field={field}
-                defaultValue={[1024]}
+                defaultValue={1024}
                 min={256}
                 max={1024}
                 step={32}
@@ -132,7 +132,7 @@ const HeightSelector = ({ field }: { field: any }) => (
         <FormControl>
             <SliderSelector
                 field={field}
-                defaultValue={[1024]}
+                defaultValue={1024}
                 min={256}
                 max={1024}
                 step={32}
@@ -175,7 +175,7 @@ const SafetyToleranceSelector = ({ field }: { field: any }) => (
         <FormControl>
             <SliderSelector
                 field={field}
-                defaultValue={[0]}
+                defaultValue={0}
                 min={0}
                 max={6}
                 step={1}
@@ -186,11 +186,11 @@ const SafetyToleranceSelector = ({ field }: { field: any }) => (
 
 const StepsSelector = ({ field }: { field: any }) => (
     <FormItem>
-        <InputLabel label="Safety Tolerance" hint={HINTS.FL_SAFETY} />
+        <InputLabel label="Steps" hint={HINTS.FL_STEPS} />
         <FormControl>
             <SliderSelector
                 field={field}
-                defaultValue={[1]}
+                defaultValue={1}
                 min={1}
                 max={50}
                 step={1}
@@ -201,11 +201,11 @@ const StepsSelector = ({ field }: { field: any }) => (
 
 const GuidanceSelector = ({ field }: { field: any }) => (
     <FormItem>
-        <InputLabel label="Safety Tolerance" hint={HINTS.FL_SAFETY} />
+        <InputLabel label="Safety Tolerance" hint={HINTS.FL_GUIDANCE} />
         <FormControl>
             <SliderSelector
                 field={field}
-                defaultValue={[1.5]}
+                defaultValue={1.5}
                 min={1.5}
                 max={5}
                 step={0.5}
@@ -216,11 +216,11 @@ const GuidanceSelector = ({ field }: { field: any }) => (
 
 const IntervalSelector = ({ field }: { field: any }) => (
     <FormItem>
-        <InputLabel label="Safety Tolerance" hint={HINTS.FL_SAFETY} />
+        <InputLabel label="Safety Tolerance" hint={HINTS.FL_INTERVAL} />
         <FormControl>
             <SliderSelector
                 field={field}
-                defaultValue={[1]}
+                defaultValue={2}
                 min={1}
                 max={4}
                 step={1}
@@ -231,7 +231,7 @@ const IntervalSelector = ({ field }: { field: any }) => (
 
 const RawToggle = ({ field }: { field: any }) => (
     <FormItem>
-        <InputLabel label="Raw" hint={HINTS.FL_UPSAMPLING} />
+        <InputLabel label="Raw" hint={HINTS.FL_RAW} />
         <FormControl>
             <Switch 
                 {...field}
