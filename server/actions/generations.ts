@@ -67,7 +67,7 @@ const getImageGenerationById = async (genId: string, includeImages: boolean = fa
 
 }
 
-export const createOrEditImageGeneration = async (data: CreateOrEditImageGenerationDTO) => {
+export const createOrEditImageGeneration = async (data: CreateOrEditImageGenerationDTO) : Promise<ApiResponse<ImageGeneration>> => {
     let existingGen;
     if (data.id) {
         const existingGenRes = await getImageGenerationById(data.id);
@@ -79,7 +79,7 @@ export const createOrEditImageGeneration = async (data: CreateOrEditImageGenerat
 
     const validationRes = await validateImageGenerationData(data, existingGen);
     if (!validationRes.success || !validationRes.data)
-        return validationRes;
+        return ResponseFactory.fail({ message: validationRes.message });
 
     const validatedData = validationRes.data;
 
@@ -101,7 +101,7 @@ const validateImageGenerationData = async (data: CreateOrEditImageGenerationDTO,
 
     data.userId = userId;
 
-    return ResponseFactory.success({ data: data });
+    return ResponseFactory.success({  });
 }
 
 const createImageGeneration = async (data: CreateOrEditImageGenerationDTO): Promise<ApiResponse<ImageGeneration>> => {
@@ -132,8 +132,9 @@ const createImageGeneration = async (data: CreateOrEditImageGenerationDTO): Prom
     return ResponseFactory.fail({ message: "Invalid provider" });
 }
 
-const editImageGeneration = async (data: CreateOrEditImageGenerationDTO, existingGen: ImageGeneration) => {
+const editImageGeneration = async (data: CreateOrEditImageGenerationDTO, existingGen: ImageGeneration) : Promise<ApiResponse<ImageGeneration>> => {
     // TODO: Implement when needed
+    return ResponseFactory.fail({ message: "Not implemented" });
 }
 
 const updateImageGenerationStatus = async (genId: string, status: ImageGenerationStatus): Promise<ApiResponse> => {

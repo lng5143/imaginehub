@@ -5,6 +5,8 @@ import { CreateOrEditImageGenerationDTO } from "@/types/image-generation";
 import { ApiResponse, ResponseFactory } from "@/types/response";
 import { QueryClient } from "@tanstack/react-query";
 import { Provider } from "@prisma/client";
+import { GenerationState } from "@/types/generation-state";
+import { LSConsts } from "@/const/consts";
 
 interface GenerationCallbacks {
     onInitComplete: () => void;
@@ -79,3 +81,7 @@ const validateAPIKey = (provider: string) : ApiResponse<{ key: string }> => {
 
     return { success: true, data: { key: apiKey! } }
 }
+
+// export const getPendingGenerations = () : GenerationState[] => {
+//     return JSON.parse(localStorage.getItem(LSConsts.PENDING_GENERATIONS) || "[]");
+// }
