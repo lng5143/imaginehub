@@ -8,7 +8,6 @@ const DALLE_ENDPOINT = "https://api.openai.com/v1/images/generations";
 export const generateDalleImages = async (data: CreateOrEditImageGenerationDTO, apiKey: string) : Promise<ApiResponse<FormData>> => {
     const modelName = getOpenAIModelName(data.model);
     if (!modelName) return ResponseFactory.fail({ message: "Invalid model" });
-    
 
     const response = await fetch(DALLE_ENDPOINT, {
         method: "POST",

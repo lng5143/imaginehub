@@ -7,8 +7,10 @@ const FLUX_ENDPOINT = "https://api.replicate.com/v1/models/black-forest-labs/";
 
 export const generateFLUXImages = async (data: CreateOrEditImageGenerationDTO, apiKey: string) : Promise<ApiResponse<FormData>> => {
     const payload = getFLUXPayload(data);
+    const modelEndpoint = getFLUXModelEndPoint(data.model);
+    if (!payload || !modelEndpoint) return ResponseFactory.fail({ message: "Invalid model" });
 
-    const response = await fetch(FLUX_ENDPOINT + getFLUXModelEndPoint(data.model), {
+    const response = await fetch(FLUX_ENDPOINT + modelEndpoint, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -34,7 +36,7 @@ export const generateFLUXImages = async (data: CreateOrEditImageGenerationDTO, a
     return ResponseFactory.success({ data: formData });
 }
 
-const getFLUXModelEndPoint = (model: Model) : string => {
+const getFLUXModelEndPoint = (model: Model) : string | undefined => {
     switch(model) {
         case Model.FLUX_1_1_PRO:
             return "flux-1.1-pro/predictions"
@@ -43,11 +45,11 @@ const getFLUXModelEndPoint = (model: Model) : string => {
         case Model.FLUX_1_PRO:
             return "flux-pro/predictions"
         default:
-            return ""
+            return undefined;
     }
 }
 
-const getFLUXPayload = (data: CreateOrEditImageGenerationDTO) => {
+const getFLUXPayload = (data: CreateOrEditImageGenerationDTO) : any | undefined => {
     switch(data.model) {
         case Model.FLUX_1_1_PRO:
             return {
@@ -82,6 +84,6 @@ const getFLUXPayload = (data: CreateOrEditImageGenerationDTO) => {
                 prompt: data.prompt,
             }
         default:
-            return {}
+            return undefined;
     }
 }

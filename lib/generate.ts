@@ -6,6 +6,7 @@ import { ApiResponse, ResponseFactory } from "@/types/response";
 import { QueryClient } from "@tanstack/react-query";
 import { Provider } from "@prisma/client";
 import { ERROR_TYPES } from "@/const/consts";
+import { generateFLUXImages } from "./replicate";
 
 interface GenerationCallbacks {
     onInitComplete: () => void;
@@ -36,6 +37,9 @@ export const generateImages = async (
                 break;
             case Provider.STABILITY:
                 genRes = await generateStabilityImages(inputData, apiKeyRes.data?.key!);
+                break;
+            case Provider.REPLICATE:
+                genRes = await generateFLUXImages(inputData, apiKeyRes.data?.key!);
                 break;
             default:
                 return ResponseFactory.fail({ message: "Invalid provider!", data: { genId: initialGen?.data?.id } });
@@ -70,6 +74,9 @@ const validateAPIKey = (provider: string) : ApiResponse<{ key: string }> => {
         case "stability":
             apiKey = localStorage.getItem("ib_stability_api_key");
             break;
+        case "replicate":
+            apiKey = localStorage.getItem("ib_replicate_api_key");
+            break;
     }
 
     if (!apiKey) {
@@ -78,8 +85,8 @@ const validateAPIKey = (provider: string) : ApiResponse<{ key: string }> => {
                 return ResponseFactory.fail({ message: "No OpenAI API key found. Please enter your API key in settings.", errorType: ERROR_TYPES.NO_API_KEY });
             case Provider.STABILITY:
                 return ResponseFactory.fail({ message: "No Stability AI API key found. Please enter your API key in settings.", errorType: ERROR_TYPES.NO_API_KEY });
-            case Provider.BFL:
-                return ResponseFactory.fail({ message: "No BFL API key found. Please enter your API key in settings.", errorType: ERROR_TYPES.NO_API_KEY });
+            case Provider.REPLICATE:
+                return ResponseFactory.fail({ message: "No Replicate API key found. Please enter your API key in settings.", errorType: ERROR_TYPES.NO_API_KEY });
             default: 
                 return ResponseFactory.fail({ message: "Invalid provider" });
         }
