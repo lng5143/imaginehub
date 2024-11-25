@@ -28,15 +28,15 @@ export const HINTS = {
     SD_RATIOS: `Aspect ratio of the image to generate.`,
     SD_SEED: `A specific value that is used to guide the 'randomness' of the generation: [0 .. 4294967294]`,
     SD_NEGATIVE_PROMPT: `Description of what you don't want to generate.`,
-    FL_WIDTH: ``,
-    FL_HEIGHT: ``,
-    FL_SEED: ``,
-    FL_UPSAMPLING: ``,
-    FL_SAFETY: ``,
-    FL_STEPS: ``,
-    FL_GUIDANCE: ``,
-    FL_INTERVAL: ``,
-    FL_RAW: ``
+    FL_WIDTH: `Width of the generated image. Minimum 256, maximum 1024. Must be a multiple of 32.`,
+    FL_HEIGHT: `Height of the generated image. Minimum 256, maximum 1024. Must be a multiple of 32.`,
+    FL_SEED: `Optional seed for reproducibility. Must be an integer`,
+    FL_UPSAMPLING: `Automatically modifies the prompt for more creative generation`,
+    FL_SAFETY: `Tolerance level for input and output moderation. Between 0 and 6, 0 being most strict, 6 being least strict.`,
+    FL_STEPS: `Number of diffusion steps.`,
+    FL_GUIDANCE: `Controls the balance between adherence to the text prompt and image quality/diversity. Minimum 1.5, maximum 5. \nHigher values make the output more closely match the prompt.`,
+    FL_INTERVAL: `Variance in possible outputs. Minimum 1, maximum 4. \nHigher value produces more dynamic or varied outputs.`,
+    FL_RAW: `Generate less processed, more natural-looking images`
 }
 
 export const BLOG_PAGE_SIZE = 9;
@@ -49,4 +49,9 @@ export const LSConsts = {
     OPEN_AI_API_KEY: 'ib_openai_api_key',
     STABILITY_API_KEY: 'ib_stability_api_key',
     PENDING_GENERATIONS: 'ib-pending-generations'
+}
+
+export enum ERROR_TYPES {
+    NO_API_KEY,
+    INVALID_PROVIDER
 }

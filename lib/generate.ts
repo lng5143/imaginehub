@@ -5,7 +5,7 @@ import { CreateOrEditImageGenerationDTO } from "@/types/image-generation";
 import { ApiResponse, ResponseFactory } from "@/types/response";
 import { QueryClient } from "@tanstack/react-query";
 import { Provider } from "@prisma/client";
-import { ERROR_TYPES } from "./error";
+import { ERROR_TYPES } from "@/const/consts";
 
 interface GenerationCallbacks {
     onInitComplete: () => void;

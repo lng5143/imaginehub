@@ -8,7 +8,7 @@ import StabilityForm from "./forms/stability-form";
 import NoKeyDialog from "./no-key-dialog";
 import { getProviderFromModel } from "@/lib/models";
 import { generateImages } from "@/lib/generate";
-import { ERROR_TYPES } from "@/lib/error";
+import { ERROR_TYPES } from "@/const/consts";
 import { updateImageGenerationStatus } from "@/server/actions/generations";
 
 export default function CreateFormWrapper() {

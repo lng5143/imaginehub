@@ -1,4 +1,4 @@
-import { ERROR_TYPES } from "@/lib/error";
+import { ERROR_TYPES } from "@/const/consts";
 
 export type ApiResponse<T = any> = {
     success: boolean;

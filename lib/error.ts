@@ -1,4 +1,0 @@
-export enum ERROR_TYPES {
-    NO_API_KEY,
-    INVALID_PROVIDER
-}
