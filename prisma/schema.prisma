@@ -152,7 +152,7 @@ enum OrderStatus {
 enum Provider {
   STABILITY
   OPENAI
-  BFL
+  REPLICATE
 }
 
 enum UserTier {
