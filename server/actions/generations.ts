@@ -137,7 +137,7 @@ const editImageGeneration = async (data: CreateOrEditImageGenerationDTO, existin
     return ResponseFactory.fail({ message: "Not implemented" });
 }
 
-const updateImageGenerationStatus = async (genId: string, status: ImageGenerationStatus): Promise<ApiResponse> => {
+export const updateImageGenerationStatus = async (genId: string, status: ImageGenerationStatus): Promise<ApiResponse> => {
     const res = await prisma.imageGeneration.update({
         where: { id: genId },
         data: { status }

@@ -5,6 +5,7 @@ import { CreateOrEditImageGenerationDTO } from "@/types/image-generation";
 import { ApiResponse, ResponseFactory } from "@/types/response";
 import { QueryClient } from "@tanstack/react-query";
 import { Provider } from "@prisma/client";
+import { ERROR_TYPES } from "./error";
 
 interface GenerationCallbacks {
     onInitComplete: () => void;
@@ -17,6 +18,7 @@ export const generateImages = async (
     queryClient: QueryClient, 
     callbacks: GenerationCallbacks
     ) : Promise<ApiResponse> => {
+
     const apiKeyRes = validateAPIKey(inputData.provider);
     if (!apiKeyRes.success) {
         return apiKeyRes;
@@ -70,16 +72,18 @@ const validateAPIKey = (provider: string) : ApiResponse<{ key: string }> => {
             break;
     }
 
-    if (!apiKey && provider === "openai") {
-        return ResponseFactory.fail({ message: "No OpenAI API key found. Please enter your API key in settings." });
-    }
-    if (!apiKey && provider === "stability") {
-        return ResponseFactory.fail({ message: "No Stability AI API key found. Please enter your API key in settings." })
+    if (!apiKey) {
+        switch (provider) {
+            case Provider.OPENAI:
+                return ResponseFactory.fail({ message: "No OpenAI API key found. Please enter your API key in settings.", errorType: ERROR_TYPES.NO_API_KEY });
+            case Provider.STABILITY:
+                return ResponseFactory.fail({ message: "No Stability AI API key found. Please enter your API key in settings.", errorType: ERROR_TYPES.NO_API_KEY });
+            case Provider.BFL:
+                return ResponseFactory.fail({ message: "No BFL API key found. Please enter your API key in settings.", errorType: ERROR_TYPES.NO_API_KEY });
+            default: 
+                return ResponseFactory.fail({ message: "Invalid provider" });
+        }
     }
 
-    return { success: true, data: { key: apiKey! } }
+    return ResponseFactory.success({ data: { key: apiKey! } });
 }
-
-// export const getPendingGenerations = () : GenerationState[] => {
-//     return JSON.parse(localStorage.getItem(LSConsts.PENDING_GENERATIONS) || "[]");
-// }

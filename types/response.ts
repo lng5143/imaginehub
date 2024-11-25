@@ -1,6 +1,9 @@
+import { ERROR_TYPES } from "@/lib/error";
+
 export type ApiResponse<T = any> = {
     success: boolean;
     message?: string;
+    errorType?: ERROR_TYPES;
     data?: T;
 }
 
@@ -9,7 +12,7 @@ export class ResponseFactory {
         return { success: true, data, message };
     }
 
-    static fail<T>({message, data}: {message?: string, data?: T}) : ApiResponse<T> {
+    static fail<T>({message, data, errorType }: {message?: string, data?: T, errorType?: ERROR_TYPES}) : ApiResponse<T> {
         return { success: false, data, message };
     }
 }

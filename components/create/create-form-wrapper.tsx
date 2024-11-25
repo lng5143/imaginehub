@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { Model } from "@prisma/client";
+import { ImageGenerationStatus, Model } from "@prisma/client";
 import { useState } from "react";
 import { CreateOrEditImageGenerationDTO } from "@/types/image-generation";
 import { toast } from "sonner";
@@ -8,11 +8,14 @@ import StabilityForm from "./forms/stability-form";
 import NoKeyDialog from "./no-key-dialog";
 import { getProviderFromModel } from "@/lib/models";
 import { generateImages } from "@/lib/generate";
+import { ERROR_TYPES } from "@/lib/error";
+import { updateImageGenerationStatus } from "@/server/actions/generations";
 
 export default function CreateFormWrapper() {
     const queryClient = useQueryClient();
     const [currentModel, _setCurrentModel] = useState<Model | undefined>(undefined);
     const [isNoKeyDialogOpen, setIsNoKeyDialogOpen] = useState(false);
+    const [isInitInsertInProgress, setIsInitInsertInProgress] = useState(false);
 
     const provider = getProviderFromModel(currentModel);
 
@@ -25,29 +28,26 @@ export default function CreateFormWrapper() {
         toast.success("Image generation complete!")
     }
 
-    const handleNoKey = () => {
+    const handleNoKeyError = () => {
         setIsNoKeyDialogOpen(true);
     }
 
     const handleSubmit = async (data: CreateOrEditImageGenerationDTO) => {
         console.log(data);
 
-        const registration = await navigator.serviceWorker.ready;
-
         try {
-            setIsInitInsertInProgress(true);
             const res = await generateImages(data, queryClient, {
                 onInitComplete: handleInitComplete,
                 onFinalUpdateComplete: handleFinalUpdateComplete,
             })
 
             if (!res.success) {
-                if (res.data?.isNoKey) {
-                    handleNoKeyError(res);
+                if (res.errorType === ERROR_TYPES.NO_API_KEY) {
+                    handleNoKeyError();
                 } else {
                     toast.error(res.message);
                     if (res.data?.genId) {
-                        await markGenerationAsFailed(res.data?.genId);
+                        await updateImageGenerationStatus(res.data?.genId, ImageGenerationStatus.FAILED);
                     }
                 }
             }
