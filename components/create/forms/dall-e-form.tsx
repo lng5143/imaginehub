@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import SliderSelector from "./slider-selector";
 import AdvancedFormFields from "./advanced-form-fields";
 import { getDefaultValues, getResolver } from "@/lib/models";
+import BadgeSelector from "./badge-selector";
 
 export default function DallEForm({ onSubmit, isSubmitting } : CreateFormProps) {
     const [currentModel] = useCurrentModel();
@@ -68,18 +69,7 @@ const SizeSelector = ({ field, model }: { field: any, model: Model }) => {
         <FormItem>
             <InputLabel label="Size" hint={HINTS.DE_SIZE} />
             <FormControl>
-                <div>
-                    {sizeOptions.map((size, index) => (
-                        <Badge
-                            key={index}
-                            // className="flex items-center justify-center"
-                            variant={field.value === size ? "ibLightChosen" : "outline"}
-                            onClick={() => field.onChange(size)}
-                        >
-                            {size}
-                        </Badge>
-                    ))}
-                </div>
+                <BadgeSelector field={field} options={sizeOptions} />
             </FormControl>
         </FormItem>
     )
@@ -88,19 +78,8 @@ const SizeSelector = ({ field, model }: { field: any, model: Model }) => {
 const DE3QualitySelector = ({ field }: { field: any }) => (
     <FormItem>
         <InputLabel label="Quality" hint={HINTS.DE_QUALITY} />
-        <FormControl className="flex flex-wrap gap-2">
-            <div>
-                {DE3_QUALITIES.map((quality, index) => (
-                    <Badge
-                        key={index}
-                        // className="flex items-center justify-center"
-                        variant={field.value === quality ? "ibLightChosen" : "outline"}
-                        onClick={() => field.onChange(quality)}
-                    >
-                        {quality}
-                    </Badge>
-                ))}
-            </div>
+        <FormControl>
+            <BadgeSelector field={field} options={DE3_QUALITIES} />
         </FormControl>
     </FormItem>
 )
@@ -111,7 +90,6 @@ const DE2SamplesSelector = ({ field }: { field: any }) => (
         <FormControl>
             <SliderSelector 
                 field={field}
-                defaultValue={1}
                 min={1}
                 max={10}
                 step={1}

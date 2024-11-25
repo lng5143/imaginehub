@@ -119,7 +119,6 @@ const WidthSelector = ({ field }: { field: any }) => (
         <FormControl>
             <SliderSelector
                 field={field}
-                defaultValue={1024}
                 min={256}
                 max={1024}
                 step={32}
@@ -134,7 +133,6 @@ const HeightSelector = ({ field }: { field: any }) => (
         <FormControl>
             <SliderSelector
                 field={field}
-                defaultValue={1024}
                 min={256}
                 max={1024}
                 step={32}
@@ -178,7 +176,6 @@ const SafetyToleranceSelector = ({ field }: { field: any }) => (
         <FormControl>
             <SliderSelector
                 field={field}
-                defaultValue={0}
                 min={0}
                 max={6}
                 step={1}
@@ -193,7 +190,6 @@ const StepsSelector = ({ field }: { field: any }) => (
         <FormControl>
             <SliderSelector
                 field={field}
-                defaultValue={1}
                 min={1}
                 max={50}
                 step={1}
@@ -208,7 +204,6 @@ const GuidanceSelector = ({ field }: { field: any }) => (
         <FormControl>
             <SliderSelector
                 field={field}
-                defaultValue={1.5}
                 min={1.5}
                 max={5}
                 step={0.5}
@@ -223,7 +218,6 @@ const IntervalSelector = ({ field }: { field: any }) => (
         <FormControl>
             <SliderSelector
                 field={field}
-                defaultValue={2}
                 min={1}
                 max={4}
                 step={1}

@@ -129,7 +129,7 @@ export const getDefaultValues = (model: Model) => {
                 width: 1024,
                 height: 1024,
                 seed: undefined,
-                safety_tolerance: undefined,
+                safety_tolerance: 2,
                 prompt_upsampling: false,
                 prompt: ""
             }
@@ -138,11 +138,11 @@ export const getDefaultValues = (model: Model) => {
                 width: 1024,
                 height: 1024,
                 seed: undefined,
-                safety_tolerance: undefined,
+                safety_tolerance: 2,
                 prompt_upsampling: false,
-                steps: undefined,
-                guidance: undefined, 
-                interval: undefined,
+                steps: 25,
+                guidance: 3, 
+                interval: 2,
                 prompt: ""
             }
         case Model.FLUX_1_1_PRO_ULTRA:
@@ -150,7 +150,7 @@ export const getDefaultValues = (model: Model) => {
                 width: 1024,
                 height: 1024,
                 seed: undefined,
-                safety_tolerance: undefined,
+                safety_tolerance: 2,
                 raw: false,
                 prompt: ""
             }

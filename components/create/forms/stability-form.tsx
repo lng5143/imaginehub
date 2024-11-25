@@ -8,16 +8,15 @@ import { useCurrentModel } from "@/store/use-current-model";
 import InputLabel from "../input-label";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { Command, CommandInput, CommandList, CommandItem, CommandEmpty, CommandGroup } from "../../ui/command";
-import { Input } from "../../ui/input";
 import { HINTS, SD_PRESETS, SD_RATIOS } from "@/const/consts";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Model } from "@prisma/client";
 import { CreateFormProps } from "@/types/create-form";
-import { Badge } from "@/components/ui/badge";
 import AdvancedFormFields from "./advanced-form-fields";
 import { getDefaultValues, getResolver } from "@/lib/models";
 import SliderSelector from "./slider-selector";
+import BadgeSelector from "./badge-selector";
 
 export default function StabilityForm({ onSubmit, isSubmitting } : CreateFormProps) {
     const [currentModel] = useCurrentModel();
@@ -83,17 +82,7 @@ const RatioSelector = ({ field }: { field: any }) => (
     <FormItem>
         <InputLabel label="Aspect Ratio" hint={HINTS.SD_RATIOS} />
         <FormControl>
-            <div>
-            {SD_RATIOS.map((item, index) => (
-                <Badge
-                    key={index}
-                    variant={field.value === item ? "ibLightChosen" : "outline"}
-                    onClick={() => field.onChange(item)}
-                >
-                    {item}
-                </Badge>
-            ))}
-            </div>
+            <BadgeSelector field={field} options={SD_RATIOS} />
         </FormControl>
     </FormItem>
 )
@@ -113,7 +102,6 @@ const SeedInput = ({ field }: { field: any }) => (
         <FormControl>
             <SliderSelector
                 field={field}
-                defaultValue={0}
                 min={0}
                 max={4294967294}
                 step={1}
