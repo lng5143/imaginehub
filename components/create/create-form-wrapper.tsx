@@ -10,6 +10,7 @@ import { getProviderFromModel } from "@/lib/models";
 import { generateImages } from "@/lib/generate";
 import { ERROR_TYPES } from "@/const/consts";
 import { updateImageGenerationStatus } from "@/server/actions/generations";
+import FLUXForm from "./forms/flux-form";
 
 export default function CreateFormWrapper() {
     const queryClient = useQueryClient();
@@ -35,27 +36,27 @@ export default function CreateFormWrapper() {
     const handleSubmit = async (data: CreateOrEditImageGenerationDTO) => {
         console.log(data);
 
-        try {
-            const res = await generateImages(data, queryClient, {
-                onInitComplete: handleInitComplete,
-                onFinalUpdateComplete: handleFinalUpdateComplete,
-            })
+        // try {
+        //     const res = await generateImages(data, queryClient, {
+        //         onInitComplete: handleInitComplete,
+        //         onFinalUpdateComplete: handleFinalUpdateComplete,
+        //     })
 
-            if (!res.success) {
-                if (res.errorType === ERROR_TYPES.NO_API_KEY) {
-                    handleNoKeyError();
-                } else {
-                    toast.error(res.message);
-                    if (res.data?.genId) {
-                        await updateImageGenerationStatus(res.data?.genId, ImageGenerationStatus.FAILED);
-                    }
-                }
-            }
-        } catch (error) {
-            toast.error("Failed to generate images");
-        } finally {
-            setIsInitInsertInProgress(false);
-        }
+        //     if (!res.success) {
+        //         if (res.errorType === ERROR_TYPES.NO_API_KEY) {
+        //             handleNoKeyError();
+        //         } else {
+        //             toast.error(res.message);
+        //             if (res.data?.genId) {
+        //                 await updateImageGenerationStatus(res.data?.genId, ImageGenerationStatus.FAILED);
+        //             }
+        //         }
+        //     }
+        // } catch (error) {
+        //     toast.error("Failed to generate images");
+        // } finally {
+        //     setIsInitInsertInProgress(false);
+        // }
     }
 
     const CreateForm = () => {
@@ -69,6 +70,10 @@ export default function CreateFormWrapper() {
             case Model.DALL_E_2:
             case Model.DALL_E_3:
                 return <DallEForm onSubmit={handleSubmit} isSubmitting={isInitInsertInProgress} />
+            case Model.FLUX_1_1_PRO:
+            case Model.FLUX_1_PRO:
+            case Model.FLUX_1_1_PRO_ULTRA:
+                return <FLUXForm onSubmit={handleSubmit} isSubmitting={isInitInsertInProgress} />
             }
         }
 

@@ -1,5 +1,4 @@
 import { useCurrentModel } from "@/store/use-current-model";
-import { MODELS} from "@/const/consts";
 import { useState } from "react";
 import {
     Dialog,
@@ -12,6 +11,10 @@ import {
 import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
+import { Model } from "@prisma/client";
+import { getModelName } from "@/lib/models";
+
+const models = Object.values(Model);
 
 export default function ModelSelector() {
     const [currentModel, setCurrentModel] = useCurrentModel();
@@ -20,8 +23,8 @@ export default function ModelSelector() {
     const handleSelectModel = (model: any) => {
         setCurrentModel(model);
         setOpen(false);
-    }   
-
+    }
+    
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
@@ -35,13 +38,13 @@ export default function ModelSelector() {
                     <VisuallyHidden><DialogDescription></DialogDescription></VisuallyHidden>
                 </DialogHeader>
                 <div className="p-2 grid grid-cols-3">
-                    {MODELS.map((model) => (
+                    {models.map((model) => (
                         <div 
-                            key={model.code} 
-                            className={cn("flex items-center justify-center", model.code === currentModel.code ? "border border-blue-500" : "")}
+                            key={model} 
+                            className={cn("flex items-center justify-center", model === currentModel ? "border border-blue-500" : "")}
                             onClick={() => handleSelectModel(model)}
                         >
-                            {model.name}
+                            {getModelName(model)}
                         </div>
                     ))}
                 </div>
