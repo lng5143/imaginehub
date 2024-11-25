@@ -1,4 +1,4 @@
-import { TRIAL_IMAGE_COUNT } from "@/const/imagine-box-consts"
+import { TRIAL_IMAGE_COUNT } from "@/const/consts"
 
 export const BENEFITS = [
     {
