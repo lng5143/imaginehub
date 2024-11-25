@@ -1,5 +1,5 @@
 import Generation from "./generation";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import PaginationContainer from "./pagination";
 import { useCurrentGenerationId } from "@/store/use-current-generation-id";
 import { useQuery } from "@tanstack/react-query";
@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { PAGE_SIZE } from "@/const/consts";
 import { cn } from "@/lib/utils";
 import { useCurrentPage } from "@/store/use-current-page";
-import { ImageGenerationStatus } from "@prisma/client";
+import { Image, ImageGeneration, ImageGenerationStatus } from "@prisma/client";
 
 export default function GenerationsPanel({}) {
   const containerRef = useRef(null);
@@ -27,7 +27,7 @@ export default function GenerationsPanel({}) {
     setCurrentPage(page);
   }
 
-  const handleSelectGeneration = (generation) => {
+  const handleSelectGeneration = (generation : ImageGeneration & { images: Image[]}) => {
     if (generation.status === ImageGenerationStatus.PROCESSING)
       toast.info("Image generation in progress");
     else if (generation.status === ImageGenerationStatus.COMPLETED)
@@ -40,7 +40,7 @@ export default function GenerationsPanel({}) {
         ref={containerRef} 
         className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6 mb-auto p-5 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-800"
       >
-        {!isPending && response?.data?.map(generation => (
+        {!isPending && response?.data?.data?.map(generation => (
           <Generation key={generation.id} data={generation} onClick={() => handleSelectGeneration(generation)}/>
         ))}
         {isPending && Array.from({length: PAGE_SIZE}).map((_, index) => (
@@ -50,7 +50,7 @@ export default function GenerationsPanel({}) {
       <div className="pb-4">
         <PaginationContainer 
           currentPage={currentPage}
-          totalCount={response?.totalCount}
+          totalCount={response?.data?.totalCount!}
           onPageChange={page => handlePageChange(page)}
         />
       </div>

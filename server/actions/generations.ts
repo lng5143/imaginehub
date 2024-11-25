@@ -15,7 +15,7 @@ import { OpenAIGenerationConfigs, StabilityGenerationConfigs } from "@prisma/cli
 const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/jpg", "image/webp"];
 const MAX_IMAGE_COUNT = 10;
 
-export const getGenerations = async (page: number): Promise<ApiResponse<PagedData<ImageGeneration>>> => {
+export const getGenerations = async (page: number): Promise<ApiResponse<PagedData<ImageGeneration & { images: Image[] }>>> => {
     const userId = await getCurrentUserId();
     
     if (!userId)

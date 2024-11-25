@@ -4,10 +4,10 @@ import { PAGE_SIZE } from "@/const/consts";
 interface PaginationContainerProps {
     currentPage: number,
     totalCount: number,
-    // onPageChange: (page: number) => void
+    onPageChange: (page: number) => void
 }
 
-export default function PaginationContainer({ currentPage, totalCount}: PaginationContainerProps) {
+export default function PaginationContainer({ currentPage, totalCount, onPageChange }: PaginationContainerProps) {
     const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
     if (!totalCount || totalCount <= 0 ||totalPages <= 1) return null;
@@ -19,9 +19,8 @@ export default function PaginationContainer({ currentPage, totalCount}: Paginati
                     <PaginationItem
                         onClick={(e) => {
                             e.preventDefault();
-                            // TODO: navigate using Link component
+                            onPageChange(currentPage - 1);
                         }}
-                        
                         >
                         <PaginationPrevious 
                             className="hover:bg-amber-500 hover:text-black cursor-pointer" 
@@ -44,7 +43,7 @@ export default function PaginationContainer({ currentPage, totalCount}: Paginati
                                         : "hover:bg-amber-500 hover:text-black cursor-pointer"}
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        // TODO: navigate using Link component
+                                        onPageChange(page);
                                     }}
                                 >
                                     {page}
@@ -64,7 +63,7 @@ export default function PaginationContainer({ currentPage, totalCount}: Paginati
                     <PaginationItem
                         onClick={(e) => {
                             e.preventDefault();
-                                // TODO: navigate using Link component    
+                            onPageChange(currentPage + 1);
                         } 
                     }                 
                     >

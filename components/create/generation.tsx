@@ -1,9 +1,9 @@
-import { Image, ImageGeneration, ImageGenerationStatus } from "@prisma/client";
+import { Image as PrismaImage, ImageGeneration, ImageGenerationStatus } from "@prisma/client";
 import { CircleX, ImageIcon, LoaderCircle } from "lucide-react";
 import Image from "next/image";
 
 interface GenerationProps {
-    data: ImageGeneration & { images: Image[]},
+    data: ImageGeneration & { images: PrismaImage[]},
     onClick: () => void;
 }
 
