@@ -12,7 +12,8 @@ import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { Model } from "@prisma/client";
-import { getModelName } from "@/lib/models";
+import { getModelDescription, getModelIcon, getModelName } from "@/lib/models";
+import Image from "next/image";
 
 const models = Object.values(Model);
 
@@ -28,7 +29,7 @@ export default function ModelSelector() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>{currentModel ? getModelName(currentModel) : "Select Model"}</Button>
+                <Button className="rounded-sm">{currentModel ? getModelName(currentModel) : "Select Model"}</Button>
             </DialogTrigger>
             <DialogContent className="w-10/12 lg:w-8/12 max-w-full">
                 <DialogHeader>
@@ -42,11 +43,15 @@ export default function ModelSelector() {
                         <div 
                             key={model} 
                             className={cn(
-                                "flex items-center justify-center text-center text-sm p-2 h-[80px] border-2 rounded-md cursor-pointer", 
+                                "flex flex-col gap-2 items-center justify-center text-center text-sm p-2 h-[80px] border-2 rounded-sm cursor-pointer", 
                                 model === currentModel ? "border-2 border-blue-500" : "")}
                             onClick={() => handleSelectModel(model)}
                         >
-                            {getModelName(model)}
+                            <div className="flex items-center justify-center gap-2">
+                                <Image src={getModelIcon(model) || ""} alt={model} width={20} height={32} />
+                                {getModelName(model)}
+                            </div>
+                                {getModelDescription(model) && <p className="text-xs text-gray-500">{getModelDescription(model)}</p>}
                         </div>
                     ))}
                 </div>

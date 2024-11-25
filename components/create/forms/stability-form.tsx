@@ -91,7 +91,7 @@ const NegativePromptInput = ({ field }: { field: any }) => (
     <FormItem>
         <InputLabel label="Negative Prompt" hint={HINTS.SD_NEGATIVE_PROMPT} />
         <FormControl>
-            <Textarea className="h-16 bg-white" {...field} />
+            <Textarea className="h-16 bg-white rounded-sm" {...field} />
         </FormControl>
     </FormItem>
 )

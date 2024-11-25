@@ -39,7 +39,7 @@ export default function NavigationBar() {
       </Link>
       <div className="flex-grow" />
       {!isLoading && user?.tier === UserTier.FREE && (
-        <UpgradeButton className="h-full" />
+        <UpgradeButton className="h-full rounded-sm" />
       )}
       <div className="flex items-center justify-end">
         {!isLoading && !user && (

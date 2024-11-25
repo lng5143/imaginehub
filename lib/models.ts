@@ -176,3 +176,34 @@ export const getDefaultValues = (model: Model) => {
             return undefined;
     }
 }
+
+export const getModelDescription = (model: Model) : string | undefined => {
+    switch (model) {
+        case Model.FLUX_1_1_PRO:
+        case Model.FLUX_1_PRO:
+        case Model.FLUX_1_1_PRO_ULTRA:
+            return "via Replicate"
+        default:
+            return undefined;
+    }
+}
+
+export const getModelIcon = (model: Model) : string | undefined => {
+    switch (model) {
+        case Model.FLUX_1_1_PRO:
+        case Model.FLUX_1_PRO:
+        case Model.FLUX_1_1_PRO_ULTRA:
+            return "/logo/bfl-logo.png"
+        case Model.STABLE_DIFFUSION_3_LARGE:
+        case Model.STABLE_DIFFUSION_3_LARGE_TURBO:
+        case Model.STABLE_DIFFUSION_3_MEDIUM:
+        case Model.STABLE_IMAGE_CORE:
+        case Model.STABLE_IMAGE_ULTRA:
+            return "/logo/stability-logo.png"
+        case Model.DALL_E_2:
+        case Model.DALL_E_3:
+            return "/logo/openai-logo.png"
+        default:
+            return undefined;
+    }
+}

@@ -29,7 +29,7 @@ export default function CreateBaseForm({ children, onSubmit, isSubmitting, form 
                             <FormControl>
                                 <Textarea 
                                     required 
-                                    className="h-28 bg-white" 
+                                    className="h-28 bg-white rounded-sm" 
                                     {...field} 
                                 />
                             </FormControl>

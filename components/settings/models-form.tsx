@@ -7,6 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/
 import { ModelsSettingsSchema } from "@/schemas/index";
 import { toast } from "sonner";
 import { z } from "zod";
+import { LSConsts } from "@/const/consts";
 
 export default function KeysForm() {
     const [isPending, startTransition] = useTransition();
@@ -14,8 +15,9 @@ export default function KeysForm() {
     const form = useForm({
         resolver: zodResolver(ModelsSettingsSchema),
         defaultValues: {
-            openai_api_key: localStorage.getItem("ib_openai_api_key") || "",
-            stability_api_key: localStorage.getItem("ib_stability_api_key") || "",
+            openai_api_key: localStorage.getItem(LSConsts.OPEN_AI_API_KEY) || "",
+            stability_api_key: localStorage.getItem(LSConsts.STABILITY_API_KEY) || "",
+            replicate_api_key: localStorage.getItem(LSConsts.REPLICATE_API_KEY) || "",
         }
     })
 
@@ -23,9 +25,11 @@ export default function KeysForm() {
         startTransition(async () => {
             const stabilityApiKey = data.stability_api_key;
             const openaiApiKey = data.openai_api_key;
+            const replicateApiKey = data.replicate_api_key;
 
-            if (stabilityApiKey) localStorage.setItem("ib_stability_api_key", stabilityApiKey);
-            if (openaiApiKey) localStorage.setItem("ib_openai_api_key", openaiApiKey);
+            if (stabilityApiKey) localStorage.setItem(LSConsts.STABILITY_API_KEY, stabilityApiKey);
+            if (openaiApiKey) localStorage.setItem(LSConsts.OPEN_AI_API_KEY, openaiApiKey);
+            if (replicateApiKey) localStorage.setItem(LSConsts.REPLICATE_API_KEY, replicateApiKey);
         })
 
         toast.success("API keys saved");
@@ -66,6 +70,21 @@ export default function KeysForm() {
                                 </FormItem>
                             )}
                         />
+                        <FormField
+                            control={form.control}
+                            name="replicate_api_key"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <div className="flex flex-col gap-1">
+                                        <FormLabel className="font-semibold">Replicate API Key</FormLabel>
+                                        <p className="text-xs text-gray-500">For FLUX models</p>
+                                    </div>
+                                    <FormControl>
+                                        <Input placeholder="sk-..." {...field} disabled={isPending} />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />  
                     </div>
                 </div>
                 <Button variant="ibDark" className="w-40 self-end" type="submit" disabled={isPending}>Save</Button>

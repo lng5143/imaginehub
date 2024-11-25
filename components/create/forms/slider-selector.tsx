@@ -29,7 +29,7 @@ export default function SliderSelector({ field, min, max, step } : SliderSelecto
                     const roundedValue = Math.round(value / step) * step;
                     field.onChange(Math.min(Math.max(roundedValue, min), max));
                 }}
-                className="w-[80px] bg-white text-xs truncate"
+                className="w-[80px] bg-white text-xs truncate rounded-sm"
             />
         </div>
     )

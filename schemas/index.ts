@@ -1,11 +1,3 @@
-import { 
-    DE2_SIZES, 
-    DE3_SIZES, 
-    DE3_QUALITIES,
-    DE2_QUALITIES,
-    SD_PRESETS,
-    SD_RATIOS,
-} from '@/const/consts';
 import * as z from 'zod';
 
 export const LoginSchema = z.object({
@@ -21,9 +13,8 @@ export const GeneralSettingsSchema = z.object({
 export const ModelsSettingsSchema = z.object({
     openai_api_key: z.string().optional(),
     stability_api_key: z.string().optional(),
+    replicate_api_key: z.string().optional(),
 })
-
-
 
 export const EmailFormSchema = z.object({
     email: z.string().email({

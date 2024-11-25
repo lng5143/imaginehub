@@ -18,9 +18,9 @@ export default function SettingsDialog({ isOpen, setIsOpen, user } : SettingsDia
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogContent className="sm:max-w-[850px] sm:h-[600px] p-0 overflow-hidden border-none">
                 <Tabs value={activeTab} onValueChange={setActiveTab} className="flex h-full">
-                    <TabsList className="flex flex-col justify-start items-start h-full w-[200px] space-y-2 rounded-none border-r bg-indigo-950 p-4">
-                        <TabsTrigger value="general" className="justify-start w-full">General</TabsTrigger>
-                        <TabsTrigger value="models" className="justify-start w-full">API Keys</TabsTrigger>
+                    <TabsList className="flex flex-col justify-start items-start h-full w-[200px] space-y-2 rounded-none border-r bg-indigo-950 py-4 px-2">
+                        <TabsTrigger value="general" className="justify-start w-full rounded-sm">General</TabsTrigger>
+                        <TabsTrigger value="models" className="justify-start w-full rounded-sm">API Keys</TabsTrigger>
                     </TabsList>
                     <div className="flex-1 space-y-4 p-6 overflow-auto">
                         <DialogHeader>
