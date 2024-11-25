@@ -3,63 +3,21 @@ import { useForm } from "react-hook-form";
 import { useCurrentModel } from "@/store/use-current-model";
 import InputLabel from "../input-label";
 import { Input } from "../../ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Model } from "@prisma/client";
-import { FLUX_1_1_Pro_UltraFormSchema, FLUX_1_1_ProFormSchema, FLUX_1_ProFormSchema } from "@/types/image-generation";
 import CreateBaseForm from "./create-base-form";
 import { CreateFormProps } from "@/types/create-form";
 import SliderSelector from "./slider-selector";
 import { HINTS } from "@/const/consts";
 import AdvancedFormFields from "./advanced-form-fields";
 import { Switch } from "@/components/ui/switch";
+import { getDefaultValues, getResolver } from "@/lib/models";
 
 export default function FLUXForm({ onSubmit, isSubmitting } : CreateFormProps) {
     const [currentModel] = useCurrentModel();
 
-    let resolver;
-    let defaultValues;
-    switch (currentModel) {
-        case (Model.FLUX_1_1_PRO): 
-            resolver = zodResolver(FLUX_1_1_ProFormSchema);
-            defaultValues = {
-                width: 1024,
-                height: 1024,
-                seed: undefined,
-                safety_tolerance: undefined,
-                prompt_upsampling: false,
-                prompt: ""
-            }
-            break;
-        case (Model.FLUX_1_PRO):
-            resolver = zodResolver(FLUX_1_ProFormSchema);
-            defaultValues = {
-                width: 1024,
-                height: 1024,
-                seed: undefined,
-                safety_tolerance: undefined,
-                prompt_upsampling: false,
-                steps: undefined,
-                guidance: undefined, 
-                interval: undefined,
-                prompt: ""
-            }
-            break;
-        case (Model.FLUX_1_1_PRO_ULTRA):
-            resolver = zodResolver(FLUX_1_1_Pro_UltraFormSchema);
-            defaultValues = {
-                width: 1024,
-                height: 1024,
-                seed: undefined,
-                safety_tolerance: undefined,
-                raw: false,
-                prompt: ""
-            }
-            break;
-    }
-
     const form = useForm({
-        resolver: resolver,
-        defaultValues: defaultValues,
+        resolver: getResolver(currentModel),
+        defaultValues: getDefaultValues(currentModel),
         mode: "onSubmit"
     });
 

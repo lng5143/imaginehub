@@ -9,47 +9,21 @@ import InputLabel from "../input-label";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { Command, CommandInput, CommandList, CommandItem, CommandEmpty, CommandGroup } from "../../ui/command";
 import { Input } from "../../ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { HINTS, SD_PRESETS, SD_RATIOS } from "@/const/consts";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Model } from "@prisma/client";
-import { SD3LargeFormSchema, SD3LargeTurboFormSchema, SD3MediumFormSchema, SICoreFormSchema, SIUltraFormSchema } from "@/types/image-generation";
 import { CreateFormProps } from "@/types/create-form";
 import { Badge } from "@/components/ui/badge";
 import AdvancedFormFields from "./advanced-form-fields";
+import { getDefaultValues, getResolver } from "@/lib/models";
 
 export default function StabilityForm({ onSubmit, isSubmitting } : CreateFormProps) {
     const [currentModel] = useCurrentModel();
 
-    let resolver;
-    switch(currentModel) {
-        case Model.STABLE_DIFFUSION_3_LARGE:
-            resolver = zodResolver(SD3LargeFormSchema);
-            break;
-        case Model.STABLE_DIFFUSION_3_LARGE_TURBO:
-            resolver = zodResolver(SD3LargeTurboFormSchema);
-            break;
-        case Model.STABLE_DIFFUSION_3_MEDIUM:
-            resolver = zodResolver(SD3MediumFormSchema);            
-            break;
-        case Model.STABLE_IMAGE_CORE:
-            resolver = zodResolver(SICoreFormSchema);            
-            break;
-        case Model.STABLE_IMAGE_ULTRA:
-            resolver = zodResolver(SIUltraFormSchema);            
-            break;
-    }
-
     const form = useForm({
-        resolver: resolver,
-        defaultValues: {
-            sd_aspectRatio: "1:1",
-            // sd_stylePreset: null,
-            sd_seed: 0,
-            sd_negativePrompt: "",
-            prompt: ""
-        },
+        resolver: getResolver(currentModel),
+        defaultValues: getDefaultValues(currentModel),
         mode: "onSubmit"
     });
 

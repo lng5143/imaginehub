@@ -3,7 +3,6 @@ export const SD_RATIOS = ["1:1", "2:3", "3:2", "4:5", "5:4", "9:16", "9:21", "16
 export const DE2_SIZES = ["256x256", "512x512", "1024x1024"];
 export const DE3_SIZES = ["1024x1024", "1024x1792", "1792x1024"];
 export const DE3_QUALITIES = ["standard", "hd"];
-export const DE2_QUALITIES = ["standard"];
 
 // TODO: determine if IMAGE_BUCKET_NAME, IMAGINEBOX_OTP_PRICE_ID should be env var
 export const IMAGE_BUCKET_NAME = "generated-images";

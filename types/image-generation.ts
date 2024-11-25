@@ -1,7 +1,6 @@
-import { string, z } from "zod";
-import { DE2_SIZES, DE2_QUALITIES, DE3_SIZES, DE3_QUALITIES, SD_RATIOS, SD_PRESETS } from "@/const/consts";
+import { z } from "zod";
+import { DE2_SIZES, DE3_SIZES, DE3_QUALITIES, SD_RATIOS, SD_PRESETS } from "@/const/consts";
 import { ImageGenerationStatus, Model, Provider } from "@prisma/client";
-import { raw } from "@prisma/client/runtime/library";
 
 export type CreateOrEditImageGenerationDTO = {
     id: string | undefined;
@@ -49,7 +48,6 @@ export type FLUXGenerationConfigsDTO = {
 export const DE2FormSchema = z.object({
     id: z.string().optional(),
     size: z.enum(DE2_SIZES as [string, ...string[]]),
-    quality: z.enum(DE2_QUALITIES as [string, ...string[]]),
     samples: z.number().min(1).max(10),
     prompt: z.string().min(1, { message: "Prompt is required" }),
 })
@@ -63,7 +61,7 @@ export const DE2FormSchema = z.object({
     model: Model.DALL_E_2,
     openAIGenerationConfigs: {
         id: undefined,
-        quality: data.quality,
+        quality: "standard",
         size: data.size,
         imageGenerationId: undefined,
     }
@@ -73,14 +71,13 @@ export const DE3FormSchema = z.object({
     id: z.string().optional(),
     size: z.enum(DE3_SIZES as [string, ...string[]]),
     quality: z.enum(DE3_QUALITIES as [string, ...string[]]),
-    samples: z.number().min(1).max(10),
     prompt: z.string().min(1, { message: "Prompt is required" }),
 })
 .transform((data) : CreateOrEditImageGenerationDTO => ({
     id: data.id,
     userId: undefined,
     prompt: data.prompt,
-    samples: data.samples,
+    samples: 1,
     status: ImageGenerationStatus.PROCESSING,
     provider: Provider.OPENAI,
     model: Model.DALL_E_3,
@@ -269,7 +266,7 @@ export const FLUX_1_ProFormSchema = z.object({
     samples: 1,
     status: ImageGenerationStatus.PROCESSING,
     provider: Provider.BFL,
-    model: Model.FLUX_1_1_PRO,
+    model: Model.FLUX_1_PRO,
     fluxGenerationConfigs: {
         id: undefined,
         width: data.width,
@@ -301,7 +298,7 @@ export const FLUX_1_1_Pro_UltraFormSchema = z.object({
     samples: 1,
     status: ImageGenerationStatus.PROCESSING,
     provider: Provider.BFL,
-    model: Model.FLUX_1_1_PRO,
+    model: Model.FLUX_1_1_PRO_ULTRA,
     fluxGenerationConfigs: {
         id: undefined,
         width: data.width,
