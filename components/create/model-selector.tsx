@@ -43,7 +43,7 @@ export default function ModelSelector() {
                         <div 
                             key={model} 
                             className={cn(
-                                "flex flex-col gap-2 items-center justify-center text-center text-sm p-2 h-[80px] border-2 rounded-sm cursor-pointer", 
+                                "flex flex-col gap-2 items-center justify-center text-center text-sm p-4 h-[80px] border-2 rounded-sm cursor-pointer", 
                                 model === currentModel ? "border-2 border-blue-500" : "")}
                             onClick={() => handleSelectModel(model)}
                         >

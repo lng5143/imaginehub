@@ -15,7 +15,7 @@ import Image from "next/image";
 import DetailsToolbar from "./details-toolbar";
 import { Image as PrismaImage } from "@prisma/client";
 
-export default function GenerationDetails({ }) {
+export default function GenerationDetails() {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isCarouselDialogOpen, setIsCarouselDialogOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);

@@ -10,9 +10,11 @@ import { PAGE_SIZE } from "@/const/consts";
 import { cn } from "@/lib/utils";
 import { useCurrentPage } from "@/store/use-current-page";
 import { Image, ImageGeneration, ImageGenerationStatus } from "@prisma/client";
+import { useQueryClient } from "@tanstack/react-query";
 
-export default function GenerationsPanel({}) {
+export default function GenerationsPanel() {
   const containerRef = useRef(null);
+  const queryClient = useQueryClient();
   const [currentPage, setCurrentPage] = useCurrentPage();
   const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
 
@@ -28,10 +30,16 @@ export default function GenerationsPanel({}) {
   }
 
   const handleSelectGeneration = (generation : ImageGeneration & { images: Image[]}) => {
-    if (generation.status === ImageGenerationStatus.PROCESSING)
+    if (generation.status === ImageGenerationStatus.PROCESSING) {
       toast.info("Image generation in progress");
-    else if (generation.status === ImageGenerationStatus.COMPLETED)
+    }
+    else if (generation.status === ImageGenerationStatus.COMPLETED) {
+      queryClient.setQueryData(
+        ["generation", generation.id], 
+        { success: true, data: generation }
+      );
       setCurrentGenerationId(generation.id);
+    }
   }
 
   return (
