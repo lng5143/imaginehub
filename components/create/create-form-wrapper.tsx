@@ -23,7 +23,7 @@ export default function CreateFormWrapper() {
 
     const handleInitComplete = () => {
         setIsInitInsertInProgress(false);
-        toast.info("Image generation started, please wait...")
+        toast.info("Image generation started, please keep this page open while generation is in progress.")
     }
 
     const handleFinalUpdateComplete = () => {

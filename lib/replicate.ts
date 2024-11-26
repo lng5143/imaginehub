@@ -21,17 +21,16 @@ export const generateFLUXImages = async (data: CreateOrEditImageGenerationDTO, a
 
     const resData = await response.json();
 
-    if (resData?.error) {
-        return { success: false, message: resData?.error?.message }
+    if (resData?.status === 422) {
+        return ResponseFactory.fail({ message: resData?.title });
     }
 
-    const urls = resData?.data.map((d: any) => d?.url);
-    const imageBlobs : Blob[] = await Promise.all(urls.map(async (url: string) => {
-        const imageRes = await fetch(url);
-        return imageRes.blob();
-    }));
+    const successResponse = resData as ReplicateFLUXSuccessResponse;
 
-    const formData = toFormData(imageBlobs);
+    const url = successResponse?.urls.stream;
+    const imageRes = await fetch(url);
+    const imageBlob = await imageRes.blob();
+    const formData = toFormData([imageBlob]);
     
     return ResponseFactory.success({ data: formData });
 }
@@ -49,39 +48,45 @@ const getFLUXModelEndPoint = (model: Model) : string | undefined => {
     }
 }
 
-const getFLUXPayload = (data: CreateOrEditImageGenerationDTO) : any | undefined => {
+const getFLUXPayload = (data: CreateOrEditImageGenerationDTO) : ReplicateFLUXPayload | undefined => {
     switch(data.model) {
         case Model.FLUX_1_1_PRO:
             return {
-                width: data.fluxGenerationConfigs?.width,
-                height: data.fluxGenerationConfigs?.height,
-                prompt_upsampling: data.fluxGenerationConfigs?.prompt_upsampling,
-                seed: data.fluxGenerationConfigs?.seed,
-                safety_tolerance: data.fluxGenerationConfigs?.safety_tolerance,
-                output_format: "png",
-                prompt: data.prompt,
+                input: {
+                    width: data.fluxGenerationConfigs?.width,
+                    height: data.fluxGenerationConfigs?.height,
+                    prompt_upsampling: data.fluxGenerationConfigs?.prompt_upsampling,
+                    seed: data.fluxGenerationConfigs?.seed,
+                    safety_tolerance: data.fluxGenerationConfigs?.safety_tolerance,
+                    output_format: "png",
+                    prompt: data.prompt,
+                }
             }
         case Model.FLUX_1_1_PRO_ULTRA:
             return {
-                width: data.fluxGenerationConfigs?.width,
-                height: data.fluxGenerationConfigs?.height,
-                seed: data.fluxGenerationConfigs?.seed,
-                safety_tolerance: data.fluxGenerationConfigs?.safety_tolerance,
-                raw: data.fluxGenerationConfigs?.raw,
-                output_format: "png",
-                prompt: data.prompt,
+                input: {
+                    width: data.fluxGenerationConfigs?.width,
+                    height: data.fluxGenerationConfigs?.height,
+                    seed: data.fluxGenerationConfigs?.seed,
+                    safety_tolerance: data.fluxGenerationConfigs?.safety_tolerance,
+                    raw: data.fluxGenerationConfigs?.raw,
+                    output_format: "png",
+                    prompt: data.prompt,
+                }
             }
         case Model.FLUX_1_PRO:
             return {
-                width: data.fluxGenerationConfigs?.width,
-                height: data.fluxGenerationConfigs?.height,
-                seed: data.fluxGenerationConfigs?.seed,
-                guidance: data.fluxGenerationConfigs?.guidance,
-                steps: data.fluxGenerationConfigs?.steps,
-                interval: data.fluxGenerationConfigs?.interval,
-                safety_tolerance: data.fluxGenerationConfigs?.safety_tolerance,
-                output_format: "png",
-                prompt: data.prompt,
+                input: {
+                    width: data.fluxGenerationConfigs?.width,
+                    height: data.fluxGenerationConfigs?.height,
+                    seed: data.fluxGenerationConfigs?.seed,
+                    guidance: data.fluxGenerationConfigs?.guidance,
+                    steps: data.fluxGenerationConfigs?.steps,
+                    interval: data.fluxGenerationConfigs?.interval,
+                    safety_tolerance: data.fluxGenerationConfigs?.safety_tolerance,
+                    output_format: "png",
+                    prompt: data.prompt,
+                }
             }
         default:
             return undefined;
