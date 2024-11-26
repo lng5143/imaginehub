@@ -5,8 +5,8 @@ import { CreateOrEditImageGenerationDTO } from "@/types/image-generation";
 import { ApiResponse, ResponseFactory } from "@/types/response";
 import { QueryClient } from "@tanstack/react-query";
 import { Provider } from "@prisma/client";
-import { ERROR_TYPES } from "@/const/consts";
-import { generateFLUXImages } from "./replicate";
+import { ERROR_TYPES, LSConsts } from "@/const/consts";
+import { generateFLUXImages } from "./together-ai";
 
 interface GenerationCallbacks {
     onInitComplete: () => void;
@@ -65,17 +65,17 @@ export const generateImages = async (
     }
 }
 
-const validateAPIKey = (provider: string) : ApiResponse<{ key: string }> => {
+const validateAPIKey = (provider: Provider) : ApiResponse<{ key: string }> => {
     let apiKey;
     switch (provider) {
-        case "openai":
-            apiKey = localStorage.getItem("ib_openai_api_key");
+        case Provider.OPENAI:
+            apiKey = localStorage.getItem(LSConsts.OPEN_AI_API_KEY);
             break;
-        case "stability":
-            apiKey = localStorage.getItem("ib_stability_api_key");
+        case Provider.STABILITY:
+            apiKey = localStorage.getItem(LSConsts.STABILITY_API_KEY);
             break;
-        case "replicate":
-            apiKey = localStorage.getItem("ib_replicate_api_key");
+        case Provider.REPLICATE:
+            apiKey = localStorage.getItem(LSConsts.REPLICATE_API_KEY);
             break;
     }
 

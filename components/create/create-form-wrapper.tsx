@@ -37,27 +37,38 @@ export default function CreateFormWrapper() {
     const handleSubmit = async (data: CreateOrEditImageGenerationDTO) => {
         console.log(data);
 
-        // try {
-        //     const res = await generateImages(data, queryClient, {
-        //         onInitComplete: handleInitComplete,
-        //         onFinalUpdateComplete: handleFinalUpdateComplete,
-        //     })
+        data.model = currentModel;
+        const provider = getProviderFromModel(currentModel);
+        if (!provider) return;
 
-        //     if (!res.success) {
-        //         if (res.errorType === ERROR_TYPES.NO_API_KEY) {
-        //             handleNoKeyError();
-        //         } else {
-        //             toast.error(res.message);
-        //             if (res.data?.genId) {
-        //                 await updateImageGenerationStatus(res.data?.genId, ImageGenerationStatus.FAILED);
-        //             }
-        //         }
-        //     }
-        // } catch (error) {
-        //     toast.error("Failed to generate images");
-        // } finally {
-        //     setIsInitInsertInProgress(false);
-        // }
+        data.provider = provider;
+
+        try {
+            const res = await generateImages(data, queryClient, {
+                onInitComplete: handleInitComplete,
+                onFinalUpdateComplete: handleFinalUpdateComplete,
+            })
+
+            if (!res.success) {
+                const isNoApiKeyError = res.errorType === ERROR_TYPES.NO_API_KEY;
+                
+                if (isNoApiKeyError) {
+                    handleNoKeyError();
+                    return;
+                }
+                
+                toast.error(res.message);
+                
+                const generationId = res.data?.genId;
+                if (generationId) {
+                    await updateImageGenerationStatus(generationId, ImageGenerationStatus.FAILED);
+                }
+            }
+        } catch (error) {
+            toast.error("Failed to generate images");
+        } finally {
+            setIsInitInsertInProgress(false);
+        }
     }
 
     const CreateForm = () => {

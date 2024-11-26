@@ -1,0 +1,81 @@
+import Together from "together-ai";
+import { ApiResponse, ResponseFactory } from "@/types/response";
+import { toFormData } from "./images";
+import { CreateOrEditImageGenerationDTO } from "@/types/image-generation";
+import { Model } from "@prisma/client";
+
+const TOGETHER_ENDPOINT = "https://api.together.xyz/v1/images/generations";
+
+interface TogetherFLUXPayload {
+    steps: number;
+    n: number;
+    height: number;
+    width: number;
+    model: string;
+    prompt: string;
+}
+
+export const generateFLUXImages = async (data : CreateOrEditImageGenerationDTO, apiKey : string) : Promise<ApiResponse<FormData>> => {
+    const together = new Together({
+        apiKey: apiKey
+    })
+
+    let res;
+    try {
+        res = await together.images.create(getFLUXPayload(data));
+    } catch (error: any) {
+        const errorData = await JSON.parse(error.message.split(" ").slice(1).join(" "));
+        const errorMessage = errorData.error.message;
+        return ResponseFactory.fail({ message: errorMessage });
+    }
+
+    // @ts-ignore
+    const urls = res.data.map((image) => image.url);
+
+    const imageBlobs : Blob[] = await Promise.all(urls.map(async (url: string) => {
+        const imageRes = await fetch(url);
+        return imageRes.blob();
+    }));
+
+    const formData = toFormData(imageBlobs);
+    
+    return ResponseFactory.success({ data: formData });
+}
+
+const getFLUXPayload = (data: CreateOrEditImageGenerationDTO) : TogetherFLUXPayload => {
+    return {
+        steps: data.fluxGenerationConfigs?.steps || 4,
+        n: data.samples || 1,
+        height: data.fluxGenerationConfigs?.height || 1024,
+        width: data.fluxGenerationConfigs?.width || 1024,
+        model: getTogetherModelString(data.model),
+        prompt: data.prompt
+    }
+}
+
+const getFLUXExamplePayload = () : any => {
+    return {
+        prompt: 'cat floating in space, cinematic',
+        model: 'black-forest-labs/FLUX.1-schnell-Free',
+        // model : 'black-forest-labs/FLUX.1-pro',
+        steps: 1,
+        // seed: 0,
+        // n: 1,
+        height: 1024,
+        width: 1024,
+        // negative_prompt: 'string'
+      }
+}
+
+const getTogetherModelString = (model: Model) : string => {
+    switch(model) {
+        case Model.FLUX_1_SCHNELL:
+            return "black-forest-labs/FLUX.1-schnell-Free";
+        case Model.FLUX_1_1_PRO:
+            return "black-forest-labs/FLUX.1.1-pro";
+        case Model.FLUX_1_PRO:
+            return "black-forest-labs/FLUX.1-pro";
+        default:
+            return "";
+    }
+}

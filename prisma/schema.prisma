@@ -171,6 +171,7 @@ enum Provider {
   STABILITY
   OPENAI
   REPLICATE
+  TOGETHER
 }
 
 enum UserTier {
@@ -201,4 +202,5 @@ enum Model {
   FLUX_1_PRO
   FLUX_1_1_PRO
   FLUX_1_1_PRO_ULTRA
+  FLUX_1_SCHNELL
 }

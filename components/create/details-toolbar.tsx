@@ -10,7 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useCurrentPage } from "@/store/use-current-page";
 import { useCurrentGenerationId } from "@/store/use-current-generation-id";
 import { deleteGeneration } from "@/server/actions/generations";
-import { ApiResponse } from "@/types/response";
+import { useMutation } from "@tanstack/react-query";
 
 interface DetailsToolbarProps {
     handleClose: () => void,
@@ -34,32 +34,27 @@ export default function DetailsToolbar({ handleClose, imageUrls, genId }: Detail
         });
     };
 
-    const handleDeleteOptimisticUpdate = async () => {
-        queryClient.setQueryData(["generations", currentPage], (old: any) => {
-            if (!old) return;
-
-            const deletedItem = old.data.find((item: any) => item.id === currentGenerationId);
-            if (deletedItem) {
-                const newData = old.data.filter((item: any) => item.id !== deletedItem.id);
-                return { ...old, data: newData };
-            }
-
-            return old;
-        });
-
-        queryClient.invalidateQueries({ queryKey: ["generations", currentPage] });
-
-        handleClose();
-    }
-
-    const handleDelete = async () : Promise<ApiResponse> => {
-        const res = await deleteGeneration(currentGenerationId!);
-        if (res.success) {
-            handleDeleteOptimisticUpdate();
+    const { mutateAsync: handleDelete } = useMutation({
+        mutationFn: async () => {
+            return await deleteGeneration(currentGenerationId!);
+        },
+        onSuccess: () => {
+            queryClient.setQueryData(["generations", currentPage], (old: any) => {
+                if (!old) return;
+    
+                const deletedItem = old.data.find((item: any) => item.id === currentGenerationId);
+                if (deletedItem) {
+                    const newData = old.data.filter((item: any) => item.id !== deletedItem.id);
+                    return { ...old, data: newData };
+                }
+    
+                return old;
+            });
+    
+            queryClient.invalidateQueries({ queryKey: ["generations", currentPage] });
+            handleClose();
         }
-
-        return res;
-    }
+    });
 
     return (
         <>

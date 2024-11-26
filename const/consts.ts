@@ -49,6 +49,7 @@ export const LSConsts = {
     OPEN_AI_API_KEY: 'ib_openai_api_key',
     STABILITY_API_KEY: 'ib_stability_api_key',
     REPLICATE_API_KEY: 'ib_replicate_api_key',
+    TOGETHER_API_KEY: 'ib_together_api_key',
     PENDING_GENERATIONS: 'ib-pending-generations'
 }
 
