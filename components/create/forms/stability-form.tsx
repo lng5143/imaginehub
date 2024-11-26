@@ -26,7 +26,7 @@ export default function StabilityForm({ onSubmit, isSubmitting } : CreateFormPro
         defaultValues: getDefaultValues(currentModel),
         mode: "onSubmit"
     });
-
+    
     return (
         <CreateBaseForm
             form={form}
@@ -37,7 +37,7 @@ export default function StabilityForm({ onSubmit, isSubmitting } : CreateFormPro
             {/* Common field */}
             <FormField
                 control={form.control}
-                name="sd_aspectRatio"
+                name="aspectRatio"
                 render={({ field }) => (
                     <RatioSelector field={field} />
                 )}
@@ -49,7 +49,7 @@ export default function StabilityForm({ onSubmit, isSubmitting } : CreateFormPro
                 {currentModel === Model.STABLE_IMAGE_CORE && (
                     <FormField
                         control={form.control}
-                        name="sd_stylePreset"
+                        name="stylePreset"
                         render={({ field }) => (
                             <SICOREPresetSelector field={field} />
                         )}
@@ -58,7 +58,7 @@ export default function StabilityForm({ onSubmit, isSubmitting } : CreateFormPro
 
                 <FormField
                     control={form.control}
-                    name="sd_seed"
+                    name="seed"
                     render={({ field }) => (
                         <SeedInput field={field} />
                     )}

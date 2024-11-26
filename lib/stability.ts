@@ -8,27 +8,14 @@ const STABILITY_ENDPOINT = "https://api.stability.ai/v2beta/stable-image/generat
 export const generateStabilityImages = async (data: CreateOrEditImageGenerationDTO, apiKey: string) : Promise<ApiResponse<FormData>> => {
     const modelEndpoint = getStabilityModelEndpoint(data.model);
     if (!modelEndpoint) return ResponseFactory.fail({ message: "Invalid model" });
-    
+
     const response = await fetch(`${STABILITY_ENDPOINT}${modelEndpoint}`, {
         method: "POST",
         headers: {
             "Accept": "image/*",
             "Authorization": `Bearer ${apiKey}`
         },
-        body: (() => {
-            const formData = new FormData();
-            formData.append("prompt", data.prompt);
-            formData.append("model", data.model);
-            formData.append("seed", data?.stabilityGenerationConfigs?.seed.toString()!);
-            formData.append("aspect_ratio", data?.stabilityGenerationConfigs?.aspectRatio.toString()!);
-
-            const negativePrompt = data?.stabilityGenerationConfigs?.negativePrompt;
-            if (negativePrompt && negativePrompt.trim().length > 0) formData.append("negative_prompt", negativePrompt);
-            
-            const stylePreset = data?.stabilityGenerationConfigs?.stylePreset;
-            if (stylePreset) formData.append("style_preset", stylePreset);
-            return formData;
-        })(),
+        body: getStabilityPayload(data),
     })
 
     if (!response.ok) {
@@ -59,4 +46,20 @@ const getStabilityModelEndpoint =(model: Model) : string | undefined => {
         default:
             return undefined;
     }
+}
+
+const getStabilityPayload = (data: CreateOrEditImageGenerationDTO) : FormData => {
+    const formData = new FormData();
+    formData.append("prompt", data.prompt);
+    formData.append("model", data.model);
+    formData.append("seed", data?.stabilityGenerationConfigs?.seed.toString()!);
+    formData.append("aspect_ratio", data?.stabilityGenerationConfigs?.aspectRatio.toString()!);
+
+    const negativePrompt = data?.stabilityGenerationConfigs?.negativePrompt;
+    if (negativePrompt && negativePrompt.trim().length > 0) formData.append("negative_prompt", negativePrompt);
+
+    const stylePreset = data?.stabilityGenerationConfigs?.stylePreset;
+    if (stylePreset) formData.append("style_preset", stylePreset);
+
+    return formData;
 }
