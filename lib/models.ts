@@ -45,11 +45,11 @@ export const getModelName = (model: Model) : string | undefined => {
         case Model.DALL_E_3:
             return "DALL-E 3";
         case Model.STABLE_DIFFUSION_3_LARGE:
-            return "Stable Diffusion 3 Large";
+            return "Stable Diffusion 3.5 Large";
         case Model.STABLE_DIFFUSION_3_MEDIUM:
-            return "Stable Diffusion 3 Medium";
+            return "Stable Diffusion 3.5 Medium";
         case Model.STABLE_DIFFUSION_3_LARGE_TURBO:
-            return "Stable Diffusion 3 Large Turbo";
+            return "Stable Diffusion 3.5 Large Turbo";
         case Model.STABLE_IMAGE_CORE:
             return "Stable Image Core";
         case Model.STABLE_IMAGE_ULTRA:

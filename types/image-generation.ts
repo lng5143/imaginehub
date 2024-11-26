@@ -28,6 +28,7 @@ export type StabilityGenerationConfigsDTO = {
     seed: number;
     negativePrompt: string | undefined;
     stylePreset: string | undefined;
+    model: string | undefined;
     imageGenerationId: string | undefined;
 }
 
@@ -110,6 +111,7 @@ export const SD3MediumFormSchema = z.object({
         seed: data.seed,
         negativePrompt: data.negativePrompt,
         stylePreset: undefined,
+        model: "sd3.5-medium",
         imageGenerationId: undefined,
     }
 }))
@@ -135,6 +137,7 @@ export const SD3LargeFormSchema = z.object({
         seed: data.seed,
         negativePrompt: data.negativePrompt,
         stylePreset: undefined,
+        model: "sd3.5-large",
         imageGenerationId: undefined,
     }
 }))
@@ -160,6 +163,7 @@ export const SD3LargeTurboFormSchema = z.object({
         seed: data.seed,
         negativePrompt: data.negativePrompt,
         stylePreset: undefined,
+        model: "sd3.5-large-turbo",
         imageGenerationId: undefined,
     }
 }))
@@ -186,6 +190,7 @@ export const SICoreFormSchema = z.object({
         seed: data.seed,
         negativePrompt: data.negativePrompt,
         stylePreset: data.stylePreset,
+        model: undefined,
         imageGenerationId: undefined,
     }
 }))
@@ -211,6 +216,7 @@ export const SIUltraFormSchema = z.object({
         seed: data.seed,
         negativePrompt: data.negativePrompt,
         stylePreset: undefined,
+        model: undefined,
         imageGenerationId: undefined,
     }
 }))

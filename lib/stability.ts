@@ -1,7 +1,7 @@
 import { CreateOrEditImageGenerationDTO } from "@/types/image-generation";
 import { toFormData } from "./images";
 import { ApiResponse, ResponseFactory } from "@/types/response";
-import { Model, Provider } from "@prisma/client";
+import { Model } from "@prisma/client";
 
 const STABILITY_ENDPOINT = "https://api.stability.ai/v2beta/stable-image/generate/";
 
@@ -51,9 +51,11 @@ const getStabilityModelEndpoint =(model: Model) : string | undefined => {
 const getStabilityPayload = (data: CreateOrEditImageGenerationDTO) : FormData => {
     const formData = new FormData();
     formData.append("prompt", data.prompt);
-    formData.append("model", data.model);
     formData.append("seed", data?.stabilityGenerationConfigs?.seed.toString()!);
     formData.append("aspect_ratio", data?.stabilityGenerationConfigs?.aspectRatio.toString()!);
+
+    const sd3Model = data.stabilityGenerationConfigs?.model;
+    if (sd3Model) formData.append("model", sd3Model);
 
     const negativePrompt = data?.stabilityGenerationConfigs?.negativePrompt;
     if (negativePrompt && negativePrompt.trim().length > 0) formData.append("negative_prompt", negativePrompt);
