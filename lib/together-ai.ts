@@ -14,7 +14,7 @@ interface TogetherFLUXPayload {
     prompt: string;
 }
 
-export const generateFLUXImages = async (data : CreateOrEditImageGenerationDTO, apiKey : string) : Promise<ApiResponse<FormData>> => {
+export const generateFLUXImages = async (data : CreateOrEditImageGenerationDTO, apiKey : string) : Promise<ApiResponse<string[]>> => {
     const together = new Together({
         apiKey: apiKey
     })
@@ -39,14 +39,7 @@ export const generateFLUXImages = async (data : CreateOrEditImageGenerationDTO, 
     //@ts-ignore
     const urls = res.data.map((image) => image.url);
 
-    const imageBlobs : Blob[] = await Promise.all(urls.map(async (url: string) => {
-        const imageRes = await fetch(url);
-        return imageRes.blob();
-    }));
-
-    const formData = toFormData(imageBlobs);
-    
-    return ResponseFactory.success({ data: formData });
+    return ResponseFactory.success({ data: urls });
     // return ResponseFactory.success({ data: res });
 }
 

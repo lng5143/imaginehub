@@ -5,7 +5,7 @@ import { Model } from "@prisma/client";
 
 const DALLE_ENDPOINT = "https://api.openai.com/v1/images/generations";
 
-export const generateDalleImages = async (data: CreateOrEditImageGenerationDTO, apiKey: string) : Promise<ApiResponse<FormData>> => {
+export const generateDalleImages = async (data: CreateOrEditImageGenerationDTO, apiKey: string) : Promise<ApiResponse<string[]>> => {
     const modelName = getOpenAIModelName(data.model);
     if (!modelName) return ResponseFactory.fail({ message: "Invalid model" });
 
@@ -31,14 +31,8 @@ export const generateDalleImages = async (data: CreateOrEditImageGenerationDTO, 
     }
 
     const urls = resData?.data.map((d: any) => d?.url);
-    const imageBlobs : Blob[] = await Promise.all(urls.map(async (url: string) => {
-        const imageRes = await fetch(url);
-        return imageRes.blob();
-    }));
 
-    const formData = toFormData(imageBlobs);
-    
-    return ResponseFactory.success({ data: formData });
+    return ResponseFactory.success({ data: urls });
 }
 
 const getOpenAIModelName = (model: Model) : string | undefined => {

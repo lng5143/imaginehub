@@ -88,8 +88,10 @@ export const createOrEditImageGeneration = async (data: CreateOrEditImageGenerat
     }
 
     const validationRes = await validateImageGenerationData(data, existingGen);
-    if (!validationRes.success || !validationRes.data)
+    if (!validationRes.success || !validationRes.data) {
+        console.log(validationRes);
         return ResponseFactory.fail({ message: validationRes.message });
+    }
 
     const validatedData = validationRes.data;
 
@@ -111,10 +113,11 @@ const validateImageGenerationData = async (data: CreateOrEditImageGenerationDTO,
 
     data.userId = userId;
 
-    return ResponseFactory.success({  });
+    return ResponseFactory.success({ data: data });
 }
 
 const createImageGeneration = async (data: CreateOrEditImageGenerationDTO): Promise<ApiResponse<ImageGeneration>> => {
+    console.log("createImageGeneration", data);
     const { id, openAIGenerationConfigs, stabilityGenerationConfigs, fluxGenerationConfigs, ...genData} = data;
 
     if (data.provider === Provider.OPENAI) {
@@ -167,7 +170,11 @@ export const updateImageGenerationStatus = async (genId: string, status: ImageGe
     return ResponseFactory.success({ data: res });
 }
 
-export const uploadImageAndUpdateGeneration = async (genId: string, data: FormData ) : Promise<ApiResponse> => {
+export const uploadImageAndUpdateGeneration = async (genId: string, data: FormData | string[] ) : Promise<ApiResponse> => {
+    if (Array.isArray(data)) {
+        data = await getBlobFormDataFromUrls(data);
+    }
+
     const validateRes = await validateUploadImages(data);
     if (!validateRes.success || !validateRes.data) return validateRes;
 
@@ -182,6 +189,21 @@ export const uploadImageAndUpdateGeneration = async (genId: string, data: FormDa
     await updateUserCredits();
 
     return ResponseFactory.success({ message: "Image generation completed!" });
+}
+
+const getBlobFormDataFromUrls = async (urls: string[]) : Promise<FormData> => {
+    const formData = new FormData();
+
+    const imageBlobs : Blob[] = await Promise.all(urls.map(async (url: string) => {
+        const imageRes = await fetch(url);
+        return imageRes.blob();
+    }));
+
+    imageBlobs.forEach((blob, index) => {
+        formData.append(`file${index}`, blob);
+    })
+
+    return formData;
 }
 
 const uploadImages = async (genId: string, data: FormData) : Promise<ApiResponse> => {

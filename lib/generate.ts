@@ -19,6 +19,7 @@ export const generateImages = async (
     queryClient: QueryClient, 
     callbacks: GenerationCallbacks
     ) : Promise<ApiResponse> => {
+    console.log("inputData", inputData);
 
     const apiKeyRes = validateAPIKey(inputData.provider);
     if (!apiKeyRes.success) {
@@ -26,11 +27,14 @@ export const generateImages = async (
     }
 
     const initialGen = await createOrEditImageGeneration(inputData);
+    if (!initialGen.success) {
+        return initialGen;
+    }
     await queryClient.refetchQueries({ queryKey: ["generations", 1] })
     callbacks.onInitComplete();
 
     try {
-        let genRes : ApiResponse<FormData>;
+        let genRes : ApiResponse<FormData | string[]>;
         switch (inputData.provider) {
             case Provider.OPENAI:
                 genRes = await generateDalleImages(inputData, apiKeyRes.data?.key!);
@@ -44,7 +48,7 @@ export const generateImages = async (
             default:
                 return ResponseFactory.fail({ message: "Invalid provider!", data: { genId: initialGen?.data?.id } });
         }
-        
+
         if (!genRes || !genRes.success || !genRes.data) {
             return ResponseFactory.fail({ message: genRes?.message, data: { genId: initialGen?.data?.id } });
         }

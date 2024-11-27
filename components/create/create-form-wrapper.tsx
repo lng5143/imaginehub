@@ -35,7 +35,7 @@ export default function CreateFormWrapper() {
     }
 
     const handleSubmit = async (data: CreateOrEditImageGenerationDTO) => {
-        console.log(data);
+        // console.log(data);
 
         data.model = currentModel;
         const provider = getProviderFromModel(currentModel);
