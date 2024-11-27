@@ -82,8 +82,9 @@ model StabilityGenerationConfigs {
   updatedAt         DateTime        @updatedAt
   negativePrompt    String?
   aspectRatio       String
-  seed              BigInt
+  seed              BigInt?
   stylePreset       String?
+  model             String?
   imageGenerationId String          @unique
   imageGeneration   ImageGeneration @relation(fields: [imageGenerationId], references: [id], onDelete: Cascade)
 }
