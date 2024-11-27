@@ -18,7 +18,7 @@ export default function HowToPage() {
                 <p>ImagineBox only provides the web interface and will not charge you for model usage. You can monitor your billing and usage on providers' platform. </p>
 
                 <div className="flex flex-col gap-2">
-                    <p>How to create API key and add credits on OpenAI platform:</p>
+                    <p className="font-bold">How to create API key and add credits on OpenAI platform:</p>
                     <ul className="list-disc pl-4">
                         <li>Login/Signup on <span className="font-bold"><a href="https://platform.openai.com/" className="text-blue-600 hover:text-blue-800 underline">OpenAI platform</a></span></li>
                         <li>Go to <span className="font-bold">Settings Icon</span> on the top left &gt; <span className="font-bold">Billings</span> to add to credit balance</li>
@@ -27,11 +27,20 @@ export default function HowToPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                    <p>How to create API key and add credits on Stability AI platform:</p>
+                    <p className="font-bold">How to create API key and add credits on Stability AI platform:</p>
                     <ul className="list-disc pl-4">
                         <li>Login/Signup on <span className="font-bold"><a href="https://platform.stability.ai/" className="text-blue-600 hover:text-blue-800 underline">Stability AI platform</a></span></li>
                         <li>Go to <span className="font-bold">Account Icon</span> on the top left &gt; <span className="font-bold">Billing</span> to add credits</li>
                         <li>Go to <span className="font-bold">API Keys</span> to create new API key</li>
+                    </ul>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                    <p className="font-bold">How to create API key and add credits on Together AI platform:</p>
+                    <ul className="list-disc pl-4">
+                        <li>Login/Signup on <span className="font-bold"><a href="https://api.together.ai/signin" className="text-blue-600 hover:text-blue-800 underline">Together AI platform</a></span></li>
+                        <li>Get the API key provided after signing up or in <span className="font-bold">Settings</span> &gt; <span className="font-bold">API Keys</span></li>
+                        <li>Add payment info in <span className="font-bold">Settings</span> &gt; <span className="font-bold">Billing</span></li>
                     </ul>
                 </div>
             </div>
