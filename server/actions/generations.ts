@@ -115,7 +115,7 @@ const validateImageGenerationData = async (data: CreateOrEditImageGenerationDTO,
 }
 
 const createImageGeneration = async (data: CreateOrEditImageGenerationDTO): Promise<ApiResponse<ImageGeneration>> => {
-    const { id, openAIGenerationConfigs, stabilityGenerationConfigs, ...genData} = data;
+    const { id, openAIGenerationConfigs, stabilityGenerationConfigs, fluxGenerationConfigs, ...genData} = data;
 
     if (data.provider === Provider.OPENAI) {
         const generation = await prisma.imageGeneration.create({
@@ -132,6 +132,17 @@ const createImageGeneration = async (data: CreateOrEditImageGenerationDTO): Prom
         const generation = await prisma.imageGeneration.create({
             data: {
                 stabilityGenerationConfigs : { create: stabilityGenerationConfigs },
+                ...genData
+            }
+        })
+
+        return ResponseFactory.success({ data: generation });
+    }
+
+    if (data.provider === Provider.TOGETHER) {
+        const generation = await prisma.imageGeneration.create({
+            data: {
+                fluxGenerationConfigs : { create: fluxGenerationConfigs },
                 ...genData
             }
         })

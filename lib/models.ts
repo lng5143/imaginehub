@@ -4,6 +4,10 @@ import * as Schema from "@/types/image-generation"
 import { SD_RATIOS } from "@/const/consts"
 import { Resolver } from "react-hook-form"
 
+export const getAllModels = () => {
+    return Object.values(Model).filter((model) => model !== Model.FLUX_1_1_PRO_ULTRA);
+}
+
 export const getProviderFromModel = (model: Model | undefined) : Provider | undefined => {
     switch (model) {
         case Model.DALL_E_2:
@@ -17,8 +21,8 @@ export const getProviderFromModel = (model: Model | undefined) : Provider | unde
             return Provider.STABILITY
         case Model.FLUX_1_1_PRO:
         case Model.FLUX_1_PRO:
-        case Model.FLUX_1_1_PRO_ULTRA:
-            return Provider.REPLICATE
+        case Model.FLUX_1_SCHNELL:
+            return Provider.TOGETHER
         default:
            return undefined;
     }
@@ -32,6 +36,8 @@ export const getProviderName = (provider: Provider | undefined) : string | undef
             return "Stability AI"
         case Provider.REPLICATE:
             return "Replicate"
+        case Provider.TOGETHER:
+            return "Together AI"
         default:
             return undefined;
 
@@ -60,6 +66,8 @@ export const getModelName = (model: Model) : string | undefined => {
             return "FLUX.1 [pro]"
         case Model.FLUX_1_1_PRO_ULTRA:
             return "FLUX 1.1 [pro] Ultra"
+        case Model.FLUX_1_SCHNELL:
+            return "FLUX.1 [schnell] (Free)"
         default:
             return undefined;
     }
@@ -78,11 +86,11 @@ export const getResolver = (model: Model) : Resolver | undefined => {
         case Model.STABLE_IMAGE_ULTRA:
             return zodResolver(Schema.SIUltraFormSchema);
         case Model.FLUX_1_1_PRO:
-            return zodResolver(Schema.FLUX_1_1_ProFormSchema);
+            return zodResolver(Schema.FLUX_1_1_Pro_FormSchema);
         case Model.FLUX_1_PRO:
-            return zodResolver(Schema.FLUX_1_ProFormSchema);
-        case Model.FLUX_1_1_PRO_ULTRA:
-            return zodResolver(Schema.FLUX_1_1_Pro_UltraFormSchema);
+            return zodResolver(Schema.FLUX_1_Pro_FormSchema);
+        case Model.FLUX_1_SCHNELL:
+            return zodResolver(Schema.FLUX_1_SCHNELL_FormSchema);
         case Model.DALL_E_2:
             return zodResolver(Schema.DE2FormSchema);
         case Model.DALL_E_3:
@@ -135,8 +143,9 @@ export const getDefaultValues = (model: Model) => {
                 width: 1024,
                 height: 1024,
                 seed: undefined,
-                safety_tolerance: 2,
-                prompt_upsampling: false,
+                negative_prompt: "",
+                steps: 20,
+                samples: 1,
                 prompt: ""
             }
         case Model.FLUX_1_PRO:
@@ -144,20 +153,19 @@ export const getDefaultValues = (model: Model) => {
                 width: 1024,
                 height: 1024,
                 seed: undefined,
-                safety_tolerance: 2,
-                prompt_upsampling: false,
-                steps: 25,
-                guidance: 3, 
-                interval: 2,
+                negative_prompt: "",
+                steps: 20,
+                samples: 1,
                 prompt: ""
             }
-        case Model.FLUX_1_1_PRO_ULTRA:
+        case Model.FLUX_1_SCHNELL:
             return {
                 width: 1024,
                 height: 1024,
                 seed: undefined,
-                safety_tolerance: 2,
-                raw: false,
+                negative_prompt: "",
+                steps: 4,
+                samples: 1,
                 prompt: ""
             }
         case Model.DALL_E_2:
@@ -182,7 +190,8 @@ export const getModelDescription = (model: Model) : string | undefined => {
         case Model.FLUX_1_1_PRO:
         case Model.FLUX_1_PRO:
         case Model.FLUX_1_1_PRO_ULTRA:
-            return "via Replicate"
+        case Model.FLUX_1_SCHNELL:
+            return "via together.ai"
         default:
             return undefined;
     }
@@ -193,6 +202,7 @@ export const getModelIcon = (model: Model) : string | undefined => {
         case Model.FLUX_1_1_PRO:
         case Model.FLUX_1_PRO:
         case Model.FLUX_1_1_PRO_ULTRA:
+        case Model.FLUX_1_SCHNELL:
             return "/logo/bfl-logo.png"
         case Model.STABLE_DIFFUSION_3_LARGE:
         case Model.STABLE_DIFFUSION_3_LARGE_TURBO:
@@ -205,5 +215,14 @@ export const getModelIcon = (model: Model) : string | undefined => {
             return "/logo/openai-logo.png"
         default:
             return undefined;
+    }
+}
+
+export const getFLUXDimensions = (model: Model) : [number, number] => {
+    switch (model) {
+        case Model.FLUX_1_SCHNELL:
+            return [256, 1792];
+        default:
+            return [256, 1440];
     }
 }

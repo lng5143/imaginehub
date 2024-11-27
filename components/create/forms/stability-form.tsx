@@ -87,7 +87,7 @@ const RatioSelector = ({ field }: { field: any }) => (
     </FormItem>
 )
 
-const NegativePromptInput = ({ field }: { field: any }) => (
+export const NegativePromptInput = ({ field }: { field: any }) => (
     <FormItem>
         <InputLabel label="Negative Prompt" hint={HINTS.SD_NEGATIVE_PROMPT} />
         <FormControl>

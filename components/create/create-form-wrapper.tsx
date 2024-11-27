@@ -84,7 +84,7 @@ export default function CreateFormWrapper() {
                 return <DallEForm onSubmit={handleSubmit} isSubmitting={isInitInsertInProgress} />
             case Model.FLUX_1_1_PRO:
             case Model.FLUX_1_PRO:
-            case Model.FLUX_1_1_PRO_ULTRA:
+            case Model.FLUX_1_SCHNELL:
                 return <FLUXForm onSubmit={handleSubmit} isSubmitting={isInitInsertInProgress} />
             default: 
                 return null;

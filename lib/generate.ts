@@ -38,13 +38,13 @@ export const generateImages = async (
             case Provider.STABILITY:
                 genRes = await generateStabilityImages(inputData, apiKeyRes.data?.key!);
                 break;
-            case Provider.REPLICATE:
+            case Provider.TOGETHER:
                 genRes = await generateFLUXImages(inputData, apiKeyRes.data?.key!);
                 break;
             default:
                 return ResponseFactory.fail({ message: "Invalid provider!", data: { genId: initialGen?.data?.id } });
         }
-
+        
         if (!genRes || !genRes.success || !genRes.data) {
             return ResponseFactory.fail({ message: genRes?.message, data: { genId: initialGen?.data?.id } });
         }
@@ -77,6 +77,9 @@ const validateAPIKey = (provider: Provider) : ApiResponse<{ key: string }> => {
         case Provider.REPLICATE:
             apiKey = localStorage.getItem(LSConsts.REPLICATE_API_KEY);
             break;
+        case Provider.TOGETHER:
+            apiKey = localStorage.getItem(LSConsts.TOGETHER_API_KEY);
+            break;
     }
 
     if (!apiKey) {
@@ -87,6 +90,8 @@ const validateAPIKey = (provider: Provider) : ApiResponse<{ key: string }> => {
                 return ResponseFactory.fail({ message: "No Stability AI API key found. Please enter your API key in settings.", errorType: ERROR_TYPES.NO_API_KEY });
             case Provider.REPLICATE:
                 return ResponseFactory.fail({ message: "No Replicate API key found. Please enter your API key in settings.", errorType: ERROR_TYPES.NO_API_KEY });
+            case Provider.TOGETHER:
+                return ResponseFactory.fail({ message: "No Together AI API key found. Please enter your API key in settings.", errorType: ERROR_TYPES.NO_API_KEY });
             default: 
                 return ResponseFactory.fail({ message: "Invalid provider" });
         }

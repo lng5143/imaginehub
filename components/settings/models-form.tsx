@@ -17,19 +17,18 @@ export default function KeysForm() {
         defaultValues: {
             openai_api_key: localStorage.getItem(LSConsts.OPEN_AI_API_KEY) || "",
             stability_api_key: localStorage.getItem(LSConsts.STABILITY_API_KEY) || "",
-            replicate_api_key: localStorage.getItem(LSConsts.REPLICATE_API_KEY) || "",
+            together_api_key: localStorage.getItem(LSConsts.TOGETHER_API_KEY) || "",
         }
     })
-
     function onSubmit(data: z.infer<typeof ModelsSettingsSchema>) {
         startTransition(async () => {
             const stabilityApiKey = data.stability_api_key;
             const openaiApiKey = data.openai_api_key;
-            const replicateApiKey = data.replicate_api_key;
+            const togetherApiKey = data.together_api_key;
 
             if (stabilityApiKey) localStorage.setItem(LSConsts.STABILITY_API_KEY, stabilityApiKey);
             if (openaiApiKey) localStorage.setItem(LSConsts.OPEN_AI_API_KEY, openaiApiKey);
-            if (replicateApiKey) localStorage.setItem(LSConsts.REPLICATE_API_KEY, replicateApiKey);
+            if (togetherApiKey) localStorage.setItem(LSConsts.TOGETHER_API_KEY, togetherApiKey);
         })
 
         toast.success("API keys saved");
@@ -72,11 +71,11 @@ export default function KeysForm() {
                         />
                         <FormField
                             control={form.control}
-                            name="replicate_api_key"
+                            name="together_api_key"
                             render={({ field }) => (
                                 <FormItem>
                                     <div className="flex flex-col gap-1">
-                                        <FormLabel className="font-semibold">Replicate API Key</FormLabel>
+                                        <FormLabel className="font-semibold">Together.AI API Key</FormLabel>
                                         <p className="text-xs text-gray-500">For FLUX models</p>
                                     </div>
                                     <FormControl>

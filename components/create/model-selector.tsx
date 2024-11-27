@@ -12,10 +12,10 @@ import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { Model } from "@prisma/client";
-import { getModelDescription, getModelIcon, getModelName } from "@/lib/models";
+import { getAllModels, getModelDescription, getModelIcon, getModelName } from "@/lib/models";
 import Image from "next/image";
 
-const models = Object.values(Model);
+const models = getAllModels();
 
 export default function ModelSelector() {
     const [currentModel, setCurrentModel] = useCurrentModel();

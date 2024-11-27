@@ -1,3 +1,6 @@
+import { getModelName } from "@/lib/models";
+import { Model } from "@prisma/client";
+
 export const SD_PRESETS = ["3d-model", "analog-film", "anime", "cinematic", "comic-book", "digital-art", "enhance", "fantasy-art", "isometric", "line-art", "low-poly", "modeling-compound", "neon-punk", "origami", "photographic", "pixel-art", "tile-texture"]
 export const SD_RATIOS = ["1:1", "2:3", "3:2", "4:5", "5:4", "9:16", "9:21", "16:9", "21:9"]
 export const DE2_SIZES = ["256x256", "512x512", "1024x1024"];
@@ -28,15 +31,11 @@ export const HINTS = {
     SD_RATIOS: `Aspect ratio of the image to generate.`,
     SD_SEED: `A specific value that is used to guide the 'randomness' of the generation: [0 .. 4294967294]`,
     SD_NEGATIVE_PROMPT: `Description of what you don't want to generate.`,
-    FL_WIDTH: `Width of the generated image. Minimum 256, maximum 1024. Must be a multiple of 32.`,
-    FL_HEIGHT: `Height of the generated image. Minimum 256, maximum 1024. Must be a multiple of 32.`,
-    FL_SEED: `Optional seed for reproducibility. Must be an integer`,
-    FL_UPSAMPLING: `Automatically modifies the prompt for more creative generation`,
-    FL_SAFETY: `Tolerance level for input and output moderation. Between 0 and 6, 0 being most strict, 6 being least strict.`,
-    FL_STEPS: `Number of diffusion steps.`,
-    FL_GUIDANCE: `Controls the balance between adherence to the text prompt and image quality/diversity. Minimum 1.5, maximum 5. \nHigher values make the output more closely match the prompt.`,
-    FL_INTERVAL: `Variance in possible outputs. Minimum 1, maximum 4. \nHigher value produces more dynamic or varied outputs.`,
-    FL_RAW: `Generate less processed, more natural-looking images`
+    FL_WIDTH: `Width of the generated image. \nMinimum of 256 and maximum of 1792 for FLUX.1 [schnell], minimum of 256 and maximum of 1440 for FLUX.1 [pro] and FLUX 1.1 [pro]. \nMust be a multiple of 32.`,
+    FL_HEIGHT: `Height of the generated image. \nMinimum of 256 and maximum of 1792 for FLUX.1 [schnell], minimum of 256 and maximum of 1440 for FLUX.1 [pro] and FLUX 1.1 [pro]. \nMust be a multiple of 32.`,
+    FL_SEED: `Optional seed for reproducibility. Must be an integer from 0 to 99999999.`,
+    FL_STEPS: `Number of diffusion steps. \nFrom 1 to 4 for FLUX.1 [schnell], from 1 to 50 for FLUX.1 [pro] and FLUX 1.1 [pro].`,
+    FL_SAMPLES: `The number of images to generate. From 1 to 4.`,
 }
 
 export const BLOG_PAGE_SIZE = 9;

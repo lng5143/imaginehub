@@ -3,8 +3,7 @@ import { ApiResponse, ResponseFactory } from "@/types/response";
 import { toFormData } from "./images";
 import { CreateOrEditImageGenerationDTO } from "@/types/image-generation";
 import { Model } from "@prisma/client";
-
-const TOGETHER_ENDPOINT = "https://api.together.xyz/v1/images/generations";
+import { ERROR_TYPES } from "@/const/consts";
 
 interface TogetherFLUXPayload {
     steps: number;
@@ -22,14 +21,22 @@ export const generateFLUXImages = async (data : CreateOrEditImageGenerationDTO, 
 
     let res;
     try {
-        res = await together.images.create(getFLUXPayload(data));
+        const payload = getFLUXPayload(data);
+        console.log("payload", payload);
+        res = await together.images.create(payload);
+        console.log(res);
     } catch (error: any) {
         const errorData = await JSON.parse(error.message.split(" ").slice(1).join(" "));
         const errorMessage = errorData.error.message;
+
+        if (error.message.includes("500")) {
+            return ResponseFactory.fail({ message: "Something went wrong with Together AI server. Please try again later." });
+        }
+
         return ResponseFactory.fail({ message: errorMessage });
     }
 
-    // @ts-ignore
+    //@ts-ignore
     const urls = res.data.map((image) => image.url);
 
     const imageBlobs : Blob[] = await Promise.all(urls.map(async (url: string) => {
@@ -40,6 +47,7 @@ export const generateFLUXImages = async (data : CreateOrEditImageGenerationDTO, 
     const formData = toFormData(imageBlobs);
     
     return ResponseFactory.success({ data: formData });
+    // return ResponseFactory.success({ data: res });
 }
 
 const getFLUXPayload = (data: CreateOrEditImageGenerationDTO) : TogetherFLUXPayload => {
@@ -55,15 +63,16 @@ const getFLUXPayload = (data: CreateOrEditImageGenerationDTO) : TogetherFLUXPayl
 
 const getFLUXExamplePayload = () : any => {
     return {
-        prompt: 'cat floating in space, cinematic',
-        model: 'black-forest-labs/FLUX.1-schnell-Free',
-        // model : 'black-forest-labs/FLUX.1-pro',
+        prompt: 'paper planes',
+        // model: 'black-forest-labs/FLUX.1-schnell-Free',
+        model : 'black-forest-labs/FLUX.1-pro',
+        // model: 'black-forest-labs/FLUX.1.1-pro',
         steps: 1,
-        // seed: 0,
-        // n: 1,
+        seed: 0,
+        n: 1,
         height: 1024,
         width: 1024,
-        // negative_prompt: 'string'
+        negative_prompt: 'cloud'
       }
 }
 
