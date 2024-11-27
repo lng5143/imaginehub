@@ -171,16 +171,21 @@ export const updateImageGenerationStatus = async (genId: string, status: ImageGe
 }
 
 export const uploadImageAndUpdateGeneration = async (genId: string, data: FormData | string[] ) : Promise<ApiResponse> => {
+    console.log("uploadImageAndUpdateGeneration", data);
     if (Array.isArray(data)) {
         data = await getBlobFormDataFromUrls(data);
     }
 
     const validateRes = await validateUploadImages(data);
-    if (!validateRes.success || !validateRes.data) return validateRes;
+    if (!validateRes.success) {
+        console.log(validateRes);
+        return validateRes;
+    }
 
     const uploadRes = await uploadImages(genId, data);
     if (!uploadRes.success) {
         await updateImageGenerationStatus(genId, ImageGenerationStatus.FAILED);
+        console.log(uploadRes);
         return uploadRes;
     }
 
@@ -218,7 +223,9 @@ const uploadImages = async (genId: string, data: FormData) : Promise<ApiResponse
         )
     }
 
-    const imageUrls = await Promise.all(uploadPromises);
+    const uploadRes = await Promise.all(uploadPromises);
+    const imageUrls = uploadRes.map(res => res.data);
+    console.log("s3 urls", imageUrls);
     
     const res = await prisma.image.createMany({
         data: imageUrls.map(url => ({

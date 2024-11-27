@@ -22,7 +22,6 @@ export const generateFLUXImages = async (data : CreateOrEditImageGenerationDTO, 
     let res;
     try {
         const payload = getFLUXPayload(data);
-        console.log("payload", payload);
         res = await together.images.create(payload);
         console.log(res);
     } catch (error: any) {
