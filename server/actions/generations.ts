@@ -66,6 +66,9 @@ export const getImageGenerationById = async (genId: string, includeImages: boole
     const generation = await prisma.imageGeneration.findUnique({
         where: { id: genId },
         include: {
+            openAIGenerationConfigs: true,
+            stabilityGenerationConfigs: true,
+            fluxGenerationConfigs: true,
             images: includeImages
         }
     })

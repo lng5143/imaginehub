@@ -1,17 +1,15 @@
 import { motion } from "framer-motion"
-import { Textarea } from "../ui/textarea"
 import { LoaderCircleIcon } from "lucide-react"
 import { getModelName } from "@/lib/models"
-import { Image, ImageGeneration, OpenAIGenerationConfigs, StabilityGenerationConfigs } from "@prisma/client"
-import { Accordion, AccordionTrigger } from "@radix-ui/react-accordion"
-import { AccordionContent, AccordionItem } from "../ui/accordion"
+import { FLUXGenerationConfigs, Image, ImageGeneration, OpenAIGenerationConfigs, StabilityGenerationConfigs } from "@prisma/client"
+import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from "../ui/accordion"
 
 interface DetailsDrawerProps {
   data: ImageGeneration & { 
     images: Image[], 
     openAIGenerationConfigs: OpenAIGenerationConfigs | null, 
     stabilityGenerationConfigs: StabilityGenerationConfigs | null,
-    fluxGenerationConfigs: any
+    fluxGenerationConfigs: FLUXGenerationConfigs | null
   },
   isLoading: boolean
 }
@@ -29,58 +27,9 @@ export default function DetailsDrawer({ data, isLoading }: DetailsDrawerProps) {
           {!isLoading && 
             (<div className="flex flex-col gap-3">
               <p><span className="font-bold">Model:</span> {getModelName(data.model)}</p>
-              <p><span className="font-bold">Status:</span> {data?.status}</p>
               <p><span className="font-bold">Samples:</span> {data?.images?.length}</p> 
 
-              <Accordion type="single" collapsible>
-                <AccordionItem value="item-1">
-                  {data?.openAIGenerationConfigs && (
-                    <>
-                      <AccordionTrigger>DALL-E Generation Configs</AccordionTrigger>
-                      <AccordionContent>
-                        <p><span className="font-bold">Quality:</span> {data?.openAIGenerationConfigs.quality || ""}</p>
-                        <p><span className="font-bold">Size:</span> {data?.openAIGenerationConfigs.size || ""}</p>
-                      </AccordionContent>
-                    </>
-                  )}
-
-                  {data?.stabilityGenerationConfigs && (
-                    <>
-                      <AccordionTrigger>Stability AI Generation Configs</AccordionTrigger>
-                      <AccordionContent>
-                        <p><span className="font-bold">Aspect Ratio:</span> {data?.stabilityGenerationConfigs.aspectRatio || ""}</p>
-                        <p><span className="font-bold">Style Preset:</span> {data?.stabilityGenerationConfigs.stylePreset || ""}</p>
-                        <p><span className="font-bold">Seed:</span> {data?.stabilityGenerationConfigs.seed || ""}</p>
-                        <div className="flex flex-col gap-1">
-                          <p className="font-bold">Negative Prompt:</p>
-                          <Textarea
-                            value={data?.stabilityGenerationConfigs.negativePrompt || ""}
-                            className="w-full bg-white mx-2 shadow-lg min-h-[50px] h-fit"
-                            readOnly
-                          />
-                        </div>
-                      </AccordionContent>
-                    </>
-                  )}
-
-                  {data?.fluxGenerationConfigs && (
-                    <>
-                      <AccordionTrigger>FLUX Generation Configs</AccordionTrigger>
-                      <AccordionContent>
-                        <p><span className="font-bold">Width:</span> {data?.fluxGenerationConfigs.width}</p>
-                        <p><span className="font-bold">Height:</span> {data?.fluxGenerationConfigs.height}</p>
-                        <p><span className="font-bold">Prompt Upsampling:</span> {data?.fluxGenerationConfigs.prompt_upsampling?.toString() || ""}</p>
-                        <p><span className="font-bold">Seed:</span> {data?.fluxGenerationConfigs.seed || ""}</p>
-                        <p><span className="font-bold">Safety Tolerance:</span> {data?.fluxGenerationConfigs.safety_tolerance || ""}</p>
-                        <p><span className="font-bold">Steps:</span> {data?.fluxGenerationConfigs.steps || ""}</p>
-                        <p><span className="font-bold">Guidance:</span> {data?.fluxGenerationConfigs.guidance || ""}</p>
-                        <p><span className="font-bold">Interval:</span> {data?.fluxGenerationConfigs.interval || ""}</p>
-                        <p><span className="font-bold">Raw:</span> {data?.fluxGenerationConfigs.raw?.toString() || ""}</p>
-                      </AccordionContent>
-                    </>
-                  )}
-                </AccordionItem>
-              </Accordion>
+              <AdvancedSettingDetails data={data} />
             </div>
           )}
           {isLoading && 
@@ -89,5 +38,55 @@ export default function DetailsDrawer({ data, isLoading }: DetailsDrawerProps) {
             </div>
           }
         </motion.div>
+    )
+}
+
+interface AdvancedSettingDetailsProps {
+    data: ImageGeneration & { 
+        openAIGenerationConfigs: OpenAIGenerationConfigs | null, 
+        stabilityGenerationConfigs: StabilityGenerationConfigs | null,
+        fluxGenerationConfigs: FLUXGenerationConfigs | null
+    }
+}
+
+const AdvancedSettingDetails = ({ data }: AdvancedSettingDetailsProps) => {
+    let configs: OpenAIGenerationConfigs | StabilityGenerationConfigs | FLUXGenerationConfigs | {} = {};  // Default value
+
+    if (data.openAIGenerationConfigs) {
+        configs = data.openAIGenerationConfigs;
+    }
+    if (data.stabilityGenerationConfigs) {
+        configs = data.stabilityGenerationConfigs;
+    }
+    if (data.fluxGenerationConfigs) {
+        configs = data.fluxGenerationConfigs;
+    }
+
+    return (
+      <div className="flex flex-col gap-2">
+        <p className="font-bold">Advanced Settings:</p>
+        <div className="flex flex-col gap-2 bg-white p-2 rounded-sm">
+          {Object.entries(configs)
+              .filter(([key, value]) => {
+                  const excludedFields = ['id', 'imageGenerationId', 'createdAt', 'updatedAt', 'model'];
+                  return !excludedFields.includes(key) && 
+                        value !== null && 
+                        value !== '' &&
+                        !(typeof value === 'object' && Object.keys(value).length === 0);
+              })
+              .map(([key, value]) => (
+                  <div key={key} className="flex flex-col">
+                      <div className="flex gap-2">
+                          <span className="capitalize">
+                              {key.replace(/([A-Z])/g, ' $1').trim()}:
+                          </span>
+                          <span className="text-gray-700">
+                              {typeof value === 'object' ? JSON.stringify(value, null, 2) : value?.toString()}
+                          </span>
+                      </div>
+                  </div>
+                ))}
+            </div>
+        </div>
     )
 }
