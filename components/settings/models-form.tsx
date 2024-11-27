@@ -20,15 +20,12 @@ export default function KeysForm() {
             together_api_key: localStorage.getItem(LSConsts.TOGETHER_API_KEY) || "",
         }
     })
+
     function onSubmit(data: z.infer<typeof ModelsSettingsSchema>) {
         startTransition(async () => {
-            const stabilityApiKey = data.stability_api_key;
-            const openaiApiKey = data.openai_api_key;
-            const togetherApiKey = data.together_api_key;
-
-            if (stabilityApiKey) localStorage.setItem(LSConsts.STABILITY_API_KEY, stabilityApiKey);
-            if (openaiApiKey) localStorage.setItem(LSConsts.OPEN_AI_API_KEY, openaiApiKey);
-            if (togetherApiKey) localStorage.setItem(LSConsts.TOGETHER_API_KEY, togetherApiKey);
+            localStorage.setItem(LSConsts.STABILITY_API_KEY, data.stability_api_key || "");
+            localStorage.setItem(LSConsts.OPEN_AI_API_KEY, data.openai_api_key || "");
+            localStorage.setItem(LSConsts.TOGETHER_API_KEY, data.together_api_key || "");
         })
 
         toast.success("API keys saved");

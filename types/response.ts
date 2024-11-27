@@ -13,6 +13,6 @@ export class ResponseFactory {
     }
 
     static fail<T>({message, data, errorType }: {message?: string, data?: T, errorType?: ERROR_TYPES}) : ApiResponse<T> {
-        return { success: false, data, message };
+        return { success: false, data, message, errorType };
     }
 }

@@ -44,6 +44,10 @@ export default function NoKeyDialog({ provider, open, onOpenChange } : NoKeyDial
                 localStorage.setItem(LSConsts.OPEN_AI_API_KEY, data.key);
                 handleSuccess();
                 break;
+            case Provider.TOGETHER:
+                localStorage.setItem(LSConsts.TOGETHER_API_KEY, data.key);
+                handleSuccess();
+                break;
             default:
                 break;
         }
