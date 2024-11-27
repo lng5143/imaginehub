@@ -94,8 +94,8 @@ model FLUXGenerationConfigs {
   updatedAt         DateTime        @updatedAt
   width             Int
   height            Int
-  promptUpsampling  Boolean
-  seed              BigInt
+  promptUpsampling  Boolean?
+  seed              BigInt?
   safetyTolerance   Int?
   steps             Int?
   guidance          Float?
