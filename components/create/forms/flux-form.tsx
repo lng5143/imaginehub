@@ -52,13 +52,13 @@ export default function FLUXForm({ onSubmit, isSubmitting } : CreateFormProps) {
                     )}
                 />
 
-                <FormField
+                {/* <FormField
                     control={form.control}
                     name="samples"
                     render={({ field }) => (
                         <TogetherSamplesSelector field={field} />
                     )}
-                />
+                /> */}
 
                 <FormField
                     control={form.control}
