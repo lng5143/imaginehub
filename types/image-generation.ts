@@ -49,7 +49,7 @@ export type FLUXGenerationConfigsDTO = {
 export const DE2FormSchema = z.object({
     id: z.string().optional(),
     size: z.enum(DE2_SIZES as [string, ...string[]]),
-    samples: z.number().min(1).max(10),
+    samples: z.number().min(1).max(5),
     prompt: z.string().min(1, { message: "Prompt is required" }),
 })
 .transform((data) : CreateOrEditImageGenerationDTO => ({
