@@ -29,7 +29,7 @@ export default function ModelSelector() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="rounded-sm">{currentModel ? getModelName(currentModel) : "Select Model"}</Button>
+                <Button variant="ibDark">{currentModel ? getModelName(currentModel) : "Select Model"}</Button>
             </DialogTrigger>
             <DialogContent className="w-10/12 lg:w-8/12 max-w-full">
                 <DialogHeader>

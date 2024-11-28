@@ -1,4 +1,4 @@
-import { HOW_IT_WORKS } from "@/static-data/landing-page-data";
+import { HOW_IT_WORKS } from "@/const/consts";
 import HowItem from "./how-item";
 import StepNumber from "./step-number";
 import { FolderKey, KeyRound, PackagePlus } from "lucide-react";

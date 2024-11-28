@@ -42,7 +42,7 @@ export default function GenerationDetails() {
   if (!isPendingDetails && !response?.success) return null;
 
   return (
-    <div className="relative flex flex-col h-auto basis-1/3 bg-violet-100 shadow-xl">
+    <div className="relative flex flex-col h-auto basis-1/3 bg-gray-100 shadow-xl">
       {!isPendingDetails && (
         <DetailsToolbar 
           handleClose={handleClose} 

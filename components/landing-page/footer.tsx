@@ -16,6 +16,7 @@ export default function FooterSection() {
                     <div className="flex flex-col gap-2">
                         <h3 className="font-bold">Product</h3>
                         <Link href="/pricing">Pricing</Link>
+                        <Link href="/models">Models</Link>
                     </div>
                     <div className="flex flex-col gap-2">
                         <h3 className="font-bold">Resources</h3>

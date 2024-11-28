@@ -1,5 +1,5 @@
 import PricingCard from "@/app/_component/pricing-card"
-import { PRICING_PLANS } from "@/static-data/pricing"
+import { PRICING_PLANS } from "@/const/consts"
 import { Button } from "@/components/ui/button"
 import FAQSection from "@/components/landing-page/faq"
 import Link from "next/link"

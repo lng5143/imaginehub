@@ -1,6 +1,6 @@
 import { FolderUp, KeyRound, ShieldCheck, Wallet, Zap, Infinity } from "lucide-react";
 import BenefitItem from "./benefit-item";
-import { BENEFITS } from "@/static-data/landing-page-data";
+import { BENEFITS } from "@/const/consts";
 
 export default function BenefitsSection() {
     return (
