@@ -35,6 +35,8 @@ export default function CreateFormWrapper() {
     }
 
     const handleSubmit = async (data: CreateOrEditImageGenerationDTO) => {
+        setIsInitInsertInProgress(true);
+        
         try {
             const res = await generateImages(data, queryClient, {
                 onInitComplete: handleInitComplete,
