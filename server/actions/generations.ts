@@ -285,7 +285,7 @@ const validateSingleImage = (file: File) : ApiResponse => {
 export const deleteGeneration = async (generationId: string): Promise<ApiResponse> => {
     const userId = await getCurrentUserId();
     
-    if (userId)
+    if (!userId)
         return ResponseFactory.fail({ message: "User not found" })
 
     await prisma.imageGeneration.delete({
