@@ -22,7 +22,7 @@ export default function SettingsDialog({ isOpen, setIsOpen, user } : SettingsDia
                         <TabsTrigger value="general" className="justify-start w-full rounded-sm">General</TabsTrigger>
                         <TabsTrigger value="models" className="justify-start w-full rounded-sm">API Keys</TabsTrigger>
                     </TabsList>
-                    <div className="flex-1 space-y-4 p-6 overflow-auto">
+                    <div className="flex-1 space-y-8 p-6 overflow-auto">
                         <DialogHeader>
                             <DialogTitle>{activeTab === "general" ? "General Settings" : "API Keys"}</DialogTitle>
                             <DialogDescription>

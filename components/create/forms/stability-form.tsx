@@ -133,7 +133,7 @@ const SICOREPresetSelector = ({ field }: { field: any }) => {
                                     <div>
                                     {SD_PRESETS.map((preset) => (
                                         <CommandItem 
-                                            className="flex items-center"
+                                            className="flex items-center text-xs"
                                             key={preset} 
                                             value={preset}
                                             onSelect={(currentValue) => {

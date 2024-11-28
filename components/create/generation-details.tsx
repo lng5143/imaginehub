@@ -60,7 +60,7 @@ export default function GenerationDetails() {
             src={image.url} 
             alt={response?.data?.prompt || ""} 
             onClick={() => handleCarouselDialogOpen(index)}
-            className="img-details rounded-md hover:cursor-pointer hover:scale-[1.02] transition-all duration-300 w-full shadow-md"
+            className="img-details rounded-sm hover:cursor-pointer hover:scale-[1.02] transition-all duration-300 w-full shadow-md"
             width={1000}
             height={1000}
             priority

@@ -8,6 +8,7 @@ import { ModelsSettingsSchema } from "@/schemas/index";
 import { toast } from "sonner";
 import { z } from "zod";
 import { LSConsts } from "@/const/consts";
+import Link from "next/link";
 
 export default function KeysForm() {
     const [isPending, startTransition] = useTransition();
@@ -28,14 +29,14 @@ export default function KeysForm() {
             localStorage.setItem(LSConsts.TOGETHER_API_KEY, data.together_api_key || "");
         })
 
-        toast.success("API keys saved");
+        toast.success("API keys saved!");
     }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="gap-10 flex flex-col">
-                <div className="flex flex-col gap-10">
-                    <div className="flex flex-col gap-10">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="gap-6 flex flex-col">
+                <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-6">
                         <FormField
                             control={form.control}
                             name="openai_api_key"
@@ -83,6 +84,7 @@ export default function KeysForm() {
                         />  
                     </div>
                 </div>
+                <Link href="/how-to" target="_blank" className="text-sm text-blue-500 cursor-pointer hover:underline">How to get API keys</Link>
                 <Button variant="ibDark" className="w-40 self-end" type="submit" disabled={isPending}>Save</Button>
             </form>
         </Form>

@@ -12,7 +12,7 @@ export default function Generation({ data, onClick }: GenerationProps) {
 
     return (
         <div 
-            className="relative flex items-center justify-center hover:cursor-pointer hover:scale-105 hover:z-50 transition-all duration-300 aspect-square rounded-md shadow-lg"
+            className="relative flex items-center justify-center hover:cursor-pointer hover:scale-105 hover:z-50 transition-all duration-300 aspect-square rounded-sm shadow-lg"
             onClick={onClick}
         >
             {data.status === ImageGenerationStatus.PROCESSING && (
