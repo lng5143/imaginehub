@@ -11,6 +11,10 @@ import { useCurrentPage } from "@/store/use-current-page";
 import { useCurrentGenerationId } from "@/store/use-current-generation-id";
 import { deleteGeneration } from "@/server/actions/generations";
 import { useMutation } from "@tanstack/react-query";
+import { ImageGeneration } from "@prisma/client";
+import { ApiResponse } from "@/types/response";
+import { PagedData } from "@/types/paged-data";
+import { Image } from "@prisma/client";
 
 interface DetailsToolbarProps {
     handleClose: () => void,
@@ -39,12 +43,12 @@ export default function DetailsToolbar({ handleClose, imageUrls, genId }: Detail
             return await deleteGeneration(currentGenerationId!);
         },
         onSuccess: () => {
-            queryClient.setQueryData(["generations", currentPage], (old: any) => {
-                if (!old) return;
+            queryClient.setQueryData(["generations", currentPage], (old: ApiResponse<PagedData<ImageGeneration & { images: Image[] }>>) => {
+                if (!old || !old.data) return;
     
-                const deletedItem = old.data.find((item: any) => item.id === currentGenerationId);
+                const deletedItem = old.data.data.find((item: any) => item.id === currentGenerationId);
                 if (deletedItem) {
-                    const newData = old.data.filter((item: any) => item.id !== deletedItem.id);
+                    const newData = old.data.data.filter((item: any) => item.id !== deletedItem.id);
                     return { ...old, data: newData };
                 }
     
