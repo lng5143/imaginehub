@@ -27,6 +27,7 @@ export default function CreateFormWrapper() {
     }
 
     const handleFinalUpdateComplete = () => {
+        queryClient.invalidateQueries({ queryKey: ["currentUser"] });
         toast.success("Image generation complete!")
     }
 
