@@ -12,11 +12,7 @@ import { Button } from "../ui/button";
 import { toast } from "sonner";
 import { z } from "zod";
 
-interface AuthFormProps {
-    urlError?: string | undefined;
-}
-
-export default function AuthForm({ urlError } : AuthFormProps) {
+export default function AuthForm() {
     const [isPending, startTransition] = useTransition();
 
     const form = useForm({

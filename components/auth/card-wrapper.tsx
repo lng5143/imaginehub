@@ -1,16 +1,18 @@
 import React from "react";
 import { Card, CardHeader, CardContent, CardFooter } from "../ui/card";
+import { cn } from "@/lib/utils";
 
 interface CardWrapperProps {
     headerLabel: string;
     children: React.ReactNode;
+    className?: string;
 }
 
-export default function CardWrapper({ children, headerLabel }: CardWrapperProps) {
+export default function CardWrapper({ children, headerLabel, className }: CardWrapperProps) {
     return (
-        <Card className="w-[400px] h-fit">
+        <Card className={cn("w-[400px] h-fit", className)}>
             <CardHeader>
-                <div className="text-2xl font-bold text-center">
+                <div className="text-2xl font-bold text-center text-white">
                     {headerLabel}
                 </div>
             </CardHeader>
