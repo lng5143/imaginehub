@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   app:
+    container_name: ${APP_NAME}
     build:
       context: .
       dockerfile: Dockerfile
@@ -12,7 +13,6 @@ services:
     volumes:
       - /var/log/docker/imaginebox:/app/logs
     networks:
-      - default
       - coolify
     restart: unless-stopped
     logging:
