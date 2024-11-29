@@ -17,7 +17,6 @@ FROM node:18-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-# ENV PORT 3000
 
 RUN npm install -g pm2
 
@@ -26,8 +25,8 @@ COPY --from=builder /app/pm2.config.cjs ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/next.config.* ./next.config.*
 
-# EXPOSE ${PORT}
 EXPOSE 3000
 
 CMD ["pm2-runtime", "start", "pm2.config.cjs"]
