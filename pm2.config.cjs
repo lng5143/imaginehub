@@ -17,7 +17,7 @@ module.exports = {
         {
             name: 'payment-worker',
             script: 'node',
-            args: '/app/worker/payment-worker.ts',
+            args: '/app/worker/payment-worker.js',
             error_file: '/app/logs/worker/error.log',
             out_file: '/app/logs/worker/out.log',
             log_date_format: 'YYYY-MM-DD HH:mm:ss.SSS',
