@@ -1,5 +1,5 @@
 import { Queue } from "bullmq";
-import { connection as redisConnection } from "./redis.js";
+import { connection as redisConnection } from "./redis";
 
 // create queue and add job to queue functions are called in api routes for webhooks
 export function createPaymentWebhooksQueue() {
