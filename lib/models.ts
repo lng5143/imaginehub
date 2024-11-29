@@ -1,7 +1,7 @@
 import { Model, Provider } from "@prisma/client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as Schema from "@/types/image-generation"
-import { SD_RATIOS } from "@/const/consts"
+import { LSConsts, SD_RATIOS } from "@/const/consts"
 import { Resolver } from "react-hook-form"
 
 export const getAllModels = () => {
@@ -224,5 +224,18 @@ export const getFLUXDimensions = (model: Model) : [number, number] => {
             return [256, 1792];
         default:
             return [256, 1440];
+    }
+}
+
+export const getProviderKey = (provider: Provider | undefined) : string => {
+    switch (provider) {
+        case Provider.STABILITY:
+            return localStorage.getItem(LSConsts.STABILITY_API_KEY) || "";
+        case Provider.OPENAI:
+            return localStorage.getItem(LSConsts.OPEN_AI_API_KEY) || "";
+        case Provider.TOGETHER:
+            return localStorage.getItem(LSConsts.TOGETHER_API_KEY) || "";
+        default:
+            return "";
     }
 }

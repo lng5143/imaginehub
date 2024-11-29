@@ -10,7 +10,8 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { Provider } from "@prisma/client";
 import { LSConsts } from "@/const/consts";
-import { getProviderName } from "@/lib/models";
+import { getProviderKey, getProviderName } from "@/lib/models";
+import { useEffect } from "react";
 
 interface NoKeyDialogProps {
     provider: Provider | undefined,
@@ -22,10 +23,14 @@ export default function NoKeyDialog({ provider, open, onOpenChange } : NoKeyDial
     const form = useForm({
         resolver: zodResolver(KeyFormSchema),
         defaultValues: {
-            key: ""
+            key: getProviderKey(provider)
         },
         mode: "onSubmit"
     });
+
+    useEffect(() => {
+        form.setValue("key", getProviderKey(provider));
+    }, [provider]);
 
     const providerName = getProviderName(provider);
 
