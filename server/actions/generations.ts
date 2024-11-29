@@ -2,9 +2,9 @@
 
 import { prisma } from "@/server/lib/prisma";
 import { PAGE_SIZE } from "@/const/consts";
-import { updateUserCredits } from "./users";
+import { getCurrentUser, updateUserCredits } from "./users";
 import { uploadFileToS3AndGetUrl } from "../lib/aws";
-import { Image, ImageGeneration, ImageGenerationStatus, Provider } from "@prisma/client";
+import { Image, ImageGeneration, ImageGenerationStatus, Provider, UserTier } from "@prisma/client";
 import { getCurrentUserId } from "../lib/user";
 import { ResponseFactory } from "@/types/response";
 import { ApiResponse } from "@/types/response";
@@ -106,15 +106,18 @@ export const createOrEditImageGeneration = async (data: CreateOrEditImageGenerat
 
 const validateImageGenerationData = async (data: CreateOrEditImageGenerationDTO, existingGen: ImageGeneration | undefined)
     : Promise<ApiResponse<CreateOrEditImageGenerationDTO>> => {
-    const userId = await getCurrentUserId();
+    const user = await getCurrentUser();
 
-    if (!userId)
-        return ResponseFactory.fail({ message: "Unauthorized" });
+    if (!user)
+        return ResponseFactory.fail({ message: "User not found" });
 
     if (data.id && !existingGen)
         return ResponseFactory.fail({ message: "Old image generation not found" });
 
-    data.userId = userId;
+    if (user.tier === UserTier.FREE && user.trialCredits <= 0)
+        return ResponseFactory.fail({ message: "You ran out of free generations. Upgrade to continue generating images." });
+
+    data.userId = user.id;
 
     return ResponseFactory.success({ data: data });
 }
