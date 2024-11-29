@@ -20,7 +20,7 @@ export default function FooterSection() {
                     </div>
                     <div className="flex flex-col gap-2">
                         <h3 className="font-bold">Resources</h3>
-                        <Link href="/blog">Blog</Link>
+                        {/* <Link href="/blog">Blog</Link> */}
                         <Link href="/how-to">How to use</Link>
                     </div>
                 </div>

@@ -3,16 +3,15 @@
 import { createOrder } from "../lib/order";
 import { createCheckout } from "../lib/lemon-squeezy";
 import { PRIMARY_COLOR_HEX } from "@/const/consts";
-import { prisma } from "../lib/prisma";
 import { UserTier } from "@prisma/client";
 import { LemonCheckoutInput } from "@/types/lemon-squeezy-input";
 import { ApiResponse, ResponseFactory } from "@/types/response";
-import { getCurrentUserInfo } from "./users";
+import { getCurrentUser } from "./users";
 
 const price = 19.97;
 
 export const createLicenseCheckout = async (userId: string) : Promise<ApiResponse<{url: string}>> => {
-    const user = await getCurrentUserInfo();
+    const user = await getCurrentUser();
 
     if (!user) {
         return ResponseFactory.fail({ message: 'User not found' })

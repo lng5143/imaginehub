@@ -4,7 +4,7 @@ import { CreatePostSchema } from "@/schemas";
 import { prisma } from "../lib/prisma";
 import { BLOG_PAGE_SIZE } from "@/const/consts";
 import { JSDOM } from 'jsdom';
-import { getCurrentUserInfo } from "./users";
+import { getCurrentUser } from "./users";
 import { ApiResponse, ResponseFactory } from "@/types/response";
 import { PagedData } from "@/types/paged-data";
 import { BlogPost } from "@prisma/client";
@@ -12,7 +12,7 @@ import z from 'zod';
 
 export async function getBlogPosts(page : number) : Promise<ApiResponse<PagedData<BlogPost>>> {
     // const session = await auth();
-    const user = await getCurrentUserInfo();
+    const user = await getCurrentUser();
     if (!user || !user.tier) {
         return ResponseFactory.fail({ message: "User not found" });
     }
@@ -77,7 +77,7 @@ async function editBlogPost(data : z.infer<typeof CreatePostSchema>) {
 }
 
 async function validateBlogPostData(data : z.infer<typeof CreatePostSchema>) : Promise<ApiResponse> {
-    const user = await getCurrentUserInfo();
+    const user = await getCurrentUser();
     if (!user || !user.tier) {
         return ResponseFactory.fail({ message: "User not found" });
     }

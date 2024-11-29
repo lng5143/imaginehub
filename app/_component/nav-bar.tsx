@@ -12,9 +12,9 @@ export default function NavBar() {
         <Button variant="ghost" className="text-white hover:bg-amber-500 hover:text-slate-950 hover:scale-105 transition-all duration-300">
           <Link href="/models">Models</Link>
         </Button>
-        <Button variant="ghost" className="text-white hover:bg-amber-500 hover:text-slate-950 hover:scale-105 transition-all duration-300">
+        {/* <Button variant="ghost" className="text-white hover:bg-amber-500 hover:text-slate-950 hover:scale-105 transition-all duration-300">
           <Link href="/blog">Blog</Link>
-        </Button>
+        </Button> */}
         <Button className="bg-white text-indigo-950 hover:bg-amber-500 hover:scale-105 transition-all duration-300">
           <Link href="/pricing">Pricing</Link>
         </Button>

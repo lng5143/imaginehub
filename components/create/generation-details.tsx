@@ -21,11 +21,9 @@ export default function GenerationDetails() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [currentGenerationId, setCurrentGenerationId] = useCurrentGenerationId();
 
-  if (!currentGenerationId) return null;
-
   const { data: response, isPending: isPendingDetails} = useQuery({
     queryKey: ["generation", currentGenerationId],
-    queryFn: () => getImageGenerationById(currentGenerationId, true),
+    queryFn: () => getImageGenerationById(currentGenerationId!, true),
   })
 
   const containerRef = useRef(null);
@@ -47,7 +45,7 @@ export default function GenerationDetails() {
         <DetailsToolbar 
           handleClose={handleClose} 
           imageUrls={response?.data?.images.map(image => image.url)!}
-          genId={currentGenerationId}
+          genId={currentGenerationId!}
         />
       )}
       <div 

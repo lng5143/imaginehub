@@ -51,7 +51,7 @@ export const getGenerations = async (page: number): Promise<ApiResponse<PagedDat
     return ResponseFactory.success({ data: { totalCount: totalCount, data: generations }})
 }
 
-export const getImageGenerationById = async (genId: string, includeImages: boolean = false) 
+export const getImageGenerationById = async (genId: string | undefined, includeImages: boolean = false) 
     : Promise<ApiResponse<ImageGeneration & { 
         images: Image[], 
         openAIGenerationConfigs: OpenAIGenerationConfigs | null, 

@@ -15,7 +15,7 @@ export default function HowToPage() {
             <div className="flex flex-col gap-5">
                 <h3 className="text-xl font-semibold">Get the API key on your preferred image generation model provider</h3>
                 <p>Login on your preferred AI provider (eg. OpenAI, Stability AI), and create an API key. You will need to top up credit on these platform to start using their models.</p>
-                <p>ImagineBox only provides the web interface and will not charge you for model usage. You can monitor your billing and usage on providers' platform. </p>
+                <p>ImagineBox only provides the web interface and will not charge you for model usage. You can monitor your billing and usage on providers&apos; websites. </p>
 
                 <div className="flex flex-col gap-2">
                     <p className="font-bold">How to create API key and add credits on OpenAI platform:</p>
@@ -50,7 +50,7 @@ export default function HowToPage() {
                 <p>Login on ImagineBox using email or your Google account. Go to <span className="font-bold">Settings</span> &gt; <span className="font-bold">API Keys</span> to enter your keys. Your keys will be saved to your browser only. They will not go through or be saved to our server. </p>
             </div>
             </div>
-            <p className="font-bold">That's it! You are all set to start generating images.</p>
+            <p className="font-bold">That&apos;s it! You are all set to start generating images.</p>
         </div>
     </div>
 }
