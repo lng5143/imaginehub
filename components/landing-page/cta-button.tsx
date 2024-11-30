@@ -7,7 +7,7 @@ interface CTAButtonProps {
 
 export default function CTAButton({ variant } : CTAButtonProps) {
     return (
-        <Button variant={variant} className="w-60 text-lg font-semibold">
+        <Button variant={variant} className="w-60 text-lg font-semibold" asChild>
             <Link href="/create">
                 Get Started
             </Link>
