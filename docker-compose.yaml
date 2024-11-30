@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  ${COMPOSE_PROJECT_NAME}_app:
+  ib-app:
     build:
       context: .
       dockerfile: Dockerfile.app
@@ -18,28 +18,28 @@ services:
         max-size: "10m"
         max-file: "3"
     depends_on:
-      redis:
+      ib-redis:
         condition: service_healthy
 
-  ${COMPOSE_PROJECT_NAME}_payment-worker:
+  ib-payment-worker:
     build:
       context: .
       dockerfile: Dockerfile.worker
     environment:
       - NODE_ENV=production
-      - REDIS_URL=redis://redis:6379
+      - REDIS_URL=redis://ib-redis:6379
       - DATABASE_URL=${DATABASE_URL}
     volumes:
       - /var/log/docker/${COMPOSE_PROJECT_NAME}/payment-worker:/app/logs
     restart: unless-stopped
     depends_on:
-      redis:
+      ib-redis:
         condition: service_healthy
 
-  ${COMPOSE_PROJECT_NAME}_redis:
+  ib-redis:
     image: redis:alpine
     volumes:
-      - redis-data:/data
+      - ib-redis-data:/data
     command: redis-server --appendonly yes  # Enable persistence
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
@@ -48,9 +48,9 @@ services:
       retries: 5
 
 volumes:
-  ${COMPOSE_PROJECT_NAME}_app-logs:
+  ib-app-logs:
     driver: local
-  ${COMPOSE_PROJECT_NAME}_payment-worker-logs:
+  ib-payment-worker-logs:
     driver: local
-  ${COMPOSE_PROJECT_NAME}_redis-data:
+  ib-redis-data:
     driver: local
