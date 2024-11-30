@@ -32,8 +32,10 @@
     "**/*.ts",
     "**/*.tsx",
     "server/lib/prisma.js",
-    "auth.js"
-, "worker/payment-worker.js"  ],
+    "auth.js",
+    "worker/payment-worker.ts",
+    "worker/redis.ts"
+  ],
   "exclude": [
     "node_modules"
   ],

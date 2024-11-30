@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    ports:
+      - "${HOST_PORT}:3000"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - /var/log/docker/${COMPOSE_PROJECT_NAME}/app:/app/logs
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  payment-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=${DATABASE_URL}
+    volumes:
+      - /var/log/docker/${COMPOSE_PROJECT_NAME}/payment-worker:/app/logs
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes  # Enable persistence
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  app-logs:
+    driver: local
+  payment-worker-logs:
+    driver: local
+  redis-data:
+    driver: local

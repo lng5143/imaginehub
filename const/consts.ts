@@ -40,10 +40,6 @@ export const HINTS = {
 
 export const BLOG_PAGE_SIZE = 9;
 
-export const WEBHOOK_EVENT_TYPE = {
-    ORDER_CREATED: 'order_created'
-}
-
 export const LSConsts = {
     OPEN_AI_API_KEY: 'ib_openai_api_key',
     STABILITY_API_KEY: 'ib_stability_api_key',

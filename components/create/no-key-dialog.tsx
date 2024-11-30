@@ -30,7 +30,7 @@ export default function NoKeyDialog({ provider, open, onOpenChange } : NoKeyDial
 
     useEffect(() => {
         form.setValue("key", getProviderKey(provider));
-    }, [provider]);
+    }, [provider, form]);
 
     const providerName = getProviderName(provider);
 

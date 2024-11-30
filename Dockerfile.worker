@@ -1,0 +1,42 @@
+FROM node:18-alpine AS deps
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy source files
+COPY . .
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# Build step that handles both TypeScript compilation and bundling
+FROM deps AS worker-builder
+WORKDIR /app
+
+# Install esbuild globally for the build step
+RUN npm install -g esbuild
+
+# Bundle the worker with all its dependencies
+RUN esbuild worker/payment-worker.ts \
+    --bundle \
+    --platform=node \
+    --outfile=dist/worker-bundle.js \
+    --external:@prisma/client \
+    --format=cjs \
+    --sourcemap \
+    --target=node18
+
+# Final stage with minimal runtime dependencies
+FROM node:18-alpine AS runner
+WORKDIR /app
+
+RUN mkdir -p /app/logs
+
+# Copy only necessary Prisma files and the bundled worker
+COPY --from=deps /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=deps /app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=worker-builder /app/dist/worker-bundle.js ./worker-bundle.js
+
+CMD ["node", "worker-bundle.js"]

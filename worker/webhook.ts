@@ -1,4 +1,4 @@
-import { prisma } from "./prisma.js";
+import { prisma } from "../server/lib/prisma.js";
 import { WebhookStatus, OrderStatus, UserTier } from "@prisma/client";
 
 export async function isWebhookProcessed(webhookId: string) {
