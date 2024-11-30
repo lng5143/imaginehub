@@ -7,6 +7,7 @@ const crypto = require('crypto')
 const paymentQueue = createPaymentWebhooksQueue();
 
 export const POST = async (req : Request) => {
+    console.log('lemon squeezy webhook', req);
     // validate signature
     const rawBody = await new Response(req.body).text();
     const secret = process.env.LM_SIGNING_SECRET
