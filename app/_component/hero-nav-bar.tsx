@@ -30,13 +30,13 @@ export default function HeroNavBar() {
       </Link>
       <div className="flex-grow" />
       <div className="hidden md:flex gap-5 items-center">
-        <Button variant="ghost" className="text-black hover:bg-amber-500 hover:text-slate-950 hover:scale-105 transition-all duration-300">
+        <Button asChild variant="ghost" className="text-black hover:bg-amber-500 hover:text-slate-950 hover:scale-105 transition-all duration-300">
           <Link href="/models">Models</Link>
         </Button>
         {/* <Button variant="ghost" className="text-black hover:bg-amber-500 hover:text-slate-950 hover:scale-105 transition-all duration-300">
           <Link href="/blog">Blog</Link>
         </Button> */}
-        <Button className="shadow-xl bg-indigo-950 text-white hover:bg-amber-500 hover:text-slate-950 hover:scale-105 transition-all duration-300">
+        <Button asChild className="shadow-xl bg-indigo-950 text-white hover:bg-amber-500 hover:text-slate-950 hover:scale-105 transition-all duration-300">
             <Link href="/pricing">Pricing</Link>
         </Button>
       </div>
