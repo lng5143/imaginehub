@@ -13,7 +13,7 @@ export default function HeroSection() {
                 </h1>
                 <p>Enter your API key and start generating images. No subscription required.</p>
                 <div className="flex flex-col gap-2">
-                    <CTAButton />
+                    <CTAButton variant="ibDark" />
                     <Link href="/how-to" className="text-gray-700 text-sm underline">How to use</Link>
                 </div>
             </div>
