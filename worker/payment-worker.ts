@@ -17,7 +17,6 @@ const connection = getRedisConnection();
 if (!connection) {
     console.log('No Redis connection available');
 } else {
-    console.log('db url', process.env.DATABASE_URL);
     const paymentWorker = new Worker('payment-webhooks', async (job) => {
         const { webhookId, payload, eventType } = job.data;
 
