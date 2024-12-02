@@ -116,7 +116,7 @@ export const FAQs = [
     },
     {
         "question": "Is my API key secure?",
-        "answer": "Yes. Your API keys are stored locally on your browser only. ImagineBox will directly use the locally stored key to interface with the image generation providers. Your API keys will NOT go through our servers or saved to our database."
+        "answer": "Yes. Your API keys are stored locally on your browser only. ImagineBox will directly use the locally stored key to interface with the image generation providers. Your API keys will NOT go through our servers or saved to our database. Think of ImagineBox as simply a browser to use your image generation model."
     },
     {
         "question": "What image features are supported at the moment?",

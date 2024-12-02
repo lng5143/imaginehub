@@ -47,7 +47,7 @@ export default function KeysForm() {
                                         <p className="text-xs text-gray-500">For DALL-E models</p>
                                     </div>
                                     <FormControl>
-                                        <Input placeholder="sk-..." {...field} disabled={isPending} />
+                                        <Input placeholder="..." {...field} disabled={isPending} />
                                     </FormControl>
                                 </FormItem>
                             )}
@@ -62,7 +62,7 @@ export default function KeysForm() {
                                         <p className="text-xs text-gray-500">For Stable Diffusion, Stable Image models</p>
                                     </div>
                                     <FormControl>
-                                        <Input placeholder="sk-..." {...field} disabled={isPending} />
+                                        <Input placeholder="..." {...field} disabled={isPending} />
                                     </FormControl>
                                 </FormItem>
                             )}
@@ -77,7 +77,7 @@ export default function KeysForm() {
                                         <p className="text-xs text-gray-500">For FLUX models</p>
                                     </div>
                                     <FormControl>
-                                        <Input placeholder="sk-..." {...field} disabled={isPending} />
+                                        <Input placeholder="..." {...field} disabled={isPending} />
                                     </FormControl>
                                 </FormItem>
                             )}
