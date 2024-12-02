@@ -1,3 +1,5 @@
+"use client"
+
 import { useForm } from "react-hook-form";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "../ui/dialog";
 import Link from "next/link";
@@ -10,8 +12,21 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { Provider } from "@prisma/client";
 import { LSConsts } from "@/const/consts";
-import { getProviderKey, getProviderName } from "@/lib/models";
+import { getProviderName } from "@/lib/models";
 import { useEffect } from "react";
+
+const getProviderKey = (provider: Provider | undefined) : string => {
+    switch (provider) {
+        case Provider.STABILITY:
+            return localStorage.getItem(LSConsts.STABILITY_API_KEY) || "";
+        case Provider.OPENAI:
+            return localStorage.getItem(LSConsts.OPEN_AI_API_KEY) || "";
+        case Provider.TOGETHER:
+            return localStorage.getItem(LSConsts.TOGETHER_API_KEY) || "";
+        default:
+            return "";
+    }
+}
 
 interface NoKeyDialogProps {
     provider: Provider | undefined,

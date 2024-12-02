@@ -226,16 +226,3 @@ export const getFLUXDimensions = (model: Model) : [number, number] => {
             return [256, 1440];
     }
 }
-
-export const getProviderKey = (provider: Provider | undefined) : string => {
-    switch (provider) {
-        case Provider.STABILITY:
-            return localStorage.getItem(LSConsts.STABILITY_API_KEY) || "";
-        case Provider.OPENAI:
-            return localStorage.getItem(LSConsts.OPEN_AI_API_KEY) || "";
-        case Provider.TOGETHER:
-            return localStorage.getItem(LSConsts.TOGETHER_API_KEY) || "";
-        default:
-            return "";
-    }
-}
