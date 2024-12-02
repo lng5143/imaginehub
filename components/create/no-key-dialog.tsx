@@ -16,6 +16,8 @@ import { getProviderName } from "@/lib/models";
 import { useEffect } from "react";
 
 const getProviderKey = (provider: Provider | undefined) : string => {
+    if (typeof window === 'undefined') return "";
+
     switch (provider) {
         case Provider.STABILITY:
             return localStorage.getItem(LSConsts.STABILITY_API_KEY) || "";
