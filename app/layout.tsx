@@ -3,6 +3,7 @@ import "./globals.css";
 import { auth } from "../auth";
 import { Toaster } from "sonner";
 import Providers from "@/components/providers";
+import Script from "next/script";
 
 const dmSans = DM_Sans({
   subsets: ["latin"]
@@ -26,6 +27,8 @@ export default async function RootLayout({ children } : RootLayoutProps) {
         <body className={`${dmSans.className} h-screen flex flex-col`}>
           {children}
           <Toaster richColors />
+          <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
+          <Script defer src="https://cloud.umami.is/script.js" data-website-id="1e31543c-e121-4086-be58-a65e1559ca14"></Script>
         </body>
       </html>
     </Providers>
