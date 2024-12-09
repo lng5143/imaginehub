@@ -2,22 +2,25 @@ import CTASection from "@/components/landing-page/cta-section";
 import FAQSection from "@/components/landing-page/faq";
 import Image from "next/image";
 
+export interface ImagePageDetails {
+    imageUrl: string; 
+    prompt: string; 
+    model: string;
+    generationCost: string;
+    modelProvider: string; 
+    negativePrompt: string;
+    stylePreset: string; 
+    slug: string;
+}
+
 interface ImagePageContainerProps {
-    generationDetails: {
-        imageUrl: string; 
-        prompt: string; 
-        model: string;
-        generationCost: string;
-        modelProvider: string; 
-        negativePrompt: string;
-        stylePreset: string; 
-    }
+    generationDetails: ImagePageDetails;
 }
 
 export default function ImagePageContainer({ generationDetails }: ImagePageContainerProps) {
     return (
         <div className="flex flex-col gap-4 items-center"> 
-            <div className="flex gap-10 items-center justify-center">
+            <div className="flex gap-10 items-center justify-center px-20">
                 <Image src={generationDetails.imageUrl} alt="Generated Image" width={512} height={512} />
                 <div className="flex flex-col gap-2">
                     <GenerationDetail label="Prompt" value={generationDetails.prompt} />
