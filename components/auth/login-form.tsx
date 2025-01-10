@@ -41,7 +41,7 @@ export default function AuthForm() {
     
     return (
         <div className="flex flex-col gap-8">
-            <Form {...form}>
+            {/* <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
                     <FormField
                         control={form.control}
@@ -56,7 +56,7 @@ export default function AuthForm() {
                     />
                     <Button variant="ibLight" className="w-full hover:scale-[1.02]" type="submit" disabled={isPending}>Login with email</Button>
                 </form>
-            </Form>
+            </Form> */}
             <SocialLogin />
         </div>
     )
