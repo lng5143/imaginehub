@@ -13,6 +13,10 @@ export default function FooterSection() {
                 </div>
                 <div className="hidden md:block flex-grow"></div>
                 <div className="flex gap-10">
+                     <div className="flex flex-col gap-2">
+                        <h3 className="font-bold">Our AI Products</h3>
+                        <Link href="https://videollama.co">VideoLlama</Link>
+                    </div>
                     <div className="flex flex-col gap-2">
                         <h3 className="font-bold">Product</h3>
                         <Link href="/pricing">Pricing</Link>
